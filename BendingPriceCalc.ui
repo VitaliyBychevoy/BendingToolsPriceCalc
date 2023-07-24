@@ -44,12 +44,13 @@
      <rect>
       <x>20</x>
       <y>20</y>
-      <width>90</width>
+      <width>100</width>
       <height>30</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -78,6 +79,7 @@ color: rgb(0, 255, 162);</string>
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>14</pointsize>
      </font>
     </property>
@@ -113,6 +115,7 @@ QLineEdit:focus {
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -135,6 +138,11 @@ color: rgb(0, 255, 162);</string>
       <width>250</width>
       <height>30</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Comic Sans MS</family>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">QComboBox{
@@ -161,6 +169,7 @@ QComboBox:focus {
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -183,6 +192,11 @@ color: rgb(0, 255, 162);</string>
       <width>300</width>
       <height>30</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Comic Sans MS</family>
+     </font>
     </property>
     <property name="whatsThis">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;QComboBox{&lt;/p&gt;&lt;p&gt;	background-color: rgb(237, 255, 152);&lt;/p&gt;&lt;p&gt;	color: rgb(202, 8, 255);&lt;/p&gt;&lt;p&gt;}&lt;/p&gt;&lt;p&gt;QComboBoxt:hover {&lt;/p&gt;&lt;p&gt;	border: 3px solid rgb(2, 35, 255);&lt;/p&gt;&lt;p&gt;}&lt;/p&gt;&lt;p&gt;QComboBox:focus {&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;	border: 3px solid rgb(225, 255, 249);&lt;/p&gt;&lt;p&gt;}&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -212,6 +226,7 @@ QComboBox:focus {
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
       <weight>50</weight>
       <bold>false</bold>
@@ -236,6 +251,11 @@ color: rgb(0, 255, 162);</string>
       <width>90</width>
       <height>30</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Comic Sans MS</family>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">QComboBox{
@@ -262,6 +282,7 @@ QComboBox:focus {
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -284,6 +305,11 @@ color: rgb(0, 255, 162);</string>
       <width>360</width>
       <height>30</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Comic Sans MS</family>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">QComboBox{
@@ -310,6 +336,7 @@ QComboBox:focus {
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -326,12 +353,13 @@ color: rgb(0, 255, 162);</string>
      <rect>
       <x>130</x>
       <y>220</y>
-      <width>50</width>
+      <width>60</width>
       <height>30</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
       <weight>75</weight>
       <bold>true</bold>
@@ -365,6 +393,7 @@ QSpinBox:focus {
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -394,6 +423,7 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -429,7 +459,7 @@ color: rgb(199, 55, 255);</string>
      <enum>Qt::DashDotLine</enum>
     </property>
     <property name="rowCount">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="columnCount">
      <number>4</number>
@@ -461,11 +491,6 @@ color: rgb(199, 55, 255);</string>
     <attribute name="verticalHeaderHighlightSections">
      <bool>false</bool>
     </attribute>
-    <row>
-     <property name="text">
-      <string>test</string>
-     </property>
-    </row>
     <column>
      <property name="text">
       <string>№</string>
@@ -498,6 +523,7 @@ color: rgb(199, 55, 255);</string>
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -514,12 +540,13 @@ color: rgb(255, 255, 0);</string>
      <rect>
       <x>150</x>
       <y>590</y>
-      <width>80</width>
+      <width>90</width>
       <height>30</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -542,6 +569,7 @@ color: rgb(255, 255, 0);</string>
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -564,7 +592,8 @@ color: rgb(255, 255, 0);</string>
     </property>
     <property name="font">
      <font>
-      <pointsize>16</pointsize>
+      <family>Comic Sans MS</family>
+      <pointsize>14</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -586,7 +615,8 @@ color: rgb(255, 102, 0);</string>
     </property>
     <property name="font">
      <font>
-      <pointsize>16</pointsize>
+      <family>Comic Sans MS</family>
+      <pointsize>14</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -600,15 +630,16 @@ color: rgb(255, 102, 0);</string>
    <widget class="QLabel" name="cm_label">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>465</x>
       <y>620</y>
-      <width>35</width>
+      <width>30</width>
       <height>30</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>16</pointsize>
+      <family>Comic Sans MS</family>
+      <pointsize>14</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -630,6 +661,7 @@ color: rgb(255, 102, 0);</string>
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -659,6 +691,7 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
+      <family>Comic Sans MS</family>
       <pointsize>16</pointsize>
      </font>
     </property>
