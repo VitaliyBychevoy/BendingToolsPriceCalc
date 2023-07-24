@@ -98,7 +98,7 @@ QLineEdit:focus {
 }</string>
     </property>
     <property name="text">
-     <string>Nttg</string>
+     <string>Vectortool</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
