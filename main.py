@@ -23,15 +23,19 @@ class Ui(QtWidgets.QMainWindow):
 	def __init__(self):
 		super(Ui, self).__init__()
 		uic.loadUi("BendingPriceCalc.ui", self)
-		for item in type_item_list:
-			self.type_value.addItem(item)
+		for item_connection in type_item_list:
+			self.type_value.addItem(item_connection)
 
-		if self.type_value == "Оберіть тип кріплення":
-			self.item_value.clear()
-			self.item_value.addItem(self.type_value)
-		else:
-			self.item_value.clear()
-			self.item_value.addItem("Заглушка")
+		self.item_value.addItem("Оберіть тип кріплення")
+		self.number_value.addItem("?")
+		self.length_value.addItem("Оберіть номер виробу")
+		# if self.type_value.currentText() == "Оберіть тип кріплення":
+		# 	self.item_value.clear()
+		# 	self.item_value.addItem(self.type_value)
+		# else:
+		# 	self.item_value.clear()
+		# 	self.item_value.addItem("Заглушка")
+		#print(type(self.type_value.currentText()))
 
 		self.show()
 
