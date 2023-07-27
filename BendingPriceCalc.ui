@@ -479,6 +479,9 @@ QPushButton:hover {
     </property>
    </widget>
    <widget class="QTableWidget" name="table">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -678,6 +681,9 @@ color: rgb(199, 55, 255);
     <item row="1" column="2">
      <property name="text">
       <string>gfdsfgssddsfghgdfssghdgfs1234567890</string>
+     </property>
+     <property name="flags">
+      <set>ItemIsSelectable|ItemIsEnabled</set>
      </property>
     </item>
    </widget>
