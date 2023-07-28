@@ -907,7 +907,7 @@ border-radius: 10px;</string>
        <property name="font">
         <font>
          <family>Comic Sans MS</family>
-         <pointsize>18</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="toolTipDuration">
@@ -920,7 +920,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
 }</string>
        </property>
        <property name="text">
-        <string>Курс станом на</string>
+        <string>Курс по міжбанку станом на</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -1038,7 +1038,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
 }</string>
          </property>
          <property name="text">
-          <string>00,00</string>
+          <string>00,0000</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -1060,7 +1060,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
 }</string>
          </property>
          <property name="text">
-          <string>грн</string>
+          <string>ГРН</string>
          </property>
         </widget>
        </item>
