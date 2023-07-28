@@ -2,12 +2,14 @@ import sys
 from datetime import datetime, date
 
 from PyQt5 import QtWidgets, uic
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import *
 
 # from PyQt5.QtWidgets import QApplication, QMainWindow
 
 type_item_list = [
     "Оберіть тип кріплення",
-    "Amada",
+    "Amada-promecam",
     "Trumpf",
     "Wila",
     "Bystronic"
@@ -47,6 +49,8 @@ class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()
         uic.loadUi("BendingPriceCalc.ui", self)
+        self.setGeometry(50, 50, 820, 880)
+        self.m_w = None
         for item_connection in type_item_list:
             self.type_value.addItem(item_connection)
 
@@ -54,10 +58,39 @@ class Ui(QtWidgets.QMainWindow):
         self.number_value.addItem("?")
         self.length_value.addItem("Оберіть номер виробу")
 
-        date_list = get_list_moment()
+        # Блок роботи з валютою
+        time_info = get_list_moment()
+        self.EURO_value.setText(self.euro_value.text())
 
-        # self.date_euro_layout.date_value.setText(date_list[0])
-    	self.show()
+        self.date_value.setText(time_info[0])
+        self.time_label.setText(time_info[1])
+        self.day.setText(time_info[2])
+
+        self.refresh_rate_button.clicked.connect(self.refresh_rate)
+        self.search_button.clicked.connect(self.search_item)
+
+        self.show()
+
+    def refresh_rate(self) -> None:
+        time_info = get_list_moment()
+        print(time_info)
+        self.date_value.setText(time_info[0])
+        self.time_label.setText(time_info[1])
+        self.day.setText(time_info[2])
+
+    def search_item(self) -> None:
+        self.m_w = Search()
+
+        self.m_w.show()
+
+
+class Search(QMdiSubWindow):
+    def __init__(self):
+        super(Search, self).__init__()
+        self.setGeometry(870, 50, 820, 880)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+        uic.loadUi("Search.ui", self)
 
 
 app = QtWidgets.QApplication(sys.argv)

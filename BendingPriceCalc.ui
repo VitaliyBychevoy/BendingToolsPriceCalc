@@ -1300,7 +1300,7 @@ QPushButton:hover {
      <string>Створити КП xlsx</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Search_button">
+   <widget class="QPushButton" name="search_button">
     <property name="geometry">
      <rect>
       <x>10</x>
