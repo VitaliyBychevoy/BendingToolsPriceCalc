@@ -1,7 +1,7 @@
 import sys
 import requests
 from datetime import datetime, date
-from bs4 import  BeautifulSoup
+from bs4 import BeautifulSoup
 from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
@@ -26,7 +26,7 @@ week_day = {
     1: "понеділок",
     2: "вівторок",
     3: "середа",
-    4: "четверг",
+    4: "четвер",
     5: "п'ятниця",
     6: "субота",
     7: "неділя"

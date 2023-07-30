@@ -31,7 +31,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">/*background-color: qlineargradient(spread:pad, x1:0.011, y1:0.852455, x2:0.96, y2:0.085, stop:0 rgba(112, 2, 117, 255), stop:1 rgba(128, 16, 255, 255));*/
-background-color: qlineargradient(spread:pad, x1:0.0685455, y1:0.704, x2:0.585, y2:0.261, stop:0.153409 rgba(98, 68, 234, 255), stop:1 rgba(184, 61, 250, 255));</string>
+background-color:rgb(30, 0, 65);</string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
@@ -60,7 +60,7 @@ background-color: qlineargradient(spread:pad, x1:0.0685455, y1:0.704, x2:0.585, 
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
-color: rgb(0, 255, 162);</string>
+color:rgb(190, 227, 255);</string>
     </property>
     <property name="locale">
      <locale language="Ukrainian" country="Ukraine"/>
@@ -89,8 +89,8 @@ color: rgb(0, 255, 162);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QLineEdit{
-	background-color: rgb(237, 255, 152);
-	color: rgb(202, 8, 255);
+	background-color:rgb(190, 227, 255);
+	color: rgb(0, 0, 100);
 border-radius: 5px;
 }
 
@@ -152,7 +152,7 @@ color: rgb(0, 255, 162);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QComboBox{
-	background-color: rgb(237, 255, 152);
+	background-color:rgb(190, 227, 255);
 	color: rgb(202, 8, 255);
 	border: 1px  rgb(237, 255, 152);
 border-radius: 5px;
@@ -220,7 +220,7 @@ color: rgb(0, 255, 162);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QComboBox{
-	background-color: rgb(237, 255, 152);
+	background-color: rgb(190, 227, 255);
 	color: rgb(202, 8, 255);
 	border: 1px  rgb(237, 255, 152);
 border-radius: 5px;
@@ -279,7 +279,7 @@ color: rgb(0, 255, 162);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QComboBox{
-	background-color: rgb(237, 255, 152);
+	background-color: rgb(190, 227, 255);
 	color: rgb(202, 8, 255);
 	border: 1px  rgb(237, 255, 152);
 border-radius: 5px;
@@ -335,7 +335,7 @@ color: rgb(0, 255, 162);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QComboBox{
-	background-color: rgb(237, 255, 152);
+	background-color: rgb(190, 227, 255);
 	color: rgb(202, 8, 255);
 	border: 1px  rgb(237, 255, 152);
 border-radius: 5px;
@@ -391,7 +391,7 @@ color: rgb(0, 255, 162);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">QSpinBox{
-	background-color: rgb(237, 255, 152);
+	background-color: rgb(190, 227, 255);
 	color: rgb(202, 8, 255);
 border-radius: 5px;
 }
@@ -491,7 +491,7 @@ QPushButton:hover {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background:rgb(237, 255, 152);
+     <string notr="true">background:rgb(225, 225, 225);
 color: rgb(199, 55, 255);
 </string>
     </property>
@@ -704,7 +704,7 @@ color: rgb(199, 55, 255);
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
-color: rgb(255, 255, 0);</string>
+color:rgb(255, 255, 255);</string>
     </property>
     <property name="text">
      <string>Вага складає</string>
@@ -1124,7 +1124,7 @@ QPushButton:hover {
     <property name="styleSheet">
      <string notr="true">QLineEdit{
 
-	background-color: rgb(237, 255, 152);
+	background-color:rgb(255, 255, 255);
 	color: rgb(202, 8, 255);
 	border: 1px  rgb(237, 255, 152);
 border-radius: 5px;
