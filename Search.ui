@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: qlineargradient(spread:pad, x1:0.0685455, y1:0.704, x2:0.585, y2:0.261, stop:0.153409 rgba(98, 68, 234, 255), stop:1 rgba(184, 61, 250, 255));</string>
+   <string notr="true">background-color: rgb(30, 0, 65);</string>
   </property>
   <property name="locale">
    <locale language="Ukrainian" country="Ukraine"/>

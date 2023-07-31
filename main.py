@@ -8,20 +8,41 @@ from PyQt5.QtWidgets import *
 
 # from PyQt5.QtWidgets import QApplication, QMainWindow
 
-type_item_list = [
+type_holder_list = [
     "Оберіть тип кріплення",
     "Amada-promecam",
-    "Trumpf",
-    "Wila",
+    "Trumpf-Wila",
     "Bystronic"
 ]
 
-item_list = [
+item_list_amada = [
+    "Пуансон",
+    "Матриця одноручова",
+    "Пуансон плющення",
+    "Матриця плющення",
+    "Матриця багаторучова",
+    "Тримач пуансона",
+    "Прижимні планки",
+    "Тримач матриці"
+]
+
+item_list_trumpf_wila = [
     "Пуансон",
     "Матриця",
     "Пуансон плющення",
     "Матриця плющення",
+    "Кнопка",
+    "Штифт"
 ]
+
+category = {
+    type_holder_list[0]: type_holder_list[0],
+    type_holder_list[1]: item_list_amada,
+    type_holder_list[2]: item_list_trumpf_wila,
+    type_holder_list[3]: item_list_trumpf_wila[0:4],
+}
+
+
 week_day = {
     1: "понеділок",
     2: "вівторок",
@@ -78,8 +99,9 @@ class Ui(QtWidgets.QMainWindow):
         self.setGeometry(50, 50, 820, 880)
         self.setFixedSize(820, 880)
         self.m_w = None
-        for item_connection in type_item_list:
+        for item_connection in type_holder_list:
             self.type_value.addItem(item_connection)
+        self.type_value.activated.connect(self.get_items)
 
         self.item_value.addItem("Оберіть тип кріплення")
         self.number_value.addItem("?")
@@ -98,6 +120,15 @@ class Ui(QtWidgets.QMainWindow):
         self.search_button.clicked.connect(self.search_item)
 
         self.show()
+
+    def get_items(self) -> None:
+        self.item_value.clear()
+        for items in category[self.type_value.currentText()]:
+            self.item_value.addItem(items)
+
+    def get_numbers(self) -> None:
+        #20.210
+        pass
 
     #Оновлення дати та курса
     def refresh_rate(self) -> None:
