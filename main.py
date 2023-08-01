@@ -6,6 +6,10 @@ from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 
+import style
+import mainwindow
+from style import *
+
 # from PyQt5.QtWidgets import QApplication, QMainWindow
 
 type_holder_list = [
@@ -16,6 +20,7 @@ type_holder_list = [
 ]
 
 item_list_amada = [
+    "Оберіть виріб",
     "Пуансон",
     "Матриця одноручова",
     "Пуансон плющення",
@@ -27,6 +32,7 @@ item_list_amada = [
 ]
 
 item_list_trumpf_wila = [
+    "Оберіть виріб",
     "Пуансон",
     "Матриця",
     "Пуансон плющення",
@@ -35,11 +41,12 @@ item_list_trumpf_wila = [
     "Штифт"
 ]
 
+
 category = {
     type_holder_list[0]: type_holder_list[0],
     type_holder_list[1]: item_list_amada,
     type_holder_list[2]: item_list_trumpf_wila,
-    type_holder_list[3]: item_list_trumpf_wila[0:4],
+    type_holder_list[3]: item_list_trumpf_wila[0:5],
 }
 
 
@@ -78,7 +85,7 @@ def get_rate() -> str:
     rate_full_string = None
     for item in td_list:
         rate_full_string = item.find("div", {"class": "sc-1x32wa2-9 bKmKjX"}).text
-    rate = rate_full_string[0:7]
+    rate = rate_full_string[0:6]
     return rate
 
 
@@ -102,6 +109,7 @@ class Ui(QtWidgets.QMainWindow):
         for item_connection in type_holder_list:
             self.type_value.addItem(item_connection)
         self.type_value.activated.connect(self.get_items)
+        self.type_value.setStyleSheet(style.type_value_style)
 
         self.item_value.addItem("Оберіть тип кріплення")
         self.number_value.addItem("?")
@@ -121,10 +129,16 @@ class Ui(QtWidgets.QMainWindow):
 
         self.show()
 
+
     def get_items(self) -> None:
-        self.item_value.clear()
-        for items in category[self.type_value.currentText()]:
-            self.item_value.addItem(items)
+        if category[self.type_value.currentText()] == type_holder_list[0]:
+            self.item_value.clear()
+            self.item_value.addItem(type_holder_list[0])
+        else:
+            self.item_value.clear()
+            for item in category[self.type_value.currentText()]:
+                self.item_value.addItem(item)
+
 
     def get_numbers(self) -> None:
         #20.210
@@ -133,10 +147,10 @@ class Ui(QtWidgets.QMainWindow):
     #Оновлення дати та курса
     def refresh_rate(self) -> None:
         time_info = get_list_moment()
-        self.date_value.setText(time_info[0])
-        self.time_label.setText(time_info[1])
-        self.day.setText(time_info[2])
-        self.euro_value.setText(get_rate())
+        self.window.date_value.setText(time_info[0])
+        self.window.time_label.setText(time_info[1])
+        self.window.day.setText(time_info[2])
+        self.window.euro_value.setText(get_rate())
 
     #Створення пошукового вікна
     def search_item(self) -> None:
