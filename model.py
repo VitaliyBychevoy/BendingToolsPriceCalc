@@ -1,3 +1,5 @@
+import openpyxl
+DB_FOLDER = "data/DB_bending.xlsx"
 class Item:
 
     def __init__(
@@ -17,6 +19,7 @@ class Item:
             ua_name_item: str = None,
             amount_item: int = 0
     ) -> None:
+        self.db = openpyxl.load_workbook(DB_FOLDER)
         self.db_path: str = db_path
         self.type_holder: str = type_holder
         self.type_item: str = type_item
@@ -121,7 +124,7 @@ class Invoice:
             delivery_price: float = 0.0,
             commission_percentage: float = 0.0,
             tecnostamp_discount: float = 0.0,
-    ):
+    ) -> None:
         self.rate = rate
         self.list_item = list_item
         self.packing_price = packing_price

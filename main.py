@@ -7,6 +7,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 
 import style
+from model import Invoice, Item
 import mainwindow
 from style import *
 
@@ -127,6 +128,12 @@ class Ui(QtWidgets.QMainWindow):
         self.refresh_rate_button.clicked.connect(self.refresh_rate)
         self.search_button.clicked.connect(self.search_item)
 
+        #Створюємо invoice, у якому будуть лежати вироби (item)
+        my_invoice = Invoice()
+
+        #встановлюємо курс евро
+        my_invoice.set_rate(self.EURO_value.text())
+        print(my_invoice.get_rate())
         self.show()
 
 
