@@ -1,5 +1,8 @@
 import openpyxl
+
 DB_FOLDER = "data/DB_bending.xlsx"
+
+
 class Item:
 
     def __init__(
@@ -35,12 +38,12 @@ class Item:
         self.ua_name_item: str = ua_name_item
         self.amount_item: str = amount_item
 
-
     def set_db_path(self, new_path: str) -> None:
         self.db_path = new_path
 
     def get_db_path(self) -> str:
         return self.db_path
+
     def set_type_holder(self, new_type_holder: str) -> None:
         self.type_holder = new_type_holder
 
@@ -110,9 +113,9 @@ class Item:
     def set_ua_name_item(self, new_ua_name: str) -> None:
         self.ua_name_item = new_ua_name
 
-
     def get_amount_item(self) -> int:
         return self.amount_item
+
 
 class Invoice:
 
@@ -142,7 +145,15 @@ class Invoice:
         self.list_item = new_list_item
 
     def get_list_item(self) -> list[Item]:
-        return self.list_item
+        if self.list_item is None:
+            return []
+        else:
+            return self.list_item
+
+    def add_item_to_list(self, new_item: Item) -> None:
+        my_list_item = self.get_list_item()
+        my_list_item.append(new_item)
+        self.set_list_item(my_list_item)
 
     def set_packing_price(self, new_packing_price: float) -> None:
         self.packing_price = new_packing_price

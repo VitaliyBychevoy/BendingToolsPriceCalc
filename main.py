@@ -112,6 +112,8 @@ class Ui(QtWidgets.QMainWindow):
         self.type_value.activated.connect(self.get_items)
         self.type_value.setStyleSheet(style.type_value_style)
 
+        self.add_item_button.clicked.connect(self.add_item_function)
+
         self.item_value.addItem("Оберіть тип кріплення")
         self.number_value.addItem("?")
         self.length_value.addItem("Оберіть номер виробу")
@@ -136,6 +138,11 @@ class Ui(QtWidgets.QMainWindow):
         print(my_invoice.get_rate())
         self.show()
 
+
+    #Додаємо виріб до таблиці
+    def add_item_function(self):
+        self.table.setData()
+        pass
 
     def get_items(self) -> None:
         if category[self.type_value.currentText()] == type_holder_list[0]:
