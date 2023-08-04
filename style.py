@@ -1,5 +1,5 @@
 #Стиль для типу кріплення
-type_value_style = "QComboBox{"+\
+type_holder_style = "QComboBox{"+\
 	"background-color:rgb(190, 227, 255);" +\
 	"color:  rgb(0, 0, 100);" +\
 	"border: 1px  rgb(237, 255, 152);" +\

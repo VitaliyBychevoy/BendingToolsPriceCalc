@@ -6,8 +6,10 @@ from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 
+import db_handler
 import style
 from model import Invoice, Item
+from db_handler import *
 import mainwindow
 from style import *
 
@@ -79,15 +81,15 @@ def get_rate() -> str:
     rate = ""
     url = "https://minfin.com.ua/currency/mb/"
     request = requests.get(url)
-    if request.status_code == 200:
-        print(request.status_code)
+    # if request.status_code == 200:
+    #     print(request.status_code)
     soup = BeautifulSoup(request.text, "html.parser")
     td_list = soup.find_all("td", "sc-1x32wa2-8 tWvco")
     rate_full_string = None
     for item in td_list:
         rate_full_string = item.find("div", {"class": "sc-1x32wa2-9 bKmKjX"}).text
     rate = rate_full_string[0:6]
-    return rate
+    return rate.
 
 
 
@@ -107,16 +109,33 @@ class Ui(QtWidgets.QMainWindow):
         self.setGeometry(50, 50, 820, 880)
         self.setFixedSize(820, 880)
         self.m_w = None
+
+        #Заповнюємо тип кріплення
         for item_connection in type_holder_list:
-            self.type_value.addItem(item_connection)
-        self.type_value.activated.connect(self.get_items)
-        self.type_value.setStyleSheet(style.type_value_style)
+            self.type_holder.addItem(item_connection)
+
+        self.item_value.addItem("?")
+
+        self.code_value.addItem("?")
+
+        self.length_value.addItem("?")
+
+        #Обираємо тип кріплення
+        self.type_holder.activated.connect(self.get_items)
+        self.type_holder.setStyleSheet(style.type_holder_style)
+
+        #Обираємо виріб
+        self.item_value.activated.connect(self.get_code_items)
+
+        #Oбираємо розмір
+        self.code_value.activated.connect(self.get_item_length)
+
 
         self.add_item_button.clicked.connect(self.add_item_function)
 
-        self.item_value.addItem("Оберіть тип кріплення")
-        self.number_value.addItem("?")
-        self.length_value.addItem("Оберіть номер виробу")
+        self.reset_button.clicked.connect(self.reset_function)
+
+
 
         # Блок роботи з валютою
         time_info = get_list_moment()
@@ -127,6 +146,7 @@ class Ui(QtWidgets.QMainWindow):
         self.time_label.setText(time_info[1])
         self.day.setText(time_info[2])
 
+        self.holder_item: list = []
         self.refresh_rate_button.clicked.connect(self.refresh_rate)
         self.search_button.clicked.connect(self.search_item)
 
@@ -135,8 +155,9 @@ class Ui(QtWidgets.QMainWindow):
 
         #встановлюємо курс евро
         my_invoice.set_rate(self.EURO_value.text())
-        print(my_invoice.get_rate())
         self.show()
+
+
 
 
     #Додаємо виріб до таблиці
@@ -144,19 +165,65 @@ class Ui(QtWidgets.QMainWindow):
         self.table.setData()
         pass
 
+    #Скидаємо попередні параметри
+    def reset_function(self):
+
+        self.quantity_value.setValue(0)
+
+        self.length_value.clear()
+        self.length_value.addItem("?")
+
+        self.code_value.clear()
+        self.code_value.addItem("?")
+
+        self.item_value.clear()
+        self.item_value.addItem(type_holder_list[0])
+
+        self.type_holder.clear()
+        for item_connection in type_holder_list:
+            self.type_holder.addItem(item_connection)
+
+
     def get_items(self) -> None:
-        if category[self.type_value.currentText()] == type_holder_list[0]:
+        self.quantity_value.setValue(0)
+        if category[self.type_holder.currentText()] == type_holder_list[0]:
             self.item_value.clear()
             self.item_value.addItem(type_holder_list[0])
         else:
             self.item_value.clear()
-            for item in category[self.type_value.currentText()]:
+            for item in category[self.type_holder.currentText()]:
                 self.item_value.addItem(item)
 
 
-    def get_numbers(self) -> None:
-        #20.210
-        pass
+    def get_code_items(self):
+        self.quantity_value.setValue(0)
+        if self.item_value.currentText() not in ["Оберіть виріб", "Оберіть тип кріплення", "?", " "]:
+            self.length_value.clear()
+            self.length_value.addItem("?")
+            code_list: list = db_handler.My_db().get_code_list([self.type_holder.currentText(), self.item_value.currentText()])
+            self.code_value.clear()
+            for code_item in code_list:
+                self.code_value.addItem(code_item)
+        else:
+            self.code_value.clear()
+            self.code_value.setText("?")
+            self.length_value.clear()
+            self.length_value.addItem("?")
+
+
+    def get_item_length(self) -> None:
+        self.quantity_value.setValue(0)
+        if self.code_value.currentText() not in [" ", "?"]:
+            length_list: list =\
+                db_handler.My_db().get_length_item([self.type_holder.currentText(),
+                                                    self.item_value.currentText(),
+                                                    self.code_value.currentText()])
+            self.length_value.clear()
+            for length_item in length_list:
+                self.length_value.addItem(str(length_item))
+        else:
+            self.length_value.clear()
+            self.length_value.addItem("?")
 
     #Оновлення дати та курса
     def refresh_rate(self) -> None:

@@ -135,7 +135,7 @@ color: rgb(190, 227, 255);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QComboBox" name="type_value">
+   <widget class="QComboBox" name="type_holder">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -236,7 +236,7 @@ QComboBox:focus {
 }</string>
     </property>
    </widget>
-   <widget class="QLabel" name="number_label">
+   <widget class="QLabel" name="code_label">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -264,7 +264,7 @@ color: rgb(190, 227, 255);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QComboBox" name="number_value">
+   <widget class="QComboBox" name="code_value">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -272,6 +272,12 @@ color: rgb(190, 227, 255);</string>
       <width>90</width>
       <height>30</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>1</verstretch>
+     </sizepolicy>
     </property>
     <property name="font">
      <font>
@@ -332,7 +338,7 @@ color: rgb(190, 227, 255);</string>
     <property name="font">
      <font>
       <family>Comic Sans MS</family>
-      <pointsize>12</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="styleSheet">
