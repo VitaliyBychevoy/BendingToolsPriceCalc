@@ -177,9 +177,6 @@ class Ui(QtWidgets.QMainWindow):
             self.code_value.currentText() not in [" ", "?"] and \
             self.length_value.currentText() not in [" ", "?"] and\
             self.quantity_value.value() != 0:
-
-            self.new_item.set_discount_item(self.discount_spinBox.value()) #знижка від tecnostamp
-
             data_list = [self.type_holder.currentText(),
                  self.item_value.currentText(),
                  self.code_value.currentText(),
@@ -197,9 +194,23 @@ class Ui(QtWidgets.QMainWindow):
             data_list.append(code)
 
             dict_item = My_db.get_info_item(data_list)
-            for k, v in dict_item.items():
-                print(k, " ", v)
+            # for k, v in dict_item.items():
+            #     print(k, " ", v)
             print("############")
+            self.new_item.set_type_holder(dict_item["type_holder"])
+            self.new_item.set_type_item(dict_item["item"])
+            self.new_item.set_code_item(dict_item["code_item"])
+            self.new_item.set_en_name_item(dict_item["en_name_item"])
+            self.new_item.set_ua_name_item(dict_item["ua_name_item"])
+            self.new_item.set_length_item(dict_item["length_item"])
+            self.new_item.set_length_item_mm(My_db.get_length(dict_item["length_item"]))
+            self.new_item.set_weight_item(dict_item["weight"])
+            self.new_item.set_price_item(dict_item["price_item"])
+            self.new_item.set_discount_item(self.discount_spinBox.value())
+            self.new_item.set_amount_item(self.quantity_value.value())
+            print(self.new_item)
+            print(self.new_item.get_code_item())
+            print(self.new_item.get_length_item_mm())
             # en_description: str = My_db.get_en_description(data_list)
             # ua_description: str = My_db.get_ua_description(data_list)
             # self.new_item.set_code_item(code) # Код виробу

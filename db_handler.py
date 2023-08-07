@@ -82,7 +82,6 @@ class My_db:
     @staticmethod
     def get_length(length: str) -> str:
         if length in ["+", "="]:
-            pass
             result: str = length[-1:-3:1]
             return result
         else:
@@ -115,7 +114,7 @@ class My_db:
         return full_code
 
     @staticmethod
-    def get_info_item(data_list: str) -> dict:
+    def get_info_item(data_list: list) -> dict:
         info_item: dict = {}
         wb = load_workbook("data/DB_bending.xlsx")
         work_sheet = wb[data_list[1]]
@@ -124,6 +123,7 @@ class My_db:
         for i in range(1, max_row_item):
             if work_sheet["C" + str(i)].value == data_list[-1]:
                 info_item["type_holder"] = work_sheet["B" + str(i)].value
+                info_item["item"] = work_sheet.title
                 info_item["code_item"] = work_sheet["C" + str(i)].value
                 info_item["en_name_item"] = work_sheet["D" + str(i)].value
                 info_item["ua_name_item"] = work_sheet["E" + str(i)].value
@@ -132,7 +132,7 @@ class My_db:
                 info_item["weight"] = work_sheet["H" + str(i)].value
                 info_item["price_item"] = work_sheet["I" + str(i)].value
                 info_item["parameters"] = {}
-                for j in range(9, max_column_item-1):
+                for j in range(9, max_column_item):
                     info_item["parameters"][work_sheet[chr(65 + j) + "1"].value] = work_sheet[chr(65 + j) + str(i)].value
 
         return info_item
