@@ -89,13 +89,15 @@ def get_rate() -> str:
     for item in td_list:
         rate_full_string = item.find("div", {"class": "sc-1x32wa2-9 bKmKjX"}).text
     rate = rate_full_string[0:6]
-    return rate.
+    print("rate ok")
+    return rate
 
 
 
 def get_recommended_rate_for_euro_value(new_rate: str) -> str:
     rate = new_rate.replace(",", ".")
     result = str(round(float(rate) * 1.01, 2))
+    print("recommended tare ok")
     return result
 
 
@@ -155,15 +157,59 @@ class Ui(QtWidgets.QMainWindow):
 
         #встановлюємо курс евро
         my_invoice.set_rate(self.EURO_value.text())
+
+        #Загальна вага кг
+        self.total_weight = 0.0
+
+        #Максимальна довжина, см
+        self.max_length = 0.0
+
+
         self.show()
-
-
 
 
     #Додаємо виріб до таблиці
     def add_item_function(self):
-        self.table.setData()
-        pass
+        self.new_item = Item()
+
+        if self.type_holder.currentText() != "Оберіть тип кріплення" and \
+            self.item_value.currentText() not in [" ", "Оберіть тип кріплення"] and \
+            self.code_value.currentText() not in [" ", "?"] and \
+            self.length_value.currentText() not in [" ", "?"] and\
+            self.quantity_value.value() != 0:
+
+            self.new_item.set_discount_item(self.discount_spinBox.value()) #знижка від tecnostamp
+
+            data_list = [self.type_holder.currentText(),
+                 self.item_value.currentText(),
+                 self.code_value.currentText(),
+                 self.length_value.currentText()]
+
+            # code: str = My_db.get_full_code_item(
+            #     [self.type_holder.currentText(),
+            #      self.item_value.currentText(),
+            #      self.code_value.currentText(),
+            #      self.length_value.currentText()]
+            # )
+
+            code: str = My_db.get_full_code_item(data_list)
+            print(code)
+            data_list.append(code)
+
+            dict_item = My_db.get_info_item(data_list)
+            for k, v in dict_item.items():
+                print(k, " ", v)
+            print("############")
+            # en_description: str = My_db.get_en_description(data_list)
+            # ua_description: str = My_db.get_ua_description(data_list)
+            # self.new_item.set_code_item(code) # Код виробу
+            # self.new_item.set_amount_item(self.quantity_value.value())
+            # self.new_item.set_en_name_item(en_description)
+            # self.new_item.set_ua_name_item(ua_description)
+            # print(f"Код  {self.new_item.get_code_item()}")
+            # print(f"Кількість {self.new_item.get_amount_item()}")
+            # print(f"EN: {self.new_item.get_en_name_item()} ")
+            # print(f"UA: {self.new_item.get_ua_name_item()} ")
 
     #Скидаємо попередні параметри
     def reset_function(self):
@@ -195,12 +241,23 @@ class Ui(QtWidgets.QMainWindow):
                 self.item_value.addItem(item)
 
 
+    def get_full_code(self):
+        all_parameters: list = []
+        all_parameters[0] = self.type_holder.currentText()
+        all_parameters[1] = self.item_value.currentText()
+        all_parameters[2] = self.code_value.currentText()
+        all_parameters[3] = self.length_value.currentText()
+        self.full_code = My_db.get_full_code_item(all_parameters)
+
+
     def get_code_items(self):
         self.quantity_value.setValue(0)
         if self.item_value.currentText() not in ["Оберіть виріб", "Оберіть тип кріплення", "?", " "]:
             self.length_value.clear()
             self.length_value.addItem("?")
-            code_list: list = db_handler.My_db().get_code_list([self.type_holder.currentText(), self.item_value.currentText()])
+            code_list: list = db_handler.My_db().get_code_list(
+                [self.type_holder.currentText(), self.item_value.currentText()]
+            )
             self.code_value.clear()
             for code_item in code_list:
                 self.code_value.addItem(code_item)
@@ -225,13 +282,16 @@ class Ui(QtWidgets.QMainWindow):
             self.length_value.clear()
             self.length_value.addItem("?")
 
+
     #Оновлення дати та курса
     def refresh_rate(self) -> None:
+
         time_info = get_list_moment()
-        self.window.date_value.setText(time_info[0])
-        self.window.time_label.setText(time_info[1])
-        self.window.day.setText(time_info[2])
-        self.window.euro_value.setText(get_rate())
+        self.date_value.setText(time_info[0])
+        self.time_label.setText(time_info[1])
+        self.day.setText(time_info[2])
+        self.euro_value.setText(get_rate())
+
 
     #Створення пошукового вікна
     def search_item(self) -> None:

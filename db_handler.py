@@ -6,6 +6,8 @@ DB_PATH = ""
 COMMERCIAL_OFFER_EMPTY_SAMPLE_PATH = ""
 CALCULATION_EMPTY_SMPLE_PATH = ""
 
+
+
 class My_db:
 
     def __init__(self):
@@ -19,14 +21,10 @@ class My_db:
 
     def get_code_list(self, holder_item: list[str]) -> list:
         holder: str = holder_item[0]
-
         item: str = holder_item[1]
         wb = load_workbook("data/DB_bending.xlsx")
-
         code_list: list = [" "]
-
         work_sheet = wb[item]
-
         max_row_item = work_sheet.max_row
         for i in range(1, max_row_item + 1):
             if work_sheet["B"+str(i)].value == holder:
@@ -48,6 +46,96 @@ class My_db:
                 length_list.append(work_sheet["G"+str(i)].value)
         return length_list
 
+    @staticmethod
+    def get_en_description(data_list: list) -> str:
+        en_description = "en_description"
+        holder: str = data_list[0]
+        item: str = data_list[1]
+        code: str = data_list[2]
+        length: str = data_list[3]
+        full_code: str = data_list[4]
+        wb = load_workbook("data/DB_bending.xlsx")
+        work_sheet = wb[item]
+        max_row_item = 0
+        max_row_item = work_sheet.max_row
+        for i in range(1, max_row_item + 1):
+            if work_sheet["C"+str(i)].value == full_code:
+                return work_sheet["D"+str(i)].value
+        return en_description
+
+    @staticmethod
+    def get_ua_description(data_list: list) -> str:
+        ua_description = "ua_description"
+        holder: str = data_list[0]
+        item: str = data_list[1]
+        code: str = data_list[2]
+        length: str = data_list[3]
+        full_code: str = data_list[4]
+        wb = load_workbook("data/DB_bending.xlsx")
+        work_sheet = wb[item]
+        max_row_item = 0
+        max_row_item = work_sheet.max_row
+        for i in range(1, max_row_item + 1):
+            if work_sheet["C"+str(i)].value == full_code:
+                return work_sheet["E"+str(i)].value
+        return ua_description
+    @staticmethod
+    def get_length(length: str) -> str:
+        if length in ["+", "="]:
+            pass
+            result: str = length[-1:-3:1]
+            return result
+        else:
+            return length
+
+
+    def get_item(self, parameters_list: list) -> list:
+        type_loder: str = parameters_list[0]
+        item: str = parameters_list[1]
+        code: str = parameters_list[2]
+        length_item: str = My_db.get_length(parameters_list[3])
+
+    @staticmethod
+    def get_full_code_item(parameters: list) -> str:
+        full_code: str = ""
+        holder: str = parameters[0]
+        item: str = parameters[1]
+        code: str = parameters[2]
+        length: str = parameters[3]
+        wb = load_workbook("data/DB_bending.xlsx")
+        work_sheet = wb[item]
+        max_row_item = 0
+        max_row_item = work_sheet.max_row
+
+        for i in range(1, max_row_item + 1):
+            if work_sheet["C"+str(i)].value[0:6] == code and \
+                    work_sheet["G" + str(i)].value == int(length):
+
+                return work_sheet["C" + str(i)].value
+        return full_code
+
+    @staticmethod
+    def get_info_item(data_list: str) -> dict:
+        info_item: dict = {}
+        wb = load_workbook("data/DB_bending.xlsx")
+        work_sheet = wb[data_list[1]]
+        max_row_item = work_sheet.max_row
+        max_column_item = work_sheet.max_column
+        for i in range(1, max_row_item):
+            if work_sheet["C" + str(i)].value == data_list[-1]:
+                info_item["type_holder"] = work_sheet["B" + str(i)].value
+                info_item["code_item"] = work_sheet["C" + str(i)].value
+                info_item["en_name_item"] = work_sheet["D" + str(i)].value
+                info_item["ua_name_item"] = work_sheet["E" + str(i)].value
+                info_item["image_path"] = work_sheet["F" + str(i)].value
+                info_item["length_item"] = work_sheet["G" + str(i)].value
+                info_item["weight"] = work_sheet["H" + str(i)].value
+                info_item["price_item"] = work_sheet["I" + str(i)].value
+                info_item["parameters"] = {}
+                for j in range(9, max_column_item-1):
+                    info_item["parameters"][work_sheet[chr(65 + j) + "1"].value] = work_sheet[chr(65 + j) + str(i)].value
+
+        return info_item
 class Commercial_offer:
     pass
 

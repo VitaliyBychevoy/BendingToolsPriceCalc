@@ -36,7 +36,7 @@ class Item:
         self.image_path: str = image_path
         self.en_name_item: str = en_name_item
         self.ua_name_item: str = ua_name_item
-        self.amount_item: str = amount_item
+        self.amount_item: int = amount_item
 
     def set_db_path(self, new_path: str) -> None:
         self.db_path = new_path
@@ -110,8 +110,14 @@ class Item:
     def get_en_name_item(self) -> str:
         return self.en_name_item
 
-    def set_ua_name_item(self, new_ua_name: str) -> None:
+    def set_ua_name_item(self, new_ua_name: int) -> None:
         self.ua_name_item = new_ua_name
+
+    def get_ua_name_item(self) -> str:
+        return self.ua_name_item
+
+    def set_amount_item(self, new_amount_item: int) -> None:
+        self.amount_item = new_amount_item
 
     def get_amount_item(self) -> int:
         return self.amount_item
