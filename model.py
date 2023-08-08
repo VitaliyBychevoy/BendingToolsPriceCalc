@@ -12,7 +12,7 @@ class Item:
             type_item: str = None,
             code_item: str = None,
             length_item: str = None,
-            length_item_mm: list = None,
+            length_item_mm: str = None,
             weight: float = 0.0,
             price_item: float = 0.0,
             discount_item: float = 0.0,
@@ -28,7 +28,7 @@ class Item:
         self.type_item: str = type_item
         self.code_item: str = code_item
         self.length_item: str = length_item
-        self.length_item_mm: list = length_item_mm
+        self.length_item_mm: str = length_item_mm
         self.weight: float = weight
         self.price_item: float = price_item
         self.discount_item: float = discount_item
@@ -62,16 +62,16 @@ class Item:
     def get_code_item(self) -> str:
         return self.code_item
 
-    def set_length_item(self, new_lenght_item: str) -> None:
-        self.length_item = new_lenght_item
+    def set_length_item(self, new_length_item: str) -> None:
+        self.length_item = new_length_item
 
     def get_length_item(self) -> str:
         return self.length_item
 
-    def set_length_item_mm(self, new_length_item_mm: list) -> None:
+    def set_length_item_mm(self, new_length_item_mm: str) -> None:
         self.length_item_mm = new_length_item_mm
 
-    def get_length_item_mm(self) -> list:
+    def get_length_item_mm(self) -> str:
         return self.length_item_mm
 
     def set_weight_item(self, new_weight: float) -> None:
@@ -131,11 +131,15 @@ class Invoice:
             list_item: list = None,
             packing_price: float = 0.0,
             delivery_price: float = 0.0,
+            max_length: str = "0.0",
+            total_weight: float = 0.0,
             commission_percentage: float = 0.0,
             tecnostamp_discount: float = 0.0,
     ) -> None:
         self.rate = rate
         self.list_item = list_item
+        self.total_weight = total_weight
+        self.max_length = max_length
         self.packing_price = packing_price
         self.delivery_price = delivery_price
         self.commission_percentage = commission_percentage
@@ -157,9 +161,70 @@ class Invoice:
             return self.list_item
 
     def add_item_to_list(self, new_item: Item) -> None:
+        # print("add_item_to_list 1")
+        # my_list_item = self.get_list_item()
+        # print("add_item_to_list 2")
+        # print(my_list_item)
+        # my_list_item.append(new_item)
+        # print("add_item_to_list 3")
+        # self.set_list_item([])
+        # self.set_list_item(my_list_item)
+
         my_list_item = self.get_list_item()
+        print("1")
+        for i in my_list_item:
+            print(i)
+        print("END 1")
+
         my_list_item.append(new_item)
+        print("2")
+        for i in my_list_item:
+            print(i)
+        print("END 2")
+
         self.set_list_item(my_list_item)
+        print("3")
+        for i in self.get_list_item():
+            print(i)
+        print("END 3")
+        self.set_total_weight()
+        self.set_max_length()
+
+    def print_code_amount(self):
+        for item in self.list_item:
+            print(item.get_code_item(), " ", item.get_amount_item())
+
+    #Загальна вага
+    def set_total_weight(self) -> None:
+        self.total_weight = 0.0
+        if self.list_item is None:
+            self.total_weight = 0.0
+        else:
+            for item in self.list_item:
+                self.total_weight += (item.get_weight_item() * item.get_amount_item())
+                self.total_weight = round(self.total_weight, 2)
+
+    def get_total_weight(self) -> float:
+        return self.total_weight
+
+    #Максимальна довжина
+    def set_max_length(self) -> None:
+        if self.list_item is None:
+            self.max_length = "0.0"
+        elif len(self.list_item) == 1:
+            self.max_length = self.list_item[0].get_length_item_mm()
+            self.max_length = str(float(self.max_length) / 10)
+        else:
+            for i in range(0, len(self.list_item) - 1):
+                if float(self.list_item[i].get_length_item_mm()) >= float(self.list_item[i + 1].get_length_item_mm()):
+                    self.max_length = self.list_item[i].get_length_item_mm()
+                    self.max_length = str(float(self.max_length)/10)
+                else:
+                    self.max_length = self.list_item[i + 1].get_length_item_mm()
+                    self.max_length = str(float(self.max_length)/10)
+    def get_max_length(self) -> str:
+        return self.max_length
+
 
     def set_packing_price(self, new_packing_price: float) -> None:
         self.packing_price = new_packing_price

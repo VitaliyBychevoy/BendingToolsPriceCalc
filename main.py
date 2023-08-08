@@ -153,13 +153,10 @@ class Ui(QtWidgets.QMainWindow):
         self.search_button.clicked.connect(self.search_item)
 
         #Створюємо invoice, у якому будуть лежати вироби (item)
-        my_invoice = Invoice()
+        self.my_invoice = Invoice()
 
         #встановлюємо курс евро
-        my_invoice.set_rate(self.EURO_value.text())
-
-        #Загальна вага кг
-        self.total_weight = 0.0
+        self.my_invoice.set_rate(self.EURO_value.text())
 
         #Максимальна довжина, см
         self.max_length = 0.0
@@ -167,9 +164,9 @@ class Ui(QtWidgets.QMainWindow):
 
         self.show()
 
-
     #Додаємо виріб до таблиці
     def add_item_function(self):
+
         self.new_item = Item()
 
         if self.type_holder.currentText() != "Оберіть тип кріплення" and \
@@ -177,25 +174,16 @@ class Ui(QtWidgets.QMainWindow):
             self.code_value.currentText() not in [" ", "?"] and \
             self.length_value.currentText() not in [" ", "?"] and\
             self.quantity_value.value() != 0:
+
             data_list = [self.type_holder.currentText(),
                  self.item_value.currentText(),
                  self.code_value.currentText(),
                  self.length_value.currentText()]
 
-            # code: str = My_db.get_full_code_item(
-            #     [self.type_holder.currentText(),
-            #      self.item_value.currentText(),
-            #      self.code_value.currentText(),
-            #      self.length_value.currentText()]
-            # )
-
             code: str = My_db.get_full_code_item(data_list)
-            print(code)
             data_list.append(code)
-
             dict_item = My_db.get_info_item(data_list)
-            # for k, v in dict_item.items():
-            #     print(k, " ", v)
+
             print("############")
             self.new_item.set_type_holder(dict_item["type_holder"])
             self.new_item.set_type_item(dict_item["item"])
@@ -203,25 +191,51 @@ class Ui(QtWidgets.QMainWindow):
             self.new_item.set_en_name_item(dict_item["en_name_item"])
             self.new_item.set_ua_name_item(dict_item["ua_name_item"])
             self.new_item.set_length_item(dict_item["length_item"])
-            self.new_item.set_length_item_mm(My_db.get_length(dict_item["length_item"]))
+            length_str = My_db.get_length(dict_item["length_item"])
+            self.new_item.set_length_item_mm(length_str)
             self.new_item.set_weight_item(dict_item["weight"])
             self.new_item.set_price_item(dict_item["price_item"])
             self.new_item.set_discount_item(self.discount_spinBox.value())
             self.new_item.set_amount_item(self.quantity_value.value())
-            print(self.new_item)
+            print(self.new_item.get_type_holder())
+            print(self.new_item.get_type_item())
             print(self.new_item.get_code_item())
-            print(self.new_item.get_length_item_mm())
-            # en_description: str = My_db.get_en_description(data_list)
-            # ua_description: str = My_db.get_ua_description(data_list)
-            # self.new_item.set_code_item(code) # Код виробу
-            # self.new_item.set_amount_item(self.quantity_value.value())
-            # self.new_item.set_en_name_item(en_description)
-            # self.new_item.set_ua_name_item(ua_description)
-            # print(f"Код  {self.new_item.get_code_item()}")
-            # print(f"Кількість {self.new_item.get_amount_item()}")
-            # print(f"EN: {self.new_item.get_en_name_item()} ")
-            # print(f"UA: {self.new_item.get_ua_name_item()} ")
+            print(f"Довжина {self.new_item.get_length_item_mm()} мм")
+            print(f"Кількість: {self.new_item.get_amount_item()} шт")
+            print("%%%%%%%%%%%%%%%")
 
+            #ЗМІНИТИ ЛОГІКУ
+            if not self.my_invoice.get_list_item(): #якщо список порожній
+                print("0")
+                self.my_invoice.add_item_to_list(self.new_item) # Додаємо екземплял нової деталі
+            else:
+                for i in range(0, len(self.my_invoice.get_list_item())):
+                    #якщо код і-го елемента списка виробів збігається з кодом нового виробу ТА
+                    #якщо довжина і-го елемента списка виробів збігається з довжиною нового вироба,
+                    #тоді збільшуемо збільшуємо кількість i-го елемента у списку на кількість,
+                    # яка зазначена у новому виробі
+                    if self.my_invoice.get_list_item()[i].get_code_item() == self.new_item.get_code_item() and \
+                            self.my_invoice.get_list_item()[i].get_length_item() == self.new_item.get_length_item():
+                        print("RRRRRRRRR")
+                        amount: int = self.my_invoice.get_list_item()[i].get_amount_item()
+                        amount += self.new_item.get_amount_item()
+                        self.my_invoice.get_list_item()[i].set_amount_item(amount)
+                        self.my_invoice.set_total_weight()
+                        break
+                    #У іншому випадку додаємо новий виріб до списка
+                    else:
+                        self.my_invoice.add_item_to_list(self.new_item)
+                        break
+
+            self.weight_value.setText(str(self.my_invoice.get_total_weight()))
+            self.lenght_value.setText(self.my_invoice.get_max_length())
+            print("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+            for item in self.my_invoice.get_list_item():
+
+                print(item.get_code_item(), " ", item.get_length_item_mm(), " ", item.get_amount_item(), " ", item.get_weight_item())
+            print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n")
+        else:
+            print("Бракує параметрів")
     #Скидаємо попередні параметри
     def reset_function(self):
 
@@ -240,6 +254,10 @@ class Ui(QtWidgets.QMainWindow):
         for item_connection in type_holder_list:
             self.type_holder.addItem(item_connection)
 
+        self.weight_value.setText("0000.00")
+        self.lenght_value.setText("000.00")
+        del(self.my_invoice)
+        self.my_invoice = Invoice()
 
     def get_items(self) -> None:
         self.quantity_value.setValue(0)

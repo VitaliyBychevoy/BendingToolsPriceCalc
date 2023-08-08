@@ -81,11 +81,12 @@ class My_db:
         return ua_description
     @staticmethod
     def get_length(length: str) -> str:
-        if length in ["+", "="]:
-            result: str = length[-1:-3:1]
-            return result
-        else:
-            return length
+        # if length in ["+", "="]:
+        #     pass
+        if "=" in str(length):
+            return length[-3:]
+
+        return length
 
 
     def get_item(self, parameters_list: list) -> list:
@@ -108,7 +109,7 @@ class My_db:
 
         for i in range(1, max_row_item + 1):
             if work_sheet["C"+str(i)].value[0:6] == code and \
-                    work_sheet["G" + str(i)].value == int(length):
+                    str(work_sheet["G" + str(i)].value) == length:
 
                 return work_sheet["C" + str(i)].value
         return full_code
@@ -128,7 +129,7 @@ class My_db:
                 info_item["en_name_item"] = work_sheet["D" + str(i)].value
                 info_item["ua_name_item"] = work_sheet["E" + str(i)].value
                 info_item["image_path"] = work_sheet["F" + str(i)].value
-                info_item["length_item"] = work_sheet["G" + str(i)].value
+                info_item["length_item"] = str(work_sheet["G" + str(i)].value)
                 info_item["weight"] = work_sheet["H" + str(i)].value
                 info_item["price_item"] = work_sheet["I" + str(i)].value
                 info_item["parameters"] = {}
