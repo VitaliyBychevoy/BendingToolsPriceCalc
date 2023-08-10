@@ -243,3 +243,15 @@ class Invoice:
 
     def get_tecnostamp_discount(self) -> float:
         return self.tecnostamp_discount
+
+    def show_list(self) -> None:
+        print("START LIST")
+        for item in self.get_list_item():
+            print(f"{item.get_code_item()} - {item.get_amount_item()}")
+        print("END LIST")
+
+    def get_list_code(self) -> list:
+        result_list = []
+        for i in self.get_list_item():
+            result_list.append(i.get_code_item())
+        return result_list

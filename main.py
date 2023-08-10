@@ -184,6 +184,7 @@ class Ui(QtWidgets.QMainWindow):
             data_list.append(code)
             dict_item = My_db.get_info_item(data_list)
 
+
             print("############")
             self.new_item.set_type_holder(dict_item["type_holder"])
             self.new_item.set_type_item(dict_item["item"])
@@ -204,38 +205,55 @@ class Ui(QtWidgets.QMainWindow):
             print(f"Кількість: {self.new_item.get_amount_item()} шт")
             print("%%%%%%%%%%%%%%%")
 
-            #ЗМІНИТИ ЛОГІКУ
-            if not self.my_invoice.get_list_item(): #якщо список порожній
-                print("0")
-                self.my_invoice.add_item_to_list(self.new_item) # Додаємо екземплял нової деталі
+            if not self.my_invoice.get_list_item():
+                print("Список порожній")
+                self.my_invoice.add_item_to_list(self.new_item)
+
             else:
-                for i in range(0, len(self.my_invoice.get_list_item())):
-                    #якщо код і-го елемента списка виробів збігається з кодом нового виробу ТА
-                    #якщо довжина і-го елемента списка виробів збігається з довжиною нового вироба,
-                    #тоді збільшуемо збільшуємо кількість i-го елемента у списку на кількість,
-                    # яка зазначена у новому виробі
-                    if self.my_invoice.get_list_item()[i].get_code_item() == self.new_item.get_code_item() and \
-                            self.my_invoice.get_list_item()[i].get_length_item() == self.new_item.get_length_item():
-                        print("RRRRRRRRR")
-                        amount: int = self.my_invoice.get_list_item()[i].get_amount_item()
-                        amount += self.new_item.get_amount_item()
-                        self.my_invoice.get_list_item()[i].set_amount_item(amount)
-                        self.my_invoice.set_total_weight()
-                        break
-                    #У іншому випадку додаємо новий виріб до списка
-                    else:
-                        self.my_invoice.add_item_to_list(self.new_item)
-                        break
 
-            self.weight_value.setText(str(self.my_invoice.get_total_weight()))
-            self.lenght_value.setText(self.my_invoice.get_max_length())
-            print("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-            for item in self.my_invoice.get_list_item():
+                if self.new_item.get_code_item() in self.my_invoice.get_list_code():
+                    print("Вже існує")
 
-                print(item.get_code_item(), " ", item.get_length_item_mm(), " ", item.get_amount_item(), " ", item.get_weight_item())
-            print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n")
+                else:
+                    print("Додаємо новий виріб")
+                    self.my_invoice.add_item_to_list(self.new_item)
+            self.my_invoice.show_list()
         else:
-            print("Бракує параметрів")
+            print("Помилка")
+
+            # #ЗМІНИТИ ЛОГІКУ
+            # if not self.my_invoice.get_list_item(): #якщо список порожній
+            #     print("0")
+            #     self.my_invoice.add_item_to_list(self.new_item) # Додаємо екземплял нової деталі
+            # else:
+            #     for i in range(0, len(self.my_invoice.get_list_item())):
+            #         #якщо код і-го елемента списка виробів збігається з кодом нового виробу ТА
+            #         #якщо довжина і-го елемента списка виробів збігається з довжиною нового вироба,
+            #         #тоді збільшуемо збільшуємо кількість i-го елемента у списку на кількість,
+            #         # яка зазначена у новому виробі
+            #         # if self.my_invoice.get_list_item()[i].get_code_item() == self.new_item.get_code_item() and \
+            #         #         self.my_invoice.get_list_item()[i].get_length_item() == self.new_item.get_length_item():
+            #         if self.my_invoice.get_list_item()[i].get_code_item() == self.new_item.get_code_item():
+            #             print("RRRRRRRRR")
+            #             amount: int = self.my_invoice.get_list_item()[i].get_amount_item()
+            #             amount += self.new_item.get_amount_item()
+            #             self.my_invoice.get_list_item()[i].set_amount_item(amount)
+            #             self.my_invoice.set_total_weight()
+            #             break
+            #         #У іншому випадку додаємо новий виріб до списка
+            #         else:
+            #             self.my_invoice.add_item_to_list(self.new_item)
+            #             break
+
+        #     self.weight_value.setText(str(self.my_invoice.get_total_weight()))
+        #     self.lenght_value.setText(self.my_invoice.get_max_length())
+        #     print("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        #     for item in self.my_invoice.get_list_item():
+        #
+        #         print(item.get_code_item(), " ", item.get_length_item_mm(), " ", item.get_amount_item(), " ", item.get_weight_item())
+        #     print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\n")
+        # else:
+        #     print("Бракує параметрів")
     #Скидаємо попередні параметри
     def reset_function(self):
 
