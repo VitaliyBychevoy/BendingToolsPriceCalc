@@ -161,32 +161,10 @@ class Invoice:
             return self.list_item
 
     def add_item_to_list(self, new_item: Item) -> None:
-        # print("add_item_to_list 1")
-        # my_list_item = self.get_list_item()
-        # print("add_item_to_list 2")
-        # print(my_list_item)
-        # my_list_item.append(new_item)
-        # print("add_item_to_list 3")
-        # self.set_list_item([])
-        # self.set_list_item(my_list_item)
-
         my_list_item = self.get_list_item()
-        print("1")
-        for i in my_list_item:
-            print(i)
-        print("END 1")
 
         my_list_item.append(new_item)
-        print("2")
-        for i in my_list_item:
-            print(i)
-        print("END 2")
-
         self.set_list_item(my_list_item)
-        print("3")
-        for i in self.get_list_item():
-            print(i)
-        print("END 3")
         self.set_total_weight()
         self.set_max_length()
 
