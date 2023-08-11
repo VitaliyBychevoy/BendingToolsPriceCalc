@@ -133,7 +133,6 @@ class Item:
         print(list_1[-1])
         #result = a + "\n", + b
         result = a
-        result += "\n"
         result += b
         print(result)
         print("02")
