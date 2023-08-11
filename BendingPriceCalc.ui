@@ -163,6 +163,9 @@ QScrollBar{
 QComboBox:hover {
 	border: 3px solid rgb(2, 35, 255);
 }
+QComboBox:pressed {
+	background-color:rgb(190, 227, 255);
+}
 QComboBox:focus {
 
 	border: 3px solid rgb(0, 255, 162);
@@ -520,7 +523,7 @@ color: rgb(199, 55, 255);
      <bool>true</bool>
     </property>
     <property name="rowCount">
-     <number>13</number>
+     <number>0</number>
     </property>
     <property name="columnCount">
      <number>4</number>
@@ -564,71 +567,6 @@ color: rgb(199, 55, 255);
     <attribute name="verticalHeaderStretchLastSection">
      <bool>false</bool>
     </attribute>
-    <row>
-     <property name="text">
-      <string>1</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>2</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>3</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>4</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>5</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>6</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>7</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>8</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>9</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>10</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>11</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>13</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>14</string>
-     </property>
-    </row>
     <column>
      <property name="text">
       <string>№</string>
@@ -657,7 +595,7 @@ color: rgb(199, 55, 255);
     </column>
     <column>
      <property name="text">
-      <string>Кількість</string>
+      <string>Назва</string>
      </property>
      <property name="font">
       <font>
@@ -668,7 +606,7 @@ color: rgb(199, 55, 255);
     </column>
     <column>
      <property name="text">
-      <string>Назва</string>
+      <string>Кількість</string>
      </property>
      <property name="font">
       <font>
@@ -677,24 +615,6 @@ color: rgb(199, 55, 255);
       </font>
      </property>
     </column>
-    <item row="1" column="0">
-     <property name="text">
-      <string>1</string>
-     </property>
-    </item>
-    <item row="1" column="1">
-     <property name="text">
-      <string>23.654</string>
-     </property>
-    </item>
-    <item row="1" column="2">
-     <property name="text">
-      <string>gfdsfgssddsfghgdfssghdgfs1234567890</string>
-     </property>
-     <property name="flags">
-      <set>ItemIsSelectable|ItemIsEnabled</set>
-     </property>
-    </item>
    </widget>
    <widget class="QLabel" name="weight_label">
     <property name="geometry">

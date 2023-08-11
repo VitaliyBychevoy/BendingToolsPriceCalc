@@ -5,9 +5,6 @@ type_holder_style = "QComboBox{"+\
 	"border: 1px  rgb(237, 255, 152);" +\
 "border-radius: 5px;"+\
 "}" +\
-"QListView{" + \
-	"background-color:red;"+\
-"}"+\
 "QScrollBar{" +\
 	"background-color:rgb(190, 227, 255);" +\
 "}" +\

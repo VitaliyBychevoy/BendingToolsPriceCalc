@@ -3,7 +3,7 @@ import requests
 from datetime import datetime, date
 from bs4 import BeautifulSoup
 from PyQt5 import QtWidgets, uic
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
 
 import db_handler
@@ -111,7 +111,9 @@ class Ui(QtWidgets.QMainWindow):
         self.setGeometry(50, 50, 820, 880)
         self.setFixedSize(820, 880)
         self.m_w = None
-
+        self.table.setColumnWidth(0, 20)
+        self.table.setColumnWidth(1, 100)
+        self.table.setColumnWidth(2, 500)
         #Заповнюємо тип кріплення
         for item_connection in type_holder_list:
             self.type_holder.addItem(item_connection)
@@ -161,6 +163,13 @@ class Ui(QtWidgets.QMainWindow):
         #Максимальна довжина, см
         self.max_length = 0.0
 
+        #Оформлення таблиці
+        self.table.setStyleSheet("background-color: rgb(190, 227, 255); color: rgb(199, 55, 255);")
+        font_table = QtGui.QFont()
+        font_table.setFamily("Comic Sans MS")
+        font_table.setPointSize(12)
+        self.table.setFont(font_table)
+        #self.table.item().setTextAlignment(QtCore.Qt.AlignCenter)
 
         self.show()
 
@@ -224,9 +233,11 @@ class Ui(QtWidgets.QMainWindow):
                     print("Додаємо новий виріб")
                     self.my_invoice.add_item_to_list(self.new_item)
             self.my_invoice.show_list()
+            self.weight_value.setText(str(self.my_invoice.total_weight))
+            self.lenght_value.setText(str(self.my_invoice.get_max_length()))
         else:
             print("Помилка")
-
+        self.load_data()
 
     #Скидаємо попередні параметри
     def reset_function(self):
@@ -246,10 +257,10 @@ class Ui(QtWidgets.QMainWindow):
         for item_connection in type_holder_list:
             self.type_holder.addItem(item_connection)
 
-        self.weight_value.setText("0000.00")
-        self.lenght_value.setText("000.00")
-        del(self.my_invoice)
-        self.my_invoice = Invoice()
+        # self.weight_value.setText("0000.00")
+        # self.lenght_value.setText("000.00")
+        #del(self.my_invoice)
+        #self.my_invoice = Invoice()
 
     def get_items(self) -> None:
         self.quantity_value.setValue(0)
@@ -261,6 +272,36 @@ class Ui(QtWidgets.QMainWindow):
             for item in category[self.type_holder.currentText()]:
                 self.item_value.addItem(item)
 
+    def load_data(self) -> None:
+
+        print(len(self.my_invoice.get_list_item()))
+        self.table.setRowCount(len(self.my_invoice.get_list_item()))
+        for i in range(0, len(self.my_invoice.get_list_item())):
+            print("0")
+            self.table.setRowHeight(i, 150)
+            print("1")
+            self.table.setItem(i, 0,  QTableWidgetItem(str(i + 1)))
+            print("2")
+            self.table.item(i, 0,).setTextAlignment(QtCore.Qt.AlignCenter)
+            print("3")
+            self.table.item(i, 0,).setFlags(self.table.item(i, 0,).flags() & ~ QtCore.Qt.ItemIsEditable)
+            print("4")
+            self.table.setItem(i, 1, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_code_item()))
+            print("5")
+            self.table.item(i, 1, ).setTextAlignment(QtCore.Qt.AlignCenter)
+            print("6")
+            self.table.item(i, 1, ).setFlags(self.table.item(i, 1, ).flags() & ~ QtCore.Qt.ItemIsEditable)
+            print("7")
+            #self.table.setItem(i, 2, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_ua_name_item()))
+            self.table.setItem(i, 2, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_name_for_table()))
+            print("8")
+            self.table.item(i, 2, ).setFlags(self.table.item(i, 2, ).flags() & ~ QtCore.Qt.ItemIsEditable)
+            print("9")
+            self.table.setItem(i, 3, QTableWidgetItem(str(self.my_invoice.get_list_item()[i].get_amount_item())))
+            print("10")
+            self.table.item(i, 3, ).setTextAlignment(QtCore.Qt.AlignCente)
+            print("11")
+            self.table.item(i, 3, ).setFlags(self.table.item(i, 3, ).flags() & ~ QtCore.Qt.ItemIsEditable)
 
     def get_full_code(self):
         all_parameters: list = []
