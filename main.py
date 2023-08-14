@@ -44,14 +44,12 @@ item_list_trumpf_wila = [
     "Штифт"
 ]
 
-
 category = {
     type_holder_list[0]: type_holder_list[0],
     type_holder_list[1]: item_list_amada,
     type_holder_list[2]: item_list_trumpf_wila,
     type_holder_list[3]: item_list_trumpf_wila[0:5],
 }
-
 
 week_day = {
     1: "понеділок",
@@ -63,7 +61,8 @@ week_day = {
     7: "неділя"
 }
 
-#створюємо список з датою
+
+# створюємо список з датою
 def get_list_moment() -> list:
     request_moment_1 = datetime.now()
     moment = str(request_moment_1)
@@ -76,7 +75,8 @@ def get_list_moment() -> list:
     list_result = [date_str, time_string, week_day[day]]
     return list_result
 
-#Отримуємо курс валюти з сайта мінфіна по міжбанку
+
+# Отримуємо курс валюти з сайта мінфіна по міжбанку
 def get_rate() -> str:
     rate = ""
     url = "https://minfin.com.ua/currency/mb/"
@@ -91,7 +91,6 @@ def get_rate() -> str:
     rate = rate_full_string[0:6]
     print("rate ok")
     return rate
-
 
 
 def get_recommended_rate_for_euro_value(new_rate: str) -> str:
@@ -114,7 +113,7 @@ class Ui(QtWidgets.QMainWindow):
         self.table.setColumnWidth(0, 20)
         self.table.setColumnWidth(1, 100)
         self.table.setColumnWidth(2, 500)
-        #Заповнюємо тип кріплення
+        # Заповнюємо тип кріплення
         for item_connection in type_holder_list:
             self.type_holder.addItem(item_connection)
 
@@ -124,22 +123,19 @@ class Ui(QtWidgets.QMainWindow):
 
         self.length_value.addItem("?")
 
-        #Обираємо тип кріплення
+        # Обираємо тип кріплення
         self.type_holder.activated.connect(self.get_items)
         self.type_holder.setStyleSheet(style.type_holder_style)
 
-        #Обираємо виріб
+        # Обираємо виріб
         self.item_value.activated.connect(self.get_code_items)
 
-        #Oбираємо розмір
+        # Oбираємо розмір
         self.code_value.activated.connect(self.get_item_length)
-
 
         self.add_item_button.clicked.connect(self.add_item_function)
 
         self.reset_button.clicked.connect(self.reset_function)
-
-
 
         # Блок роботи з валютою
         time_info = get_list_moment()
@@ -154,45 +150,114 @@ class Ui(QtWidgets.QMainWindow):
         self.refresh_rate_button.clicked.connect(self.refresh_rate)
         self.search_button.clicked.connect(self.search_item)
 
-        #Створюємо invoice, у якому будуть лежати вироби (item)
+        # Створюємо invoice, у якому будуть лежати вироби (item)
         self.my_invoice = Invoice()
 
-        #встановлюємо курс евро
+        # встановлюємо курс евро
         self.my_invoice.set_rate(self.EURO_value.text())
 
-        #Максимальна довжина, см
+        # Максимальна довжина, см
         self.max_length = 0.0
 
-        #Оформлення таблиці
-        self.table.setStyleSheet("background-color: rgb(190, 227, 255); color: rgb(199, 55, 255);")
+        # Оформлення таблиці
         font_table = QtGui.QFont()
         font_table.setFamily("Comic Sans MS")
         font_table.setPointSize(12)
         self.table.setFont(font_table)
-        #self.table.item().setTextAlignment(QtCore.Qt.AlignCenter)
 
+        #Шрифт для опису вироба
+        self.font_table_1 = QtGui.QFont()
+        self.font_table_1.setFamily("Comic Sans MS")
+        self.font_table_1.setPointSize(10)
+        #self.table.setFont(font_table_1)
+
+        #Додаємо один до кількості обраного елемента
+        self.add_amount_button.clicked.connect(self.add_one_item)
+
+        #Зменьшуємо на один кількость обраного елемента
+        self.remove_amount_button.clicked.connect(self.remove_one_item)
+
+        #Видаляємо обраний елемент
+        self.remove_element.clicked.connect(self.remove_row)
+
+        self.update_row.clicked.connect(self.update_item)
+
+        #Видаляемо усе з таблиці
+        self.clear_table_button.clicked.connect(self.clear_table)
+
+        self.recommended_rate_button.clicked.connect(self.recommended_rate)
         self.show()
 
-    #Додаємо виріб до таблиці
+    #Додаємо одиницю до кількості екземплярів виробу
+    def add_one_item(self) -> None:
+        row_index = self.table.currentRow()
+        if row_index > -1:
+            selected_code = self.table.model().index(row_index, 1).data()
+            for item in self.my_invoice.get_list_item():
+                if item.get_code_item() == selected_code:
+                    item.set_amount_item(item.get_amount_item() + 1)
+                    break
+            self.load_data()
+        else:
+            pass
+
+    #Зменьшуємо на одиницю кількість екземплярів виробу
+    def remove_one_item(self) -> None:
+        row_index = self.table.currentRow()
+
+        if row_index > -1:
+            selected_code = self.table.model().index(row_index, 1).data()
+            for item in self.my_invoice.get_list_item():
+                if item.get_code_item() == selected_code:
+                    if item.get_amount_item() == 1:
+                        self.my_invoice.remove_item_from_list(selected_code)
+                    else:
+                        item.set_amount_item(item.get_amount_item() - 1)
+                    break
+            self.load_data()
+        else:
+            pass
+
+    #Видаляємо позицію вироба зі списка та з таблиці
+    def remove_row(self) -> None:
+        row_index = self.table.currentRow()
+        if row_index > -1:
+            if len(self.my_invoice.get_list_item()) == 1:
+                self.clear_table()
+            selected_code = self.table.model().index(row_index, 1).data()
+            self.my_invoice.remove_item_from_list(selected_code)
+            self.load_data()
+
+            # for index_item in (0, len(self.my_invoice.get_list_item())):
+            #      if self.my_invoice.get_list_item()[index_item].get_code_item() == selected_code:
+            #
+            #         if len(self.my_invoice.get_list_item()) == 1:
+            #             self.my_invoice.set_list_item([])
+            #             self.load_data()
+            #         else:
+            #             pass
+        else:
+            pass
+
+    # Додаємо виріб до таблиці
     def add_item_function(self):
 
         self.new_item = Item()
 
         if self.type_holder.currentText() != "Оберіть тип кріплення" and \
-            self.item_value.currentText() not in [" ", "Оберіть тип кріплення"] and \
-            self.code_value.currentText() not in [" ", "?"] and \
-            self.length_value.currentText() not in [" ", "?"] and\
-            self.quantity_value.value() != 0:
+                self.item_value.currentText() not in [" ", "Оберіть тип кріплення"] and \
+                self.code_value.currentText() not in [" ", "?"] and \
+                self.length_value.currentText() not in [" ", "?"] and \
+                self.quantity_value.value() != 0:
 
             data_list = [self.type_holder.currentText(),
-                 self.item_value.currentText(),
-                 self.code_value.currentText(),
-                 self.length_value.currentText()]
+                         self.item_value.currentText(),
+                         self.code_value.currentText(),
+                         self.length_value.currentText()]
 
             code: str = My_db.get_full_code_item(data_list)
             data_list.append(code)
             dict_item = My_db.get_info_item(data_list)
-
 
             print("############")
             self.new_item.set_type_holder(dict_item["type_holder"])
@@ -233,13 +298,35 @@ class Ui(QtWidgets.QMainWindow):
                     print("Додаємо новий виріб")
                     self.my_invoice.add_item_to_list(self.new_item)
             self.my_invoice.show_list()
-            self.weight_value.setText(str(self.my_invoice.total_weight))
+            self.my_invoice.set_total_weight()
+            self.my_invoice.set_max_length()
+            self.weight_value.setText(str(self.my_invoice.get_total_weight()))
             self.lenght_value.setText(str(self.my_invoice.get_max_length()))
+
+            # self.weight_value.setText(str(self.my_invoice.total_weight))
+            # self.lenght_value.setText(str(self.my_invoice.get_max_length()))
         else:
             print("Помилка")
         self.load_data()
 
-    #Скидаємо попередні параметри
+    #Редагуємо обрану позицію
+    def update_item(self) -> None:
+        print("Update")
+        row_index = self.table.currentRow()
+        if row_index > -1:
+            selected_code = self.table.model().index(row_index, 1).data()
+            for index_item in range(0, len(self.my_invoice.get_list_item())):
+                if self.my_invoice.get_list_item()[index_item].get_code_item() == selected_code:
+                    self.type_holder.setCurrentText(self.my_invoice.get_list_item()[index_item].get_type_holder())
+                    self.item_value.setCurrentText(self.my_invoice.get_list_item()[index_item].get_type_item())
+                    self.code_value.setCurrentText(self.my_invoice.get_list_item()[index_item].get_code_item())
+                    self.length_value.setCurrentText(self.my_invoice.get_list_item()[index_item].get_length_item())
+                    self.quantity_value.setValue(self.my_invoice.get_list_item()[index_item].get_amount_item())
+                    self.remove_row()
+                    break
+        else:
+            pass
+    # Скидаємо попередні параметри
     def reset_function(self):
 
         self.quantity_value.setValue(0)
@@ -257,11 +344,8 @@ class Ui(QtWidgets.QMainWindow):
         for item_connection in type_holder_list:
             self.type_holder.addItem(item_connection)
 
-        # self.weight_value.setText("0000.00")
-        # self.lenght_value.setText("000.00")
-        #del(self.my_invoice)
-        #self.my_invoice = Invoice()
 
+    # Завантаження списка виробів для пувного типа тримача
     def get_items(self) -> None:
         self.quantity_value.setValue(0)
         if category[self.type_holder.currentText()] == type_holder_list[0]:
@@ -272,38 +356,40 @@ class Ui(QtWidgets.QMainWindow):
             for item in category[self.type_holder.currentText()]:
                 self.item_value.addItem(item)
 
+    # Завантажуємо данні з об'єкта до у таблицю
     def load_data(self) -> None:
+        if self.my_invoice is not None:
+            print(len(self.my_invoice.get_list_item()))
+            self.table.setRowCount(len(self.my_invoice.get_list_item()))
+            for i in range(0, len(self.my_invoice.get_list_item())):
+                self.table.setRowHeight(i, 50)
 
-        print(len(self.my_invoice.get_list_item()))
-        self.table.setRowCount(len(self.my_invoice.get_list_item()))
-        for i in range(0, len(self.my_invoice.get_list_item())):
-            print("0")
-            self.table.setRowHeight(i, 80)
-            print("1")
-            self.table.setItem(i, 0, QTableWidgetItem(str(i + 1)))
-            print("2")
-            self.table.item(i, 0).setTextAlignment(QtCore.Qt.AlignCenter)
+                self.table.setItem(i, 0, QTableWidgetItem(str(i + 1)))
 
-            print("3")
-            self.table.item(i, 0).setFlags(self.table.item(i, 0,).flags() & ~ QtCore.Qt.ItemIsEditable)
-            print("4")
-            self.table.setItem(i, 1, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_code_item()))
-            print("5")
-            self.table.item(i, 1).setTextAlignment(QtCore.Qt.AlignCenter)
-            print("6")
-            self.table.item(i, 1).setFlags(self.table.item(i, 1, ).flags() & ~ QtCore.Qt.ItemIsEditable)
-            print("7")
-            #self.table.setItem(i, 2, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_ua_name_item()))
-            self.table.setItem(i, 2, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_name_for_table()))
-            print("8")
-            self.table.item(i, 2).setFlags(self.table.item(i, 2, ).flags() & ~ QtCore.Qt.ItemIsEditable)
-            print("9")
-            self.table.setItem(i, 3, QTableWidgetItem(str(self.my_invoice.get_list_item()[i].get_amount_item())))
-            print("10")
-            self.table.item(i, 3).setTextAlignment(QtCore.Qt.AlignCenter)
-            print("11")
-            self.table.item(i, 3).setFlags(self.table.item(i, 3, ).flags() & ~ QtCore.Qt.ItemIsEditable)
+                self.table.item(i, 0).setTextAlignment(QtCore.Qt.AlignCenter)
 
+                self.table.item(i, 0).setFlags(self.table.item(i, 0, ).flags() & ~ QtCore.Qt.ItemIsEditable)
+
+                self.table.setItem(i, 1, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_code_item()))
+
+                self.table.item(i, 1).setTextAlignment(QtCore.Qt.AlignCenter)
+
+                self.table.item(i, 1).setFlags(self.table.item(i, 1, ).flags() & ~ QtCore.Qt.ItemIsEditable)
+
+                # self.table.setItem(i, 2, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_ua_name_item()))
+                self.table.setItem(i, 2, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_name_for_table()))
+
+                self.table.item(i, 2).setFlags(self.table.item(i, 2, ).flags() & ~ QtCore.Qt.ItemIsEditable)
+                self.table.item(i, 2).setFont(self.font_table_1)
+                self.table.setItem(i, 3, QTableWidgetItem(str(self.my_invoice.get_list_item()[i].get_amount_item())))
+
+                self.table.item(i, 3).setTextAlignment(QtCore.Qt.AlignCenter)
+
+                self.table.item(i, 3).setFlags(self.table.item(i, 3, ).flags() & ~ QtCore.Qt.ItemIsEditable)
+        else:
+            pass
+
+    # Отримання повного кода виробу з урахуванням довжини
     def get_full_code(self):
         all_parameters: list = []
         all_parameters[0] = self.type_holder.currentText()
@@ -312,7 +398,7 @@ class Ui(QtWidgets.QMainWindow):
         all_parameters[3] = self.length_value.currentText()
         self.full_code = My_db.get_full_code_item(all_parameters)
 
-
+    # Завантаження списку кодів виробу без урахування довжини
     def get_code_items(self):
         self.quantity_value.setValue(0)
         if self.item_value.currentText() not in ["Оберіть виріб", "Оберіть тип кріплення", "?", " "]:
@@ -330,11 +416,11 @@ class Ui(QtWidgets.QMainWindow):
             self.length_value.clear()
             self.length_value.addItem("?")
 
-
+    # Завантаження списку довжин для певного кода виробу
     def get_item_length(self) -> None:
         self.quantity_value.setValue(0)
         if self.code_value.currentText() not in [" ", "?"]:
-            length_list: list =\
+            length_list: list = \
                 db_handler.My_db().get_length_item([self.type_holder.currentText(),
                                                     self.item_value.currentText(),
                                                     self.code_value.currentText()])
@@ -345,8 +431,7 @@ class Ui(QtWidgets.QMainWindow):
             self.length_value.clear()
             self.length_value.addItem("?")
 
-
-    #Оновлення дати та курса
+    # Оновлення дати запита та курса
     def refresh_rate(self) -> None:
 
         time_info = get_list_moment()
@@ -355,8 +440,14 @@ class Ui(QtWidgets.QMainWindow):
         self.day.setText(time_info[2])
         self.euro_value.setText(get_rate())
 
+    def clear_table(self) -> None:
+        self.table.setRowCount(0)
 
-    #Створення пошукового вікна
+    def recommended_rate(self) -> None:
+        rate: str = self.euro_value.text().replace(",", ".")
+        self.EURO_value.setText(str(round(float(rate) * 1.01, 2)))
+
+    # Створення пошукового вікна
     def search_item(self) -> None:
         self.m_w = Search()
         self.m_w.show()

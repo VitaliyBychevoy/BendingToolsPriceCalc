@@ -137,6 +137,7 @@ class Item:
         print(result)
         print("02")
         return result
+
 class Invoice:
 
     def __init__(
@@ -181,6 +182,16 @@ class Invoice:
         self.set_list_item(my_list_item)
         self.set_total_weight()
         self.set_max_length()
+
+    def remove_item_from_list(self, code: str) -> None:
+        index_code = 0
+        for i in range(0, len(self.get_list_item())):
+            if self.get_list_item()[i].get_code_item() == code:
+                index_code = i
+                break
+        temp_list = self.get_list_item()
+        temp_list.pop(index_code)
+        self.set_list_item(temp_list)
 
     def print_code_amount(self):
         for item in self.list_item:
