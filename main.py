@@ -15,6 +15,8 @@ from style import *
 
 # from PyQt5.QtWidgets import QApplication, QMainWindow
 
+acceptable_character = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."]
+
 type_holder_list = [
     "Оберіть тип кріплення",
     "Amada-promecam",
@@ -171,6 +173,8 @@ class Ui(QtWidgets.QMainWindow):
         self.font_table_1.setPointSize(10)
         #self.table.setFont(font_table_1)
 
+        #self.EURO_value.textChanged.connect(self.check_number)
+
         #Додаємо один до кількості обраного елемента
         self.add_amount_button.clicked.connect(self.add_one_item)
 
@@ -228,14 +232,6 @@ class Ui(QtWidgets.QMainWindow):
             self.my_invoice.remove_item_from_list(selected_code)
             self.load_data()
 
-            # for index_item in (0, len(self.my_invoice.get_list_item())):
-            #      if self.my_invoice.get_list_item()[index_item].get_code_item() == selected_code:
-            #
-            #         if len(self.my_invoice.get_list_item()) == 1:
-            #             self.my_invoice.set_list_item([])
-            #             self.load_data()
-            #         else:
-            #             pass
         else:
             pass
 
@@ -446,6 +442,20 @@ class Ui(QtWidgets.QMainWindow):
     def recommended_rate(self) -> None:
         rate: str = self.euro_value.text().replace(",", ".")
         self.EURO_value.setText(str(round(float(rate) * 1.01, 2)))
+
+    def check_number(self) -> None:
+        result: str = ""
+        count_dot: int = 0
+        count_comma: int = 0
+        for item in self.EURO_value.text():
+            if item == ".":
+                count_dot += 1
+            if item == ",":
+                count_comma += 1
+            if item in acceptable_character and ((count_dot == 1 and count_comma == 0) or (count_dot == 0 and count_comma == 1)):
+                result += item
+
+        print(self.EURO_value.setText(result))
 
     # Створення пошукового вікна
     def search_item(self) -> None:
