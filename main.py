@@ -17,6 +17,13 @@ from style import *
 
 acceptable_character = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."]
 
+
+def check_valid_symbols(number: str) -> bool:
+    for letter in number:
+        if letter not in acceptable_character:
+            return False
+    return True
+
 type_holder_list = [
     "Оберіть тип кріплення",
     "Amada-promecam",
@@ -98,8 +105,9 @@ def get_rate() -> str:
 def get_recommended_rate_for_euro_value(new_rate: str) -> str:
     rate = new_rate.replace(",", ".")
     result = str(round(float(rate) * 1.01, 2))
-    print("recommended tare ok")
-    return result
+    print("recommended rate ok")
+    rate_with_comma = result.replace(".", ",")
+    return rate_with_comma
 
 
 class Ui(QtWidgets.QMainWindow):
@@ -127,7 +135,7 @@ class Ui(QtWidgets.QMainWindow):
 
         # Обираємо тип кріплення
         self.type_holder.activated.connect(self.get_items)
-        self.type_holder.setStyleSheet(style.type_holder_style)
+
 
         # Обираємо виріб
         self.item_value.activated.connect(self.get_code_items)
@@ -135,8 +143,10 @@ class Ui(QtWidgets.QMainWindow):
         # Oбираємо розмір
         self.code_value.activated.connect(self.get_item_length)
 
+        #Кнопка. Додаємо новий виріб
         self.add_item_button.clicked.connect(self.add_item_function)
 
+        #Кнопка. Скидаємо попередні поля та кількість
         self.reset_button.clicked.connect(self.reset_function)
 
         # Блок роботи з валютою
@@ -171,9 +181,10 @@ class Ui(QtWidgets.QMainWindow):
         self.font_table_1 = QtGui.QFont()
         self.font_table_1.setFamily("Comic Sans MS")
         self.font_table_1.setPointSize(10)
-        #self.table.setFont(font_table_1)
 
-        #self.EURO_value.textChanged.connect(self.check_number)
+
+        #Поле для встановлення курсу
+        self.EURO_value.textChanged.connect(self.check_number_EURO)
 
         #Додаємо один до кількості обраного елемента
         self.add_amount_button.clicked.connect(self.add_one_item)
@@ -189,8 +200,41 @@ class Ui(QtWidgets.QMainWindow):
         #Видаляемо усе з таблиці
         self.clear_table_button.clicked.connect(self.clear_table)
 
+        #Отримати рекомендований курс валюти
         self.recommended_rate_button.clicked.connect(self.recommended_rate)
+
+        #Поле для вартості пакування
+        self.packing_value.textChanged.connect(self.check_packing_number)
+
+        #Поле для вартості доставки
+        self.delivery_value.textChanged.connect(self.check_delivery_number)
         self.show()
+
+    def set_typical_style(self) -> None:
+        self.type_holder.setStyleSheet(style.typically_style_QComboBox)
+        self.item_value.setStyleSheet(style.typically_style_QComboBox)
+        self.code_value.setStyleSheet(style.typically_style_QComboBox)
+        self.length_value.setStyleSheet(style.typically_style_QComboBox)
+        self.quantity_value.setStyleSheet(style.typically_style_QSpinBox)
+        self.reset_button.setStyleSheet(style.typically_style_button_reset_fields)
+        self.reset_button.setEnabled(True)
+        self.setStyleSheet(style.typically_style_background)
+        self.EURO_value.setEnabled(True)
+        self.company_name.setEnabled(True)
+
+
+    def set_update_style(self) -> None:
+        self.type_holder.setStyleSheet(style.update_style_QComboBox)
+        self.item_value.setStyleSheet(style.update_style_QComboBox)
+        self.code_value.setStyleSheet(style.update_style_QComboBox)
+        self.length_value.setStyleSheet(style.update_style_QComboBox)
+        self.quantity_value.setStyleSheet(style.update_style_QSpinBox)
+        self.reset_button.setStyleSheet(style.update_style_button)
+        self.reset_button.setEnabled(False)
+        self.setStyleSheet(style.update_style_background)
+        self.EURO_value.setEnabled(False)
+        self.company_name.setEnabled(False)
+
 
     #Додаємо одиницю до кількості екземплярів виробу
     def add_one_item(self) -> None:
@@ -225,19 +269,21 @@ class Ui(QtWidgets.QMainWindow):
     #Видаляємо позицію вироба зі списка та з таблиці
     def remove_row(self) -> None:
         row_index = self.table.currentRow()
-        if row_index > -1:
-            if len(self.my_invoice.get_list_item()) == 1:
-                self.clear_table()
-            selected_code = self.table.model().index(row_index, 1).data()
-            self.my_invoice.remove_item_from_list(selected_code)
-            self.load_data()
-
+        if len(self.my_invoice.get_list_item()) == 1:
+            self.clear_table()
         else:
-            pass
+            if row_index > -1:
+                if len(self.my_invoice.get_list_item()) == 1:
+                    self.clear_table()
+                selected_code = self.table.model().index(row_index, 1).data()
+                self.my_invoice.remove_item_from_list(selected_code)
+                self.load_data()
+            else:
+                pass
 
     # Додаємо виріб до таблиці
     def add_item_function(self):
-
+        self.set_typical_style()
         self.new_item = Item()
 
         if self.type_holder.currentText() != "Оберіть тип кріплення" and \
@@ -310,18 +356,31 @@ class Ui(QtWidgets.QMainWindow):
         print("Update")
         row_index = self.table.currentRow()
         if row_index > -1:
+            print(f"row index: {row_index}")
+            print(f"Items: {len(self.my_invoice.get_list_item())}")
             selected_code = self.table.model().index(row_index, 1).data()
-            for index_item in range(0, len(self.my_invoice.get_list_item())):
-                if self.my_invoice.get_list_item()[index_item].get_code_item() == selected_code:
-                    self.type_holder.setCurrentText(self.my_invoice.get_list_item()[index_item].get_type_holder())
-                    self.item_value.setCurrentText(self.my_invoice.get_list_item()[index_item].get_type_item())
-                    self.code_value.setCurrentText(self.my_invoice.get_list_item()[index_item].get_code_item())
-                    self.length_value.setCurrentText(self.my_invoice.get_list_item()[index_item].get_length_item())
-                    self.quantity_value.setValue(self.my_invoice.get_list_item()[index_item].get_amount_item())
-                    self.remove_row()
-                    break
+            print(selected_code)
+            if len(self.my_invoice.get_list_item()) == 1:
+                self.type_holder.setCurrentText(self.my_invoice.get_list_item()[0].get_type_holder())
+                self.item_value.setCurrentText(self.my_invoice.get_list_item()[0].get_type_item())
+                self.code_value.setCurrentText(self.my_invoice.get_list_item()[0].get_code_item())
+                self.length_value.setCurrentText(self.my_invoice.get_list_item()[0].get_length_item())
+                self.quantity_value.setValue(self.my_invoice.get_list_item()[0].get_amount_item())
+                self.my_invoice.set_list_item([])
+            else:
+                for index_item in range(0, len(self.my_invoice.get_list_item())):
+                    if self.my_invoice.get_list_item()[index_item].get_code_item() == selected_code:
+                        self.type_holder.setCurrentText(self.my_invoice.get_list_item()[index_item].get_type_holder())
+                        self.item_value.setCurrentText(self.my_invoice.get_list_item()[index_item].get_type_item())
+                        self.code_value.setCurrentText(self.my_invoice.get_list_item()[index_item].get_code_item())
+                        self.length_value.setCurrentText(self.my_invoice.get_list_item()[index_item].get_length_item())
+                        self.quantity_value.setValue(self.my_invoice.get_list_item()[index_item].get_amount_item())
+                        self.remove_row()
+                        break
+            self.set_update_style()
         else:
             pass
+
     # Скидаємо попередні параметри
     def reset_function(self):
 
@@ -438,6 +497,8 @@ class Ui(QtWidgets.QMainWindow):
 
     def clear_table(self) -> None:
         self.table.setRowCount(0)
+        self.my_invoice.set_list_item([])
+
 
     def recommended_rate(self) -> None:
         rate: str = self.euro_value.text().replace(",", ".")
@@ -445,17 +506,58 @@ class Ui(QtWidgets.QMainWindow):
 
     def check_number(self) -> None:
         result: str = ""
-        count_dot: int = 0
-        count_comma: int = 0
-        for item in self.EURO_value.text():
-            if item == ".":
-                count_dot += 1
-            if item == ",":
-                count_comma += 1
-            if item in acceptable_character and ((count_dot == 1 and count_comma == 0) or (count_dot == 0 and count_comma == 1)):
-                result += item
 
-        print(self.EURO_value.setText(result))
+        count_comma: int = self.EURO_value.text().count(",")
+
+        if check_valid_symbols(self.EURO_value.text()):
+            current_number = self.EURO_value.text().replace(".", ",")
+            if count_comma > 0:
+                for number in current_number:
+                    if number == "," and "," in result:
+                        continue
+                    result += number
+                self.EURO_value.setText(result)
+            else:
+                self.EURO_value.setText(self.EURO_value.text().replace(".", ","))
+        else:
+            for number in self.EURO_value.text():
+                if number not in acceptable_character:
+                    continue
+                else:
+                    result += number
+            self.EURO_value.setText(result)
+
+    @staticmethod
+    def new_check_number(new_number: str) -> str:
+        result: str = ""
+
+        count_comma: int = new_number.count(",")
+
+        if check_valid_symbols(new_number):
+            current_number = new_number.replace(".", ",")
+            if count_comma > 0:
+                for number in current_number:
+                    if number == "," and "," in result:
+                        continue
+                    result += number
+                return result
+            else:
+                return new_number.replace(".", ",")
+        else:
+            for number in new_number:
+                if number not in acceptable_character:
+                    continue
+                else:
+                    result += number
+            return result
+
+    def check_number_EURO(self):
+        self.EURO_value.setText(self.new_check_number(self.EURO_value.text()))
+    def check_packing_number(self):
+        self.packing_value.setText(self.new_check_number(self.packing_value.text()))
+
+    def check_delivery_number(self):
+        self.delivery_value.setText(self.new_check_number(self.delivery_value.text()))
 
     # Створення пошукового вікна
     def search_item(self) -> None:

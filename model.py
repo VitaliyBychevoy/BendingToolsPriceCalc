@@ -123,19 +123,12 @@ class Item:
         return self.amount_item
 
     def get_name_for_table(self) -> str:
-        print("00")
         result: str = ""
         list_1: list = self.get_ua_name_item().split(";")
-        print("01")
         a = list_1[0]
         b = list_1[-1]
-        print(list_1[0])
-        print(list_1[-1])
-        #result = a + "\n", + b
         result = a
         result += b
-        print(result)
-        print("02")
         return result
 
 class Invoice:
