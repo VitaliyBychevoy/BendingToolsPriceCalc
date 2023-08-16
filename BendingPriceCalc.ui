@@ -1225,9 +1225,9 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>330</y>
+      <y>320</y>
       <width>800</width>
-      <height>31</height>
+      <height>50</height>
      </rect>
     </property>
     <property name="font">
@@ -1237,10 +1237,21 @@ QPushButton:hover {
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton {
+     <string notr="true">/*QPushButton {
 background-color:#3559FC;
 color:white;
 border-radius: 10px;
+}
+
+QPushButton:hover {
+    background-color:  rgb(48, 221, 255);
+}*/
+QPushButton {
+color:white;
+/*background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 158, 255, 255), stop:0.55 rgba(71, 61, 235, 255), stop:0.98 rgba(27, 2, 212, 255), stop:1 rgba(0, 0, 0, 0)); */
+/*background-color: rgb(102, 161, 255);*/
+background-color: #4A3CE5;
+border-radius: 20px;
 }
 
 QPushButton:hover {

@@ -182,6 +182,10 @@ class Ui(QtWidgets.QMainWindow):
         self.font_table_1.setFamily("Comic Sans MS")
         self.font_table_1.setPointSize(10)
 
+        self.font_table_2 = QtGui.QFont()
+        self.font_table_2.setFamily("Comic Sans MS")
+        self.font_table_2.setPointSize(16)
+
 
         #Поле для встановлення курсу
         self.EURO_value.textChanged.connect(self.check_number_EURO)
@@ -211,29 +215,172 @@ class Ui(QtWidgets.QMainWindow):
         self.show()
 
     def set_typical_style(self) -> None:
+        #Списки та spinbox для редагування
         self.type_holder.setStyleSheet(style.typically_style_QComboBox)
         self.item_value.setStyleSheet(style.typically_style_QComboBox)
         self.code_value.setStyleSheet(style.typically_style_QComboBox)
         self.length_value.setStyleSheet(style.typically_style_QComboBox)
         self.quantity_value.setStyleSheet(style.typically_style_QSpinBox)
+
+        #Кнопки
         self.reset_button.setStyleSheet(style.typically_style_button_reset_fields)
         self.reset_button.setEnabled(True)
-        self.setStyleSheet(style.typically_style_background)
-        self.EURO_value.setEnabled(True)
-        self.company_name.setEnabled(True)
+        self.remove_element.setStyleSheet(style.typically_remove_element_button)
+        self.remove_element.setEnabled(True)
+        self.update_row.setStyleSheet(style.typically_update_row_button)
+        self.update_row.setEnabled(True)
+        self.db_button.setStyleSheet(style.typically_db_button)
+        self.db_button.setEnabled(True)
+        self.refresh_rate_button.setStyleSheet(style.typically_refresh_rate_button)
+        self.refresh_rate_button.setEnabled(True)
+        self.recommended_rate_button.setStyleSheet(style.typically_recommended_rate_button)
+        self.refresh_rate_button.setEnabled(True)
+        self.search_button.setStyleSheet(style.typically_search_button)
+        self.search_button.setEnabled(True)
+        self.add_amount_button.setStyleSheet(style.typically_update_row_button)
+        self.add_amount_button.setEnabled(True)
+        self.remove_amount_button.setStyleSheet(style.typically_update_row_button)
+        self.remove_amount_button.setEnabled(True)
+        self.clear_table_button.setStyleSheet(style.typically_style_button_reset_fields)
+        self.clear_table_button.setEnabled(True)
+        self.xlsx_button.setStyleSheet(style.typically_xlsx_button)
+        self.xlsx_button.setEnabled(True)
+        self.kp_button.setStyleSheet(style.typically_xlsx_button)
+        self.kp_button.setEnabled(True)
 
+        #таблиця
+        self.table.setStyleSheet(style.typically_table)
+
+        # загальний фон
+        self.setStyleSheet(style.typically_style_background)
+
+        # Поля
+        self.EURO_value.setEnabled(True)
+        self.EURO_value.setStyleSheet(style.typically_style_editline)
+        self.company_name.setEnabled(True)
+        self.company_name.setStyleSheet(style.typically_style_editline)
+        self.packing_value.setEnabled(True)
+        self.packing_value.setStyleSheet(style.typically_style_editline)
+        self.delivery_value.setEnabled(True)
+        self.delivery_value.setStyleSheet(style.typically_style_editline)
+
+        #SpinBox
+        self.persentage_spinBox.setStyleSheet(style.typically_persentage_spinBox)
+        self.persentage_spinBox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
+        self.discount_spinBox.setStyleSheet(style.typically_persentage_spinBox)
+        self.discount_spinBox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
+        self.persentage_spinBox.setReadOnly(False)
+        self.discount_spinBox.setReadOnly(False)
+
+        #Курс валют
+        self.date_euro_layout.setStyleSheet(style.typically_date_euro_layout)
+        self.title.setStyleSheet(style.typically_title)
+        self.date_value.setStyleSheet(style.typically_title)
+        self.time_label.setStyleSheet(style.typically_title)
+        self.day.setStyleSheet(style.typically_title)
+        self.euro_value.setStyleSheet(style.typically_title)
+        self.euro_label.setStyleSheet(style.typically_title)
+        self.uah_label.setStyleSheet(style.typically_title)
+
+        #для xls
+        self.weight_label.setStyleSheet(style.typically_weight_label)
+        self.weight_value.setStyleSheet(style.typically_weight_label)
+        self.kg_label.setStyleSheet(style.typically_weight_label)
+        self.lenght_label.setStyleSheet(style.typically_weight_label)
+        self.lenght_value.setStyleSheet(style.typically_weight_label)
+        self.cm_label.setStyleSheet(style.typically_weight_label)
+        self.packing_label.setStyleSheet(style.typically_weight_label)
+        self.packing_euro_label.setStyleSheet(style.typically_weight_label)
+        self.comission_label.setStyleSheet(style.typically_weight_label)
+        self.percent_label.setStyleSheet(style.typically_weight_label)
+        self.delivery_label.setStyleSheet(style.typically_weight_label)
+        self.delivery_euro_label.setStyleSheet(style.typically_weight_label)
+        self.discount_label.setStyleSheet(style.typically_weight_label)
+        self.percent_discount_label.setStyleSheet(style.typically_weight_label)
 
     def set_update_style(self) -> None:
+        #Списки та spinbox для редагування
         self.type_holder.setStyleSheet(style.update_style_QComboBox)
         self.item_value.setStyleSheet(style.update_style_QComboBox)
         self.code_value.setStyleSheet(style.update_style_QComboBox)
         self.length_value.setStyleSheet(style.update_style_QComboBox)
         self.quantity_value.setStyleSheet(style.update_style_QSpinBox)
+
+        #Кнопки
         self.reset_button.setStyleSheet(style.update_style_button)
         self.reset_button.setEnabled(False)
+        self.remove_element.setStyleSheet(style.update_remove_element_button)
+        self.remove_element.setEnabled(False)
+        self.update_row.setStyleSheet(style.update_update_row_button)
+        self.update_row.setEnabled(False)
+        self.db_button.setStyleSheet(style.update_db_button)
+        self.db_button.setEnabled(False)
+        self.refresh_rate_button.setStyleSheet(style.update_refresh_rate_button)
+        self.refresh_rate_button.setEnabled(False)
+        self.recommended_rate_button.setStyleSheet(style.update_recommended_rate_button)
+        self.refresh_rate_button.setEnabled(False)
+        self.search_button.setStyleSheet(style.update_search_button)
+        self.search_button.setEnabled(False)
+        self.add_amount_button.setStyleSheet(style.update_update_row_button)
+        self.add_amount_button.setEnabled(False)
+        self.remove_amount_button.setStyleSheet(style.update_update_row_button)
+        self.remove_amount_button.setEnabled(False)
+        self.clear_table_button.setStyleSheet(style.update_style_button)
+        self.clear_table_button.setEnabled(False)
+        self.xlsx_button.setStyleSheet(style.update_xlsx_button)
+        self.xlsx_button.setEnabled(False)
+        self.kp_button.setStyleSheet(style.update_xlsx_button)
+        self.kp_button.setEnabled(False)
+
+        #таблиця
+        self.table.setStyleSheet(style.update_table)
+
+        #загальний фон
         self.setStyleSheet(style.update_style_background)
+
+        #Поля
         self.EURO_value.setEnabled(False)
+        self.EURO_value.setStyleSheet(style.update_style_editline)
+        self.packing_value.setEnabled(False)
+        self.packing_value.setStyleSheet(style.update_style_editline)
+        self.delivery_value.setEnabled(False)
+        self.delivery_value.setStyleSheet(style.update_style_editline)
         self.company_name.setEnabled(False)
+        self.company_name.setStyleSheet(style.update_style_editline)
+
+        #SpinBox
+        self.persentage_spinBox.setStyleSheet(style.update_persentage_spinBox)
+        self.persentage_spinBox.setButtonSymbols(QAbstractSpinBox.NoButtons)
+        self.discount_spinBox.setStyleSheet(style.update_persentage_spinBox)
+        self.discount_spinBox.setButtonSymbols(QAbstractSpinBox.NoButtons)
+        self.persentage_spinBox.setReadOnly(True)
+        self.discount_spinBox.setReadOnly(True)
+
+        #Курс валют
+        self.date_euro_layout.setStyleSheet(style.update_date_euro_layout)
+        self.title.setStyleSheet(style.update_title)
+        self.date_value.setStyleSheet(style.update_title)
+        self.time_label.setStyleSheet(style.update_title)
+        self.day.setStyleSheet(style.update_title)
+        self.euro_value.setStyleSheet(style.update_title)
+        self.euro_label.setStyleSheet(style.update_title)
+        self.uah_label.setStyleSheet(style.update_title)
+
+        #для xls
+        self.weight_label.setStyleSheet(style.update_weight_label)
+        self.weight_value.setStyleSheet(style.update_weight_label)
+        self.kg_label.setStyleSheet(style.update_weight_label)
+        self.lenght_label.setStyleSheet(style.update_weight_label)
+        self.lenght_value.setStyleSheet(style.update_weight_label)
+        self.cm_label.setStyleSheet(style.update_weight_label)
+        self.packing_label.setStyleSheet(style.update_weight_label)
+        self.packing_euro_label.setStyleSheet(style.update_weight_label)
+        self.comission_label.setStyleSheet(style.update_weight_label)
+        self.percent_label.setStyleSheet(style.update_weight_label)
+        self.delivery_label.setStyleSheet(style.update_weight_label)
+        self.delivery_euro_label.setStyleSheet(style.update_weight_label)
+        self.discount_label.setStyleSheet(style.update_weight_label)
+        self.percent_discount_label.setStyleSheet(style.update_weight_label)
 
 
     #Додаємо одиницю до кількості екземплярів виробу
@@ -246,8 +393,16 @@ class Ui(QtWidgets.QMainWindow):
                     item.set_amount_item(item.get_amount_item() + 1)
                     break
             self.load_data()
+            # self.my_invoice.set_total_weight()
+            # self.my_invoice.set_max_length()
+            # self.weight_value.setText(str(self.my_invoice.get_total_weight()))
+            # self.lenght_value.setText(str(self.my_invoice.get_max_length()))
         else:
-            pass
+            self.load_data()
+            # self.my_invoice.set_total_weight()
+            # self.my_invoice.set_max_length()
+            # self.weight_value.setText(str(self.my_invoice.get_total_weight()))
+            # self.lenght_value.setText(str(self.my_invoice.get_max_length()))
 
     #Зменьшуємо на одиницю кількість екземплярів виробу
     def remove_one_item(self) -> None:
@@ -263,6 +418,10 @@ class Ui(QtWidgets.QMainWindow):
                         item.set_amount_item(item.get_amount_item() - 1)
                     break
             self.load_data()
+            # self.my_invoice.set_total_weight()
+            # self.my_invoice.set_max_length()
+            # self.weight_value.setText(str(self.my_invoice.get_total_weight()))
+            # self.lenght_value.setText(str(self.my_invoice.get_max_length()))
         else:
             pass
 
@@ -277,9 +436,15 @@ class Ui(QtWidgets.QMainWindow):
                     self.clear_table()
                 selected_code = self.table.model().index(row_index, 1).data()
                 self.my_invoice.remove_item_from_list(selected_code)
+                # self.my_invoice.set_total_weight()
+                # self.my_invoice.set_max_length()
+                # self.weight_value.setText(str(self.my_invoice.get_total_weight()))
+                # self.lenght_value.setText(str(self.my_invoice.get_max_length()))
                 self.load_data()
             else:
                 pass
+
+
 
     # Додаємо виріб до таблиці
     def add_item_function(self):
@@ -342,14 +507,16 @@ class Ui(QtWidgets.QMainWindow):
             self.my_invoice.show_list()
             self.my_invoice.set_total_weight()
             self.my_invoice.set_max_length()
-            self.weight_value.setText(str(self.my_invoice.get_total_weight()))
+            self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
             self.lenght_value.setText(str(self.my_invoice.get_max_length()))
 
-            # self.weight_value.setText(str(self.my_invoice.total_weight))
-            # self.lenght_value.setText(str(self.my_invoice.get_max_length()))
         else:
             print("Помилка")
         self.load_data()
+        self.my_invoice.set_total_weight()
+        self.my_invoice.set_max_length()
+        self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
+        self.lenght_value.setText(str(self.my_invoice.get_max_length()))
 
     #Редагуємо обрану позицію
     def update_item(self) -> None:
@@ -441,8 +608,13 @@ class Ui(QtWidgets.QMainWindow):
                 self.table.item(i, 3).setTextAlignment(QtCore.Qt.AlignCenter)
 
                 self.table.item(i, 3).setFlags(self.table.item(i, 3, ).flags() & ~ QtCore.Qt.ItemIsEditable)
+                self.table.item(i, 3).setFont(self.font_table_2)
         else:
             pass
+        self.my_invoice.set_total_weight()
+        self.my_invoice.set_max_length()
+        self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
+        self.lenght_value.setText(str(self.my_invoice.get_max_length()) + " см")
 
     # Отримання повного кода виробу з урахуванням довжини
     def get_full_code(self):
@@ -498,6 +670,10 @@ class Ui(QtWidgets.QMainWindow):
     def clear_table(self) -> None:
         self.table.setRowCount(0)
         self.my_invoice.set_list_item([])
+        self.my_invoice.set_total_weight()
+        self.my_invoice.set_max_length()
+        self.weight_value.setText(str(self.my_invoice.get_total_weight()))
+        self.lenght_value.setText(str(self.my_invoice.get_max_length()))
 
 
     def recommended_rate(self) -> None:

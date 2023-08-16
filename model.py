@@ -205,7 +205,7 @@ class Invoice:
 
     #Максимальна довжина
     def set_max_length(self) -> None:
-        if self.list_item is None:
+        if len(self.list_item) == 0:
             self.max_length = "0.0"
         elif len(self.list_item) == 1:
             self.max_length = self.list_item[0].get_length_item_mm()
@@ -217,7 +217,7 @@ class Invoice:
                     self.max_length = str(float(self.max_length)/10)
                 else:
                     self.max_length = self.list_item[i + 1].get_length_item_mm()
-                    self.max_length = str(float(self.max_length)/10)
+                    self.max_length = str(float(self.max_length)/10) + " см"
     def get_max_length(self) -> str:
         return self.max_length
 
