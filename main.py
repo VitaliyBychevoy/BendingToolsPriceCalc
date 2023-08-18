@@ -89,18 +89,22 @@ def get_list_moment() -> list:
 def get_rate() -> str:
     rate = ""
     url = "https://minfin.com.ua/currency/mb/"
-    request = requests.get(url)
-    # if request.status_code == 200:
-    #     print(request.status_code)
-    soup = BeautifulSoup(request.text, "html.parser")
-    td_list = soup.find_all("td", "sc-1x32wa2-8 tWvco")
-    rate_full_string = None
-    for item in td_list:
-        rate_full_string = item.find("div", {"class": "sc-1x32wa2-9 bKmKjX"}).text
-    rate = rate_full_string[0:6]
-    print("rate ok")
-    return rate
-
+    try:
+        request = requests.get(url)
+        if request.status_code == 200:
+            print(request.status_code)
+            soup = BeautifulSoup(request.text, "html.parser")
+            td_list = soup.find_all("td", "sc-1x32wa2-8 tWvco")
+            rate_full_string = None
+            for item in td_list:
+                rate_full_string = item.find("div", {"class": "sc-1x32wa2-9 bKmKjX"}).text
+            rate = rate_full_string[0:6]
+            print("rate ok")
+            return rate
+        else:
+            return "00.000"
+    except requests.exceptions.ConnectionError:
+        return "00.000"
 
 def get_recommended_rate_for_euro_value(new_rate: str) -> str:
     rate = new_rate.replace(",", ".")
@@ -173,17 +177,20 @@ class Ui(QtWidgets.QMainWindow):
 
         # Оформлення таблиці
         font_table = QtGui.QFont()
-        font_table.setFamily("Comic Sans MS")
+        #font_table.setFamily("Comic Sans MS")
+        font_table.setFamily("Arial Narrow")
         font_table.setPointSize(12)
         self.table.setFont(font_table)
 
         #Шрифт для опису вироба
         self.font_table_1 = QtGui.QFont()
-        self.font_table_1.setFamily("Comic Sans MS")
+        #self.font_table_1.setFamily("Comic Sans MS")
+        self.font_table_1.setFamily("Arial Narrow")
         self.font_table_1.setPointSize(10)
 
         self.font_table_2 = QtGui.QFont()
-        self.font_table_2.setFamily("Comic Sans MS")
+        #self.font_table_2.setFamily("Comic Sans MS")
+        self.font_table_2.setFamily("Arial Narrow")
         self.font_table_2.setPointSize(16)
 
 
@@ -207,7 +214,7 @@ class Ui(QtWidgets.QMainWindow):
         #Отримати рекомендований курс валюти
         self.recommended_rate_button.clicked.connect(self.recommended_rate)
 
-        #Поле для вартості пакування
+        #Поле для вартості
         self.packing_value.textChanged.connect(self.check_packing_number)
 
         #Поле для вартості доставки
@@ -285,10 +292,8 @@ class Ui(QtWidgets.QMainWindow):
         #для xls
         self.weight_label.setStyleSheet(style.typically_weight_label)
         self.weight_value.setStyleSheet(style.typically_weight_label)
-        self.kg_label.setStyleSheet(style.typically_weight_label)
         self.lenght_label.setStyleSheet(style.typically_weight_label)
         self.lenght_value.setStyleSheet(style.typically_weight_label)
-        self.cm_label.setStyleSheet(style.typically_weight_label)
         self.packing_label.setStyleSheet(style.typically_weight_label)
         self.packing_euro_label.setStyleSheet(style.typically_weight_label)
         self.comission_label.setStyleSheet(style.typically_weight_label)
@@ -369,10 +374,8 @@ class Ui(QtWidgets.QMainWindow):
         #для xls
         self.weight_label.setStyleSheet(style.update_weight_label)
         self.weight_value.setStyleSheet(style.update_weight_label)
-        self.kg_label.setStyleSheet(style.update_weight_label)
         self.lenght_label.setStyleSheet(style.update_weight_label)
         self.lenght_value.setStyleSheet(style.update_weight_label)
-        self.cm_label.setStyleSheet(style.update_weight_label)
         self.packing_label.setStyleSheet(style.update_weight_label)
         self.packing_euro_label.setStyleSheet(style.update_weight_label)
         self.comission_label.setStyleSheet(style.update_weight_label)
@@ -393,16 +396,9 @@ class Ui(QtWidgets.QMainWindow):
                     item.set_amount_item(item.get_amount_item() + 1)
                     break
             self.load_data()
-            # self.my_invoice.set_total_weight()
-            # self.my_invoice.set_max_length()
-            # self.weight_value.setText(str(self.my_invoice.get_total_weight()))
-            # self.lenght_value.setText(str(self.my_invoice.get_max_length()))
+
         else:
             self.load_data()
-            # self.my_invoice.set_total_weight()
-            # self.my_invoice.set_max_length()
-            # self.weight_value.setText(str(self.my_invoice.get_total_weight()))
-            # self.lenght_value.setText(str(self.my_invoice.get_max_length()))
 
     #Зменьшуємо на одиницю кількість екземплярів виробу
     def remove_one_item(self) -> None:
@@ -418,10 +414,6 @@ class Ui(QtWidgets.QMainWindow):
                         item.set_amount_item(item.get_amount_item() - 1)
                     break
             self.load_data()
-            # self.my_invoice.set_total_weight()
-            # self.my_invoice.set_max_length()
-            # self.weight_value.setText(str(self.my_invoice.get_total_weight()))
-            # self.lenght_value.setText(str(self.my_invoice.get_max_length()))
         else:
             pass
 
@@ -444,15 +436,22 @@ class Ui(QtWidgets.QMainWindow):
             else:
                 pass
 
-
-
     # Додаємо виріб до таблиці
     def add_item_function(self):
+
         self.set_typical_style()
         self.new_item = Item()
 
         if self.type_holder.currentText() != "Оберіть тип кріплення" and \
-                self.item_value.currentText() not in [" ", "Оберіть тип кріплення"] and \
+                self.item_value.currentText() == "Оберіть виріб" and \
+                self.code_value.currentText() not in [" ", "?"] and \
+                self.length_value.currentText() not in [" ", "?"]:
+
+            print("Hello! I`m bug")
+            self.load_data()
+
+        if self.type_holder.currentText() != "Оберіть тип кріплення" and \
+                self.item_value.currentText() not in [" ", "Оберіть тип кріплення", "Оберіть виріб"] and \
                 self.code_value.currentText() not in [" ", "?"] and \
                 self.length_value.currentText() not in [" ", "?"] and \
                 self.quantity_value.value() != 0:
@@ -508,15 +507,15 @@ class Ui(QtWidgets.QMainWindow):
             self.my_invoice.set_total_weight()
             self.my_invoice.set_max_length()
             self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
-            self.lenght_value.setText(str(self.my_invoice.get_max_length()))
+            self.lenght_value.setText(str(self.my_invoice.get_max_length()) + " см")
 
         else:
             print("Помилка")
         self.load_data()
-        self.my_invoice.set_total_weight()
-        self.my_invoice.set_max_length()
-        self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
-        self.lenght_value.setText(str(self.my_invoice.get_max_length()))
+        # self.my_invoice.set_total_weight()
+        # self.my_invoice.set_max_length()
+        # self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
+        # self.lenght_value.setText(str(self.my_invoice.get_max_length()) + " см")
 
     #Редагуємо обрану позицію
     def update_item(self) -> None:
@@ -570,9 +569,14 @@ class Ui(QtWidgets.QMainWindow):
     # Завантаження списка виробів для пувного типа тримача
     def get_items(self) -> None:
         self.quantity_value.setValue(0)
+
         if category[self.type_holder.currentText()] == type_holder_list[0]:
             self.item_value.clear()
             self.item_value.addItem(type_holder_list[0])
+            self.code_value.clear()
+            self.code_value.addItem("?")
+            self.length_value.clear()
+            self.length_value.addItem("?")
         else:
             self.item_value.clear()
             for item in category[self.type_holder.currentText()]:
@@ -624,10 +628,12 @@ class Ui(QtWidgets.QMainWindow):
         all_parameters[2] = self.code_value.currentText()
         all_parameters[3] = self.length_value.currentText()
         self.full_code = My_db.get_full_code_item(all_parameters)
+        del(all_parameters)
 
     # Завантаження списку кодів виробу без урахування довжини
     def get_code_items(self):
         self.quantity_value.setValue(0)
+
         if self.item_value.currentText() not in ["Оберіть виріб", "Оберіть тип кріплення", "?", " "]:
             self.length_value.clear()
             self.length_value.addItem("?")
@@ -639,7 +645,7 @@ class Ui(QtWidgets.QMainWindow):
                 self.code_value.addItem(code_item)
         else:
             self.code_value.clear()
-            self.code_value.setText("?")
+            self.code_value.addItem("?")
             self.length_value.clear()
             self.length_value.addItem("?")
 
@@ -675,33 +681,32 @@ class Ui(QtWidgets.QMainWindow):
         self.weight_value.setText(str(self.my_invoice.get_total_weight()))
         self.lenght_value.setText(str(self.my_invoice.get_max_length()))
 
-
     def recommended_rate(self) -> None:
         rate: str = self.euro_value.text().replace(",", ".")
         self.EURO_value.setText(str(round(float(rate) * 1.01, 2)))
 
-    def check_number(self) -> None:
-        result: str = ""
-
-        count_comma: int = self.EURO_value.text().count(",")
-
-        if check_valid_symbols(self.EURO_value.text()):
-            current_number = self.EURO_value.text().replace(".", ",")
-            if count_comma > 0:
-                for number in current_number:
-                    if number == "," and "," in result:
-                        continue
-                    result += number
-                self.EURO_value.setText(result)
-            else:
-                self.EURO_value.setText(self.EURO_value.text().replace(".", ","))
-        else:
-            for number in self.EURO_value.text():
-                if number not in acceptable_character:
-                    continue
-                else:
-                    result += number
-            self.EURO_value.setText(result)
+    # def check_number(self) -> None:
+    #     result: str = ""
+    #
+    #     count_comma: int = self.EURO_value.text().count(",")
+    #
+    #     if check_valid_symbols(self.EURO_value.text()):
+    #         current_number = self.EURO_value.text().replace(".", ",")
+    #         if count_comma > 0:
+    #             for number in current_number:
+    #                 if number == "," and "," in result:
+    #                     continue
+    #                 result += number
+    #             self.EURO_value.setText(result)
+    #         else:
+    #             self.EURO_value.setText(self.EURO_value.text().replace(".", ","))
+    #     else:
+    #         for number in self.EURO_value.text():
+    #             if number not in acceptable_character:
+    #                 continue
+    #             else:
+    #                 result += number
+    #         self.EURO_value.setText(result)
 
     @staticmethod
     def new_check_number(new_number: str) -> str:

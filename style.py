@@ -36,8 +36,8 @@ typically_style_QSpinBox = \
 
 update_style_QComboBox = \
 "QComboBox{" +\
-	"background-color:#29E309;" +\
-	"color: #E36809;" +\
+	"background-color:#0069a9;" +\
+	"color: white;" +\
 	"border: 1px  rgb(237, 255, 152);" +\
 "border-radius: 5px;" +\
 "}" +\
@@ -50,8 +50,8 @@ update_style_QComboBox = \
 
 update_style_QSpinBox =\
 "QSpinBox{" +\
-	"background-color:#29E309;" +\
-	"color: #E36809;" +\
+	"background-color:#0069a9;" +\
+	"color: white;" +\
 	"border-radius: 5px;" +\
 "}" +\
 "QSpinBox:hover {" +\
@@ -90,7 +90,7 @@ typically_style_button_reset_fields = \
 #Фон
 update_style_background = "background-color: #525B61;"
 
-typically_style_background = "background-color: rgb(156, 149, 255);"
+typically_style_background = "background-color: #7393ad;"
 
 update_style_editline = \
 "QLineEdit{" +\
