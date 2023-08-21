@@ -5,10 +5,12 @@ from bs4 import BeautifulSoup
 from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
+import os
+import shutil
 
 import db_handler
 import style
-from model import Invoice, Item
+from model import Invoice, Item, Pre_commercial_offer
 from db_handler import *
 import mainwindow
 from style import *
@@ -186,7 +188,7 @@ class Ui(QtWidgets.QMainWindow):
         self.font_table_1 = QtGui.QFont()
         #self.font_table_1.setFamily("Comic Sans MS")
         self.font_table_1.setFamily("Arial Narrow")
-        self.font_table_1.setPointSize(10)
+        self.font_table_1.setPointSize(12)
 
         self.font_table_2 = QtGui.QFont()
         #self.font_table_2.setFamily("Comic Sans MS")
@@ -219,6 +221,11 @@ class Ui(QtWidgets.QMainWindow):
 
         #Поле для вартості доставки
         self.delivery_value.textChanged.connect(self.check_delivery_number)
+
+        #Кнопка Створити xlsx
+        self.pre_commercial_offer_button.clicked.connect(self.create_pre_commercial_offer)
+
+
         self.show()
 
     def set_typical_style(self) -> None:
@@ -250,10 +257,10 @@ class Ui(QtWidgets.QMainWindow):
         self.remove_amount_button.setEnabled(True)
         self.clear_table_button.setStyleSheet(style.typically_style_button_reset_fields)
         self.clear_table_button.setEnabled(True)
-        self.xlsx_button.setStyleSheet(style.typically_xlsx_button)
-        self.xlsx_button.setEnabled(True)
-        self.kp_button.setStyleSheet(style.typically_xlsx_button)
-        self.kp_button.setEnabled(True)
+        self.pre_commercial_offer_button.setStyleSheet(style.typically_xlsx_button)
+        self.pre_commercial_offer_button.setEnabled(True)
+        self.commercial_offer_button.setStyleSheet(style.typically_xlsx_button)
+        self.commercial_offer_button.setEnabled(True)
 
         #таблиця
         self.table.setStyleSheet(style.typically_table)
@@ -332,10 +339,10 @@ class Ui(QtWidgets.QMainWindow):
         self.remove_amount_button.setEnabled(False)
         self.clear_table_button.setStyleSheet(style.update_style_button)
         self.clear_table_button.setEnabled(False)
-        self.xlsx_button.setStyleSheet(style.update_xlsx_button)
-        self.xlsx_button.setEnabled(False)
-        self.kp_button.setStyleSheet(style.update_xlsx_button)
-        self.kp_button.setEnabled(False)
+        self.pre_commercial_offer_button.setStyleSheet(style.update_xlsx_button)
+        self.pre_commercial_offer_button.setEnabled(False)
+        self.commercial_offer_button.setStyleSheet(style.update_xlsx_button)
+        self.commercial_offer_button.setEnabled(False)
 
         #таблиця
         self.table.setStyleSheet(style.update_table)
@@ -385,7 +392,6 @@ class Ui(QtWidgets.QMainWindow):
         self.discount_label.setStyleSheet(style.update_weight_label)
         self.percent_discount_label.setStyleSheet(style.update_weight_label)
 
-
     #Додаємо одиницю до кількості екземплярів виробу
     def add_one_item(self) -> None:
         row_index = self.table.currentRow()
@@ -396,7 +402,6 @@ class Ui(QtWidgets.QMainWindow):
                     item.set_amount_item(item.get_amount_item() + 1)
                     break
             self.load_data()
-
         else:
             self.load_data()
 
@@ -428,10 +433,6 @@ class Ui(QtWidgets.QMainWindow):
                     self.clear_table()
                 selected_code = self.table.model().index(row_index, 1).data()
                 self.my_invoice.remove_item_from_list(selected_code)
-                # self.my_invoice.set_total_weight()
-                # self.my_invoice.set_max_length()
-                # self.weight_value.setText(str(self.my_invoice.get_total_weight()))
-                # self.lenght_value.setText(str(self.my_invoice.get_max_length()))
                 self.load_data()
             else:
                 pass
@@ -439,83 +440,104 @@ class Ui(QtWidgets.QMainWindow):
     # Додаємо виріб до таблиці
     def add_item_function(self):
 
-        self.set_typical_style()
-        self.new_item = Item()
+        # self.set_typical_style()
+        # self.new_item = Item()
 
-        if self.type_holder.currentText() != "Оберіть тип кріплення" and \
-                self.item_value.currentText() == "Оберіть виріб" and \
-                self.code_value.currentText() not in [" ", "?"] and \
-                self.length_value.currentText() not in [" ", "?"]:
+        if self.type_holder.currentText() == "Оберіть тип кріплення" or \
+            self.item_value.currentText() in ["Оберіть виріб", " ", "","Оберіть тип кріплення"] or \
+            self.code_value.currentText() in [" ", "?"] or \
+            self.length_value.currentText() in [" ", "?"] or \
+            self.quantity_value.value() == 0:
 
-            print("Hello! I`m bug")
-            self.load_data()
+            error_message = ""
+            if self.type_holder.currentText() == "Оберіть тип кріплення":
+                error_message += "Оберіть тип кріплення\n"
+            if self.item_value.currentText() in ["Оберіть виріб", " ", "","Оберіть тип кріплення","?"]:
+                error_message += "Оберіть виріб\n"
+            if self.code_value.currentText() in [" ", "?"]:
+                error_message += "Оберіть код виробу\n"
+            if self.length_value.currentText() in [" ", "?"]:
+                error_message += "Оберіть довжину виробу\n"
+            if self.quantity_value.value() == 0:
+                error_message += "Оберіть кількість виробу"
 
-        if self.type_holder.currentText() != "Оберіть тип кріплення" and \
-                self.item_value.currentText() not in [" ", "Оберіть тип кріплення", "Оберіть виріб"] and \
-                self.code_value.currentText() not in [" ", "?"] and \
-                self.length_value.currentText() not in [" ", "?"] and \
-                self.quantity_value.value() != 0:
+            error = MessageError()
+            error.setText(error_message)
+            error.exec_()
+        else:
+            self.set_typical_style()
+            self.new_item = Item()
 
-            data_list = [self.type_holder.currentText(),
-                         self.item_value.currentText(),
-                         self.code_value.currentText(),
-                         self.length_value.currentText()]
+            if self.type_holder.currentText() != "Оберіть тип кріплення" and \
+                    self.item_value.currentText() == "Оберіть виріб" and \
+                    self.code_value.currentText() not in [" ", "?"] and \
+                    self.length_value.currentText() not in [" ", "?"]:
 
-            code: str = My_db.get_full_code_item(data_list)
-            data_list.append(code)
-            dict_item = My_db.get_info_item(data_list)
+                print("Hello! I`m bug")
+                self.load_data()
 
-            print("############")
-            self.new_item.set_type_holder(dict_item["type_holder"])
-            self.new_item.set_type_item(dict_item["item"])
-            self.new_item.set_code_item(dict_item["code_item"])
-            self.new_item.set_en_name_item(dict_item["en_name_item"])
-            self.new_item.set_ua_name_item(dict_item["ua_name_item"])
-            self.new_item.set_length_item(dict_item["length_item"])
-            length_str = My_db.get_length(dict_item["length_item"])
-            self.new_item.set_length_item_mm(length_str)
-            self.new_item.set_weight_item(dict_item["weight"])
-            self.new_item.set_price_item(dict_item["price_item"])
-            self.new_item.set_discount_item(self.discount_spinBox.value())
-            self.new_item.set_amount_item(self.quantity_value.value())
-            print(self.new_item.get_type_holder())
-            print(self.new_item.get_type_item())
-            print(self.new_item.get_code_item())
-            print(f"Довжина {self.new_item.get_length_item_mm()} мм")
-            print(f"Кількість: {self.new_item.get_amount_item()} шт")
-            print("%%%%%%%%%%%%%%%")
+            if self.type_holder.currentText() != "Оберіть тип кріплення" and \
+                    self.item_value.currentText() not in [" ", "Оберіть тип кріплення", "Оберіть виріб"] and \
+                    self.code_value.currentText() not in [" ", "?"] and \
+                    self.length_value.currentText() not in [" ", "?"] and \
+                    self.quantity_value.value() != 0:
 
-            if not self.my_invoice.get_list_item():
-                print("Список порожній")
-                self.my_invoice.add_item_to_list(self.new_item)
+                data_list = [self.type_holder.currentText(),
+                             self.item_value.currentText(),
+                             self.code_value.currentText(),
+                             self.length_value.currentText()]
+
+                code: str = My_db.get_full_code_item(data_list)
+                data_list.append(code)
+                dict_item = My_db.get_info_item(data_list)
+
+                print("############")
+                self.new_item.set_type_holder(dict_item["type_holder"])
+                self.new_item.set_type_item(dict_item["item"])
+                self.new_item.set_code_item(dict_item["code_item"])
+                self.new_item.set_en_name_item(dict_item["en_name_item"])
+                self.new_item.set_ua_name_item(dict_item["ua_name_item"])
+                self.new_item.set_length_item(dict_item["length_item"])
+                length_str = My_db.get_length(dict_item["length_item"])
+                self.new_item.set_length_item_mm(length_str)
+                self.new_item.set_weight_item(dict_item["weight"])
+                self.new_item.set_price_item(dict_item["price_item"])
+                self.new_item.set_discount_item(self.discount_spinBox.value())
+                self.new_item.set_amount_item(self.quantity_value.value())
+                print(self.new_item.get_type_holder())
+                print(self.new_item.get_type_item())
+                print(self.new_item.get_code_item())
+                print(f"Довжина {self.new_item.get_length_item_mm()} мм")
+                print(f"Кількість: {self.new_item.get_amount_item()} шт")
+                print("%%%%%%%%%%%%%%%")
+
+                if not self.my_invoice.get_list_item():
+                    print("Список порожній")
+                    self.my_invoice.add_item_to_list(self.new_item)
+
+                else:
+
+                    if self.new_item.get_code_item() in self.my_invoice.get_list_code():
+                        print("Вже існує")
+                        for i in range(0, len(self.my_invoice.get_list_item())):
+                            if self.my_invoice.get_list_item()[i].get_code_item() == self.new_item.get_code_item():
+                                amount: int = int(self.new_item.get_amount_item()) + \
+                                              int(self.my_invoice.get_list_item()[i].get_amount_item())
+                                self.my_invoice.get_list_item()[i].set_amount_item(amount)
+                                self.my_invoice.set_total_weight()
+                                break
+                    else:
+                        print("Додаємо новий виріб")
+                        self.my_invoice.add_item_to_list(self.new_item)
+                self.my_invoice.show_list()
+                self.my_invoice.set_total_weight()
+                self.my_invoice.set_max_length()
+                self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
+                self.lenght_value.setText(str(self.my_invoice.get_max_length()) + " см")
 
             else:
-
-                if self.new_item.get_code_item() in self.my_invoice.get_list_code():
-                    print("Вже існує")
-                    for i in range(0, len(self.my_invoice.get_list_item())):
-                        if self.my_invoice.get_list_item()[i].get_code_item() == self.new_item.get_code_item():
-                            amount: int = int(self.new_item.get_amount_item()) + \
-                                          int(self.my_invoice.get_list_item()[i].get_amount_item())
-                            self.my_invoice.get_list_item()[i].set_amount_item(amount)
-                            self.my_invoice.set_total_weight()
-                            break
-                else:
-                    print("Додаємо новий виріб")
-                    self.my_invoice.add_item_to_list(self.new_item)
-            self.my_invoice.show_list()
-            self.my_invoice.set_total_weight()
-            self.my_invoice.set_max_length()
-            self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
-            self.lenght_value.setText(str(self.my_invoice.get_max_length()) + " см")
-
-        else:
-            print("Помилка")
-        self.load_data()
-        # self.my_invoice.set_total_weight()
-        # self.my_invoice.set_max_length()
-        # self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
-        # self.lenght_value.setText(str(self.my_invoice.get_max_length()) + " см")
+                print("Помилка")
+            self.load_data()
 
     #Редагуємо обрану позицію
     def update_item(self) -> None:
@@ -564,7 +586,6 @@ class Ui(QtWidgets.QMainWindow):
         self.type_holder.clear()
         for item_connection in type_holder_list:
             self.type_holder.addItem(item_connection)
-
 
     # Завантаження списка виробів для пувного типа тримача
     def get_items(self) -> None:
@@ -643,6 +664,12 @@ class Ui(QtWidgets.QMainWindow):
             self.code_value.clear()
             for code_item in code_list:
                 self.code_value.addItem(code_item)
+
+        elif self.type_holder.currentText() != "Оберіть тип кріплення" and self.item_value.currentText() == "Оберіть тип кріплення":
+            self.code_value.clear()
+            self.code_value.addItem("?")
+            self.length_value.clear()
+            self.length_value.addItem("?")
         else:
             self.code_value.clear()
             self.code_value.addItem("?")
@@ -666,7 +693,6 @@ class Ui(QtWidgets.QMainWindow):
 
     # Оновлення дати запита та курса
     def refresh_rate(self) -> None:
-
         time_info = get_list_moment()
         self.date_value.setText(time_info[0])
         self.time_label.setText(time_info[1])
@@ -684,29 +710,6 @@ class Ui(QtWidgets.QMainWindow):
     def recommended_rate(self) -> None:
         rate: str = self.euro_value.text().replace(",", ".")
         self.EURO_value.setText(str(round(float(rate) * 1.01, 2)))
-
-    # def check_number(self) -> None:
-    #     result: str = ""
-    #
-    #     count_comma: int = self.EURO_value.text().count(",")
-    #
-    #     if check_valid_symbols(self.EURO_value.text()):
-    #         current_number = self.EURO_value.text().replace(".", ",")
-    #         if count_comma > 0:
-    #             for number in current_number:
-    #                 if number == "," and "," in result:
-    #                     continue
-    #                 result += number
-    #             self.EURO_value.setText(result)
-    #         else:
-    #             self.EURO_value.setText(self.EURO_value.text().replace(".", ","))
-    #     else:
-    #         for number in self.EURO_value.text():
-    #             if number not in acceptable_character:
-    #                 continue
-    #             else:
-    #                 result += number
-    #         self.EURO_value.setText(result)
 
     @staticmethod
     def new_check_number(new_number: str) -> str:
@@ -732,18 +735,69 @@ class Ui(QtWidgets.QMainWindow):
                     result += number
             return result
 
-    def check_number_EURO(self):
+    def check_number_EURO(self) -> None:
         self.EURO_value.setText(self.new_check_number(self.EURO_value.text()))
-    def check_packing_number(self):
+
+    def check_packing_number(self) -> None:
         self.packing_value.setText(self.new_check_number(self.packing_value.text()))
 
-    def check_delivery_number(self):
+    def check_delivery_number(self) -> None:
         self.delivery_value.setText(self.new_check_number(self.delivery_value.text()))
 
-    # Створення пошукового вікна
+    # Кнопка створення пошукового вікна
     def search_item(self) -> None:
         self.m_w = Search()
         self.m_w.show()
+
+    # Кнопка створення попередньої таблиці
+    def create_pre_commercial_offer(self) -> None:
+        print("Pre commercial offer")
+        if self.company_name.text() in ["", " "] or \
+                self.EURO_value.text() in ["", " ", "00,000", "0,0", "0"] or \
+                self.table.rowCount() < 1 or \
+                self.packing_value.text() in ["", " ", "00,000", "0,0", "0"] or \
+                self.delivery_value.text() in ["", " ", "00,000", "0,0", "0"]:
+            error = MessageError()
+            error_message: str = ""
+            if self.company_name.text() in ["", " "]:
+                error_message += "Вкажіть назву компанії клієтна.\n"
+            if self.EURO_value.text() in ["", " ", "00,000", "0,0", "0"]:
+                error_message += "Вкажіть курс EURO.\n"
+            if self.table.rowCount() < 1:
+                error_message += "Додайте хочаб один виріб.\n"
+            if self.packing_value.text() in ["", " ", "00,000", "0,0", "0"]:
+                error_message += "Зазначте вартість пакування.\n"
+            if self.delivery_value.text() in ["", " ", "00,000", "0,0", "0"]:
+                error_message += "Зазначте вартість доставки."
+            error.setText(error_message)
+            error.exec_()
+        else:
+            print("Let`s create pre commercial offer")
+
+            self.pco = Pre_commercial_offer()
+            self.pco.set_company_name(self.company_name.text())
+            self.pco.set_rate(self.EURO_value.text())
+            self.pco.set_discount(self.discount_spinBox.value())
+            self.pco.set_path_temp(f"data/ТКП {self.pco.get_company_name()} I{self.time_label.text().replace(':', '_')}I {self.date_value.text().replace(':', '_')}.xlsx")
+            # Копиюєм попередній порожній зразок комерційної пропозиції
+            shutil.copy("data/Зразок ТКП.xlsx", self.pco.get_path_temp())
+
+            #Заповнюємо новий файл
+            self.pco.fill_xlsx(self.my_invoice, self.pco.get_path_temp())
+            #
+
+class MessageError(QMessageBox):
+    font_message = QtGui.QFont()
+    font_message.setFamily("Arial Narrow")
+    font_message.setPointSize(14)
+    def __init__(self):
+        super(MessageError, self).__init__()
+        self.setStyleSheet(typically_style_background)
+        self.setWindowTitle("Пимилка")
+        self.setFont(self.font_message)
+        self.setIcon(QMessageBox.Warning)
+        self.setStandardButtons(QMessageBox.Ok)
+        self.button(QMessageBox.Ok).setVisible(False)
 
 
 class Search(QMdiSubWindow):

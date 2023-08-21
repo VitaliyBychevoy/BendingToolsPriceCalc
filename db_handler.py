@@ -4,6 +4,7 @@ from openpyxl.utils import get_column_letter
 
 DB_PATH = ""
 COMMERCIAL_OFFER_EMPTY_SAMPLE_PATH = ""
+
 CALCULATION_EMPTY_SMPLE_PATH = ""
 
 
@@ -137,9 +138,11 @@ class My_db:
                     info_item["parameters"][work_sheet[chr(65 + j) + "1"].value] = work_sheet[chr(65 + j) + str(i)].value
 
         return info_item
-class Commercial_offer:
-    pass
 
+class Pre_commercial_offer_xlsx():
+
+    def __init__(self):
+        self.path_file
 
 class Calculation:
     pass

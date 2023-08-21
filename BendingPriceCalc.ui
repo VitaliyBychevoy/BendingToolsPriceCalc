@@ -333,7 +333,7 @@ color:rgb(255, 255, 255);</string>
     <property name="font">
      <font>
       <family>Arial Narrow</family>
-      <pointsize>10</pointsize>
+      <pointsize>12</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -429,7 +429,7 @@ color : red;
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -464,7 +464,7 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -481,7 +481,7 @@ QPushButton:hover {
 }</string>
     </property>
     <property name="text">
-     <string>Все с початку</string>
+     <string>Все з початку</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="table">
@@ -495,6 +495,12 @@ QPushButton:hover {
       <width>800</width>
       <height>250</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial Narrow</family>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background:#D5FFE4;
@@ -567,7 +573,7 @@ color: rgb(199, 55, 255);
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
        <kerning>false</kerning>
       </font>
@@ -582,7 +588,7 @@ color: rgb(199, 55, 255);
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -593,7 +599,7 @@ color: rgb(199, 55, 255);
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -615,13 +621,13 @@ color: rgb(199, 55, 255);
      <rect>
       <x>10</x>
       <y>650</y>
-      <width>130</width>
+      <width>110</width>
       <height>30</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -636,7 +642,7 @@ color:rgb(255, 255, 255);</string>
    <widget class="QLabel" name="weight_value">
     <property name="geometry">
      <rect>
-      <x>150</x>
+      <x>130</x>
       <y>650</y>
       <width>120</width>
       <height>30</height>
@@ -644,7 +650,7 @@ color:rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -654,7 +660,7 @@ color: rgb(255, 255, 255)
 ;</string>
     </property>
     <property name="text">
-     <string>0000.00 кг</string>
+     <string>0.00 кг</string>
     </property>
    </widget>
    <widget class="QLabel" name="lenght_label">
@@ -662,14 +668,14 @@ color: rgb(255, 255, 255)
      <rect>
       <x>10</x>
       <y>680</y>
-      <width>350</width>
+      <width>320</width>
       <height>30</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>14</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>16</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -683,7 +689,7 @@ color:rgb(255, 255, 255);</string>
    <widget class="QLabel" name="lenght_value">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>340</x>
       <y>680</y>
       <width>95</width>
       <height>30</height>
@@ -691,8 +697,8 @@ color:rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>14</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>16</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -700,10 +706,10 @@ color:rgb(255, 255, 255);</string>
 color:rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>000.00 см</string>
+     <string>0.0 см</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="xlsx_button">
+   <widget class="QPushButton" name="pre_commercial_offer_button">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -714,8 +720,8 @@ color:rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>16</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>18</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -744,8 +750,8 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>16</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>18</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -960,7 +966,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>14</pointsize>
      </font>
     </property>
@@ -1067,11 +1073,11 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
+      <family>Arial Narrow</family>
+      <pointsize>18</pointsize>
+      <weight>50</weight>
       <italic>false</italic>
-      <bold>true</bold>
+      <bold>false</bold>
       <underline>true</underline>
       <strikeout>false</strikeout>
      </font>
@@ -1095,7 +1101,7 @@ color:rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -1138,8 +1144,8 @@ color : red;
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>16</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>18</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1150,7 +1156,7 @@ color:rgb(255, 255, 255);</string>
      <string>%</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="kp_button">
+   <widget class="QPushButton" name="commercial_offer_button">
     <property name="geometry">
      <rect>
       <x>290</x>
@@ -1161,8 +1167,8 @@ color:rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>16</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>18</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1191,8 +1197,10 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>14</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -1232,10 +1240,10 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>14</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>Arial Narrow</family>
+      <pointsize>18</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
       <underline>true</underline>
      </font>
     </property>
@@ -1258,10 +1266,10 @@ color:rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>14</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>Arial Narrow</family>
+      <pointsize>16</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
       <underline>true</underline>
      </font>
     </property>
@@ -1284,7 +1292,7 @@ color:rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -1320,7 +1328,7 @@ QLineEdit:focus {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -1356,11 +1364,12 @@ QLineEdit:focus {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
       <underline>true</underline>
+      <strikeout>false</strikeout>
      </font>
     </property>
     <property name="styleSheet">
@@ -1382,7 +1391,7 @@ color:rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>14</pointsize>
       <weight>75</weight>
       <bold>true</bold>
@@ -1408,7 +1417,7 @@ color:rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -1451,7 +1460,7 @@ color : red;
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>16</pointsize>
      </font>
     </property>
@@ -1474,8 +1483,10 @@ color: rgb(255, 253, 240);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>16</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>18</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -1497,8 +1508,8 @@ color: rgb(255, 253, 240);</string>
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>12</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>16</pointsize>
      </font>
     </property>
     <property name="layoutDirection">
@@ -1530,8 +1541,8 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>12</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>16</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1560,8 +1571,8 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>12</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>16</pointsize>
      </font>
     </property>
     <property name="layoutDirection">
@@ -1593,7 +1604,7 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
+      <family>Arial Narrow</family>
       <pointsize>14</pointsize>
      </font>
     </property>
@@ -1623,8 +1634,8 @@ QPushButton:hover {
     </property>
     <property name="font">
      <font>
-      <family>Comic Sans MS</family>
-      <pointsize>12</pointsize>
+      <family>Arial Narrow</family>
+      <pointsize>16</pointsize>
      </font>
     </property>
     <property name="layoutDirection">

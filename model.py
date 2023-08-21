@@ -1,4 +1,4 @@
-import openpyxl
+from openpyxl import *
 
 DB_FOLDER = "data/DB_bending.xlsx"
 
@@ -251,3 +251,53 @@ class Invoice:
         for i in self.get_list_item():
             result_list.append(i.get_code_item())
         return result_list
+
+
+class Pre_commercial_offer:
+
+    def __init__(
+            self,
+            company_name: str = None,
+            rate: str = None,
+            discount: str = None,
+            path_temp: str = None
+    ):
+        self.company_name: str = company_name
+        self.rate: str = rate
+        self.discount: str = discount
+        self.path_temp: str = path_temp
+
+    def set_company_name(self, new_company: str) -> None:
+        self.company_name = new_company
+
+    def get_company_name(self) -> str:
+        return self.company_name
+
+    def set_rate(self, new_rate: str) -> None:
+        self.rate = new_rate
+
+    def get_rate(self) -> str:
+        return self.rate
+
+    def set_discount(self, new_discount: str) -> None:
+        self.discount = new_discount
+
+    def get_discoiunt(self) -> str:
+        return self.discount
+
+    def set_path_temp(self, new_path: str) -> None:
+        self.path_temp = new_path
+
+    def get_path_temp(self) -> str:
+        return self.path_temp
+
+    def fill_xlsx(self, new_invoice: Invoice, new_path: str) -> None:
+        wb = load_workbook(new_path)
+        work_sheet = wb["Лист1"]
+        start_row = 17
+        for index in range(0,len(new_invoice.get_list_item())):
+            work_sheet[f"B{str(start_row)}"] = str(index + 1)
+
+        wb.save()
+class Commercial_offer:
+    pass
