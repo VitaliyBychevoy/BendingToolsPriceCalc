@@ -782,6 +782,8 @@ class Ui(QtWidgets.QMainWindow):
             # Копиюєм попередній порожній зразок комерційної пропозиції
             shutil.copy("data/Зразок ТКП.xlsx", self.pco.get_path_temp())
 
+
+
             #Заповнюємо новий файл
             self.pco.fill_xlsx(self.my_invoice, self.pco.get_path_temp())
             #
