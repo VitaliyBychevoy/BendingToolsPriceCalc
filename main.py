@@ -776,7 +776,7 @@ class Ui(QtWidgets.QMainWindow):
 
             self.pco = Pre_commercial_offer()
             self.pco.set_company_name(self.company_name.text())
-            self.pco.set_rate(self.EURO_value.text())
+            self.pco.set_rate(new_rate=self.EURO_value.text())
             self.pco.set_discount(self.discount_spinBox.value())
             self.pco.set_path_temp(f"data/ТКП {self.pco.get_company_name()} I{self.time_label.text().replace(':', '_')}I {self.date_value.text().replace(':', '_')}.xlsx")
             # Копиюєм попередній порожній зразок комерційної пропозиції
@@ -785,7 +785,8 @@ class Ui(QtWidgets.QMainWindow):
 
 
             #Заповнюємо новий файл
-            self.pco.fill_xlsx(self.my_invoice, self.pco.get_path_temp())
+            #self.pco.fill_xlsx(self.my_invoice, self.pco.get_path_temp())
+            self.pco.fill_xlsx(self.my_invoice)
             #
 
 class MessageError(QMessageBox):

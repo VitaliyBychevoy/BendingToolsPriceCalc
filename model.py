@@ -297,8 +297,8 @@ class Pre_commercial_offer:
     def get_path_temp(self) -> str:
         return self.path_temp
 
-    def fill_xlsx(self, new_invoice: Invoice, new_path: str) -> None:
-
+    #def fill_xlsx(self, new_invoice: Invoice, new_path: str) -> None:
+    def fill_xlsx(self, new_invoice: Invoice) -> None:
         #Шрифти
         #Позиція
         position_font = Font(size=6, bold=True)
@@ -315,7 +315,8 @@ class Pre_commercial_offer:
                              top=Side(style='thin'),
                              bottom=Side(style='thin'))
 
-        wb = load_workbook(new_path)
+        #wb = load_workbook(new_path)
+        wb = load_workbook(self.get_path_temp())
         work_sheet = wb["Лист1"]
         start_row = 17
 
@@ -331,19 +332,32 @@ class Pre_commercial_offer:
             work_sheet.row_dimensions[current_row].height = 90
 
             #Номер позиції
-            work_sheet[f"B{str(current_row)}"].value = index + 1
+
             work_sheet[f"B{str(current_row)}"].font = position_font
             work_sheet[f"B{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
+            work_sheet[f"B{str(current_row)}"].value = index + 1
+            work_sheet[f"B{str(current_row)}"].border = thin_border
+
+            work_sheet[f"C{str(current_row)}"].border = thin_border
+
             #Англійська назва
             work_sheet[f"D{str(current_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00', end_color='ffff00')
             work_sheet[f"D{str(current_row)}"].value = new_invoice.get_list_item()[index].get_en_name_item()
             work_sheet[f"D{str(current_row)}"].font = name_font
-            work_sheet[f"D{str(current_row)}"].alignment = Alignment(horizontal="left", vertical='center')
+            work_sheet[f"D{str(current_row)}"].alignment = Alignment(horizontal="left", vertical='center',wrapText=True)
+            work_sheet[f"D{str(current_row)}"].border = thin_border
+
+            work_sheet[f"E{str(current_row)}"].border = thin_border
 
             #Назва українською
             work_sheet[f"F{str(current_row)}"].value = new_invoice.get_list_item()[index].get_ua_name_item()
             work_sheet[f"F{str(current_row)}"].font = name_font
-            work_sheet[f"F{str(current_row)}"].alignment = Alignment(horizontal="left", vertical='center')
+            work_sheet[f"F{str(current_row)}"].alignment = Alignment(horizontal="left", vertical='center',wrapText=True)
+            work_sheet[f"F{str(current_row)}"].border = thin_border
+
+            work_sheet[f"G{str(current_row)}"].border = thin_border
+
+            work_sheet[f"H{str(current_row)}"].border = thin_border
 
             #Вага
             work_sheet[f"J{str(current_row)}"].value = new_invoice.get_list_item()[index].get_weight_item()
@@ -351,22 +365,95 @@ class Pre_commercial_offer:
             work_sheet[f"J{str(current_row)}"].font = name_font
             work_sheet[f"J{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
             work_sheet[f"J{str(current_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00', end_color='ffff00')
+            work_sheet[f"J{str(current_row)}"].border = thin_border
 
             #Кількість
             work_sheet[f"K{str(current_row)}"].value = new_invoice.get_list_item()[index].get_amount_item()
             work_sheet[f"K{str(current_row)}"].font = name_font
             work_sheet[f"K{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
+            work_sheet[f"K{str(current_row)}"].border = thin_border
 
             #Вага помножена на кількість
-            work_sheet[f"I{str(current_row)}"].value = f"={work_sheet[f'J{str(current_row)}'].value}*{work_sheet[f'K{str(current_row)}'].value}"
+            work_sheet[f"I{str(current_row)}"].value = f"=J{str(current_row)}*K{str(current_row)}"
             work_sheet[f"I{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
             work_sheet[f"I{str(current_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00', end_color='ffff00')
+            work_sheet[f"I{str(current_row)}"].border = thin_border
 
-            #Закупка
-            work_sheet[f"L{str(current_row)}"].value = f"={new_invoice.get_list_item()[index].get_price_item()}*{100-new_invoice.get}"
+            #Закупка з урахуванням знижки
+            work_sheet[f"L{str(current_row)}"].value = f"={new_invoice.get_list_item()[index].get_price_item()}*((100-{self.get_discoiunt()})/100)"
+            work_sheet[f"L{str(current_row)}"].font = name_font
+            work_sheet[f"L{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
+            work_sheet[f"L{str(current_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00', end_color='ffff00')
+            work_sheet[f"L{str(current_row)}"].border = thin_border
 
-        wb.save(new_path)
+            # Ціна за од ГРН
+            work_sheet[f"O{str(current_row)}"].value = 0
+            work_sheet[f"O{str(current_row)}"].font = name_font
+            work_sheet[f"O{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
+            work_sheet[f"O{str(current_row)}"].border = thin_border
 
+            #Ціна за од EURO
+            work_sheet[f"M{str(current_row)}"].value = f"=O{str(current_row)}/{float(self.get_rate().replace(',','.'))}"
+            work_sheet[f"M{str(current_row)}"].font = name_font
+            work_sheet[f"M{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
+            work_sheet[f"M{str(current_row)}"].border = thin_border
 
+            #Ціна разом EURO
+            work_sheet[f"N{str(current_row)}"].value = f"=M{str(current_row)}*K{str(current_row)}"
+            work_sheet[f"N{str(current_row)}"].font = name_font
+            work_sheet[f"N{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
+            work_sheet[f"N{str(current_row)}"].border = thin_border
+
+            #Ціна разом ГРН
+            work_sheet[f"P{str(current_row)}"].value = f"=O{str(current_row)}*K{str(current_row)}"
+            work_sheet[f"P{str(current_row)}"].font = name_font
+            work_sheet[f"P{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
+            work_sheet[f"P{str(current_row)}"].border = thin_border
+
+        #last_row += 1
+        work_sheet[f"B{str(last_row)}"].value = ""
+        work_sheet[f"B{str(last_row)}"].border = thin_border
+        work_sheet[f"C{str(last_row)}"].value = ""
+        work_sheet[f"C{str(last_row)}"].border = thin_border
+        work_sheet[f"D{str(last_row)}"].value = ""
+        work_sheet[f"D{str(last_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00',
+                                                              end_color='ffff00')
+        work_sheet[f"D{str(last_row)}"].border = thin_border
+        work_sheet[f"E{str(last_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00',
+                                                              end_color='ffff00')
+        work_sheet[f"E{str(last_row)}"].border = thin_border
+        work_sheet[f"F{str(last_row)}"].value = ""
+        work_sheet[f"F{str(last_row)}"].border = thin_border
+        work_sheet[f"G{str(last_row)}"].value = ""
+        work_sheet[f"G{str(last_row)}"].border = thin_border
+        work_sheet[f"H{str(last_row)}"].value = ""
+        work_sheet[f"H{str(last_row)}"].border = thin_border
+        #work_sheet[f"I{str(last_row)}"].value = f"=СУММ({work_sheet[f'I{str(start_row)}'].value}:{work_sheet[f'I{str(last_row-1)}'].value}"
+
+        work_sheet[f"I{str(current_row)}"].font = name_font
+        work_sheet[f"I{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
+        work_sheet[f"I{str(last_row)}"].value = 21
+        work_sheet[f"I{str(last_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00',
+                                                              end_color='ffff00')
+        work_sheet[f"I{str(last_row)}"].border = thin_border
+        work_sheet[f"J{str(last_row)}"].value = ""
+        work_sheet[f"J{str(last_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00',
+                                                              end_color='ffff00')
+        work_sheet[f"J{str(last_row)}"].border = thin_border
+        work_sheet[f"K{str(last_row)}"].value = ""
+        work_sheet[f"K{str(last_row)}"].border = thin_border
+        work_sheet[f"L{str(last_row)}"].value = ""
+        work_sheet[f"L{str(last_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00',
+                                                              end_color='ffff00')
+        work_sheet[f"L{str(last_row)}"].border = thin_border
+        work_sheet[f"M{str(last_row)}"].value = ""
+        work_sheet[f"M{str(last_row)}"].border = thin_border
+        work_sheet[f"N{str(last_row)}"].value = ""
+        work_sheet[f"N{str(last_row)}"].border = thin_border
+        work_sheet[f"O{str(last_row)}"].value = ""
+        work_sheet[f"O{str(last_row)}"].border = thin_border
+        work_sheet[f"P{str(last_row)}"].value = ""
+        work_sheet[f"P{str(last_row)}"].border = thin_border
+        wb.save(self.get_path_temp())
 class Commercial_offer:
     pass
