@@ -2,6 +2,7 @@ import openpyxl
 from openpyxl import *
 from openpyxl.styles import Alignment
 from openpyxl.styles.borders import Border, Side
+import openpyxl.styles.numbers
 from openpyxl.styles import Font, Fill #Стилі для текста
 from openpyxl.styles import PatternFill #Cтили для ячеєк
 from openpyxl.styles import colors #Kольори для текста и ячеєк
@@ -406,6 +407,7 @@ class Pre_commercial_offer:
 
             #Ціна разом ГРН
             work_sheet[f"P{str(current_row)}"].value = f"=O{str(current_row)}*K{str(current_row)}"
+            #work_sheet[f"P{str(current_row)}"].value.number_format = openpyxl.styles.numbers.BUILTIN_FORMATS[2]
             work_sheet[f"P{str(current_row)}"].font = name_font
             work_sheet[f"P{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
             work_sheet[f"P{str(current_row)}"].border = thin_border
@@ -430,9 +432,12 @@ class Pre_commercial_offer:
         work_sheet[f"H{str(last_row)}"].border = thin_border
         #work_sheet[f"I{str(last_row)}"].value = f"=СУММ({work_sheet[f'I{str(start_row)}'].value}:{work_sheet[f'I{str(last_row-1)}'].value}"
 
-        work_sheet[f"I{str(current_row)}"].font = name_font
-        work_sheet[f"I{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
-        work_sheet[f"I{str(last_row)}"].value = 21
+        work_sheet[f"I{str(last_row)}"].font = name_font
+        work_sheet[f"I{str(last_row)}"].alignment = Alignment(horizontal="center", vertical='center')
+
+        #work_sheet[f"I{str(last_row)}"] = f"=СУММ(I17:I{str(last_row-1)})"
+        work_sheet[f"I{str(last_row)}"] = f"=СУММ(I17:I{str(last_row-1)})"
+        work_sheet[f"I{str(last_row)}"].number_format = openpyxl.styles.numbers.BUILTIN_FORMATS[2]
         work_sheet[f"I{str(last_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00',
                                                               end_color='ffff00')
         work_sheet[f"I{str(last_row)}"].border = thin_border
