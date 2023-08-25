@@ -785,7 +785,6 @@ class Ui(QtWidgets.QMainWindow):
 
 
             #Заповнюємо новий файл
-            #self.pco.fill_xlsx(self.my_invoice, self.pco.get_path_temp())
             self.pco.fill_xlsx(self.my_invoice)
             #
 

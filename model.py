@@ -319,9 +319,16 @@ class Pre_commercial_offer:
         #wb = load_workbook(new_path)
         wb = load_workbook(self.get_path_temp())
         work_sheet = wb["Лист1"]
+
+        #Назва компанії
+        #work_sheet.merge_cells(start_row=10, start_column=13, end_row=10, end_column=16)
+
+
+
         start_row = 17
 
-        max_row = 100
+
+
         work_sheet.insert_rows(len(new_invoice.get_list_item()))
 
 
@@ -459,6 +466,13 @@ class Pre_commercial_offer:
         work_sheet[f"O{str(last_row)}"].border = thin_border
         work_sheet[f"P{str(last_row)}"].value = ""
         work_sheet[f"P{str(last_row)}"].border = thin_border
+
+        work_sheet.merge_cells('M10:P10')
+        work_sheet.cell(row=10, column=13).value = self.get_company_name()
+        name_company_font = Font(size=9, bold=True)
+        name_company_font.name = "Times New Roman"
+        work_sheet.cell(row=10, column=13).font = name_company_font
+        work_sheet.cell(row=10, column=13).alignment = Alignment(horizontal="right", vertical='center')
         wb.save(self.get_path_temp())
 class Commercial_offer:
     pass
