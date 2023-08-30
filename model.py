@@ -6,7 +6,7 @@ import openpyxl.styles.numbers
 from openpyxl.styles import Font, Fill #Стилі для текста
 from openpyxl.styles import PatternFill #Cтили для ячеєк
 from openpyxl.styles import colors #Kольори для текста и ячеєк
-
+from vectortool_customers.customers_db import *
 DB_FOLDER = "data/DB_bending.xlsx"
 
 
@@ -468,7 +468,7 @@ class Pre_commercial_offer:
         work_sheet[f"P{str(last_row)}"].border = thin_border
 
         work_sheet.merge_cells('M10:P10')
-        work_sheet.cell(row=10, column=13).value = self.get_company_name()
+        work_sheet.cell(row=10, column=13).value =  get_full_name_company(self.get_company_name())
         name_company_font = Font(size=9, bold=True)
         name_company_font.name = "Times New Roman"
         work_sheet.cell(row=10, column=13).font = name_company_font

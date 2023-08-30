@@ -67,6 +67,26 @@ update_style_QSpinBox =\
 "color : red;" +\
 "}"
 
+typically_style_company_button = \
+"QPushButton {" +\
+"background-color: #6F61C0;" +\
+"color:white;" +\
+"border-radius: 10px;" +\
+"}" +\
+"QPushButton:hover {" +\
+"   background-color:  rgb(48, 221, 255); " +\
+"}"
+
+update_style_company_button = \
+"QPushButton {" +\
+"background-color: #43494F;" +\
+"color: #6C7680;" +\
+"border-radius: 10px;" +\
+"}" +\
+"QPushButton:hover {" +\
+"background-color:  #43494F;" +\
+"}"
+
 update_style_button = \
 "QPushButton {" +\
 "background-color: #43494F;" +\

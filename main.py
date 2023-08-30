@@ -10,6 +10,7 @@ import shutil
 
 import db_handler
 import style
+from vectortool_customers.customers_db import *
 from model import Invoice, Item, Pre_commercial_offer
 from db_handler import *
 import mainwindow
@@ -123,12 +124,19 @@ class Ui(QtWidgets.QMainWindow):
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
 
         uic.loadUi("BendingPriceCalc.ui", self)
-        self.setGeometry(50, 50, 820, 880)
-        self.setFixedSize(820, 880)
+        self.setGeometry(50, 50, 820, 920)
+        self.setFixedSize(820, 920)
         self.m_w = None
         self.table.setColumnWidth(0, 20)
         self.table.setColumnWidth(1, 100)
         self.table.setColumnWidth(2, 500)
+
+        company_list: list = get_short_name_list()
+
+        #Заповнюємо компанії
+        for company in company_list:
+            self.company_value.addItem(company)
+
         # Заповнюємо тип кріплення
         for item_connection in type_holder_list:
             self.type_holder.addItem(item_connection)
@@ -230,6 +238,8 @@ class Ui(QtWidgets.QMainWindow):
 
     def set_typical_style(self) -> None:
         #Списки та spinbox для редагування
+        self.company_value.setStyleSheet(style.typically_style_QComboBox)
+        self.company_value.setEnabled(True)
         self.type_holder.setStyleSheet(style.typically_style_QComboBox)
         self.item_value.setStyleSheet(style.typically_style_QComboBox)
         self.code_value.setStyleSheet(style.typically_style_QComboBox)
@@ -237,6 +247,8 @@ class Ui(QtWidgets.QMainWindow):
         self.quantity_value.setStyleSheet(style.typically_style_QSpinBox)
 
         #Кнопки
+        self.company_button.setStyleSheet(style.typically_style_company_button)
+        self.company_button.setEnabled(True)
         self.reset_button.setStyleSheet(style.typically_style_button_reset_fields)
         self.reset_button.setEnabled(True)
         self.remove_element.setStyleSheet(style.typically_remove_element_button)
@@ -271,8 +283,6 @@ class Ui(QtWidgets.QMainWindow):
         # Поля
         self.EURO_value.setEnabled(True)
         self.EURO_value.setStyleSheet(style.typically_style_editline)
-        self.company_name.setEnabled(True)
-        self.company_name.setStyleSheet(style.typically_style_editline)
         self.packing_value.setEnabled(True)
         self.packing_value.setStyleSheet(style.typically_style_editline)
         self.delivery_value.setEnabled(True)
@@ -312,6 +322,8 @@ class Ui(QtWidgets.QMainWindow):
 
     def set_update_style(self) -> None:
         #Списки та spinbox для редагування
+        self.company_value.setStyleSheet(style.typically_style_QComboBox)
+        self.company_value.setEnabled(False)
         self.type_holder.setStyleSheet(style.update_style_QComboBox)
         self.item_value.setStyleSheet(style.update_style_QComboBox)
         self.code_value.setStyleSheet(style.update_style_QComboBox)
@@ -319,6 +331,8 @@ class Ui(QtWidgets.QMainWindow):
         self.quantity_value.setStyleSheet(style.update_style_QSpinBox)
 
         #Кнопки
+        self.company_button.setStyleSheet(style.update_style_company_button)
+        self.company_button.setEnabled(False)
         self.reset_button.setStyleSheet(style.update_style_button)
         self.reset_button.setEnabled(False)
         self.remove_element.setStyleSheet(style.update_remove_element_button)
@@ -357,8 +371,7 @@ class Ui(QtWidgets.QMainWindow):
         self.packing_value.setStyleSheet(style.update_style_editline)
         self.delivery_value.setEnabled(False)
         self.delivery_value.setStyleSheet(style.update_style_editline)
-        self.company_name.setEnabled(False)
-        self.company_name.setStyleSheet(style.update_style_editline)
+
 
         #SpinBox
         self.persentage_spinBox.setStyleSheet(style.update_persentage_spinBox)
@@ -752,14 +765,16 @@ class Ui(QtWidgets.QMainWindow):
     # Кнопка створення попередньої таблиці
     def create_pre_commercial_offer(self) -> None:
         print("Pre commercial offer")
-        if self.company_name.text() in ["", " "] or \
+        #if self.company_name.text() in ["", " "] or \
+        if self.company_value.currentText() == "Оберіть компанію" or\
                 self.EURO_value.text() in ["", " ", "00,000", "0,0", "0"] or \
                 self.table.rowCount() < 1 or \
                 self.packing_value.text() in ["", " ", "00,000", "0,0", "0"] or \
                 self.delivery_value.text() in ["", " ", "00,000", "0,0", "0"]:
             error = MessageError()
             error_message: str = ""
-            if self.company_name.text() in ["", " "]:
+           # if self.company_name.text() in ["", " "]:
+            if self.company_value.currentText() == "Оберіть компанію":
                 error_message += "Вкажіть назву компанії клієтна.\n"
             if self.EURO_value.text() in ["", " ", "00,000", "0,0", "0"]:
                 error_message += "Вкажіть курс EURO.\n"
@@ -775,10 +790,13 @@ class Ui(QtWidgets.QMainWindow):
             print("Let`s create pre commercial offer")
 
             self.pco = Pre_commercial_offer()
-            self.pco.set_company_name(self.company_name.text())
+            #self.pco.set_company_name(self.company_name.text())
+            self.pco.set_company_name(self.company_value.currentText())
             self.pco.set_rate(new_rate=self.EURO_value.text())
             self.pco.set_discount(self.discount_spinBox.value())
-            self.pco.set_path_temp(f"data/ТКП {self.pco.get_company_name()} I{self.time_label.text().replace(':', '_')}I {self.date_value.text().replace(':', '_')}.xlsx")
+            #self.pco.set_path_temp(f"data/ТКП {self.pco.get_company_name()} I{self.time_label.text().replace(':', '_')}I {self.date_value.text().replace(':', '_')}.xlsx")
+            self.pco.set_path_temp(
+                f"data/ТКП {self.pco.get_company_name()} I{self.time_label.text().replace(':', '_')}I {self.date_value.text().replace(':', '_')}.xlsx")
             # Копиюєм попередній порожній зразок комерційної пропозиції
             shutil.copy("data/Зразок ТКП.xlsx", self.pco.get_path_temp())
 
@@ -795,7 +813,7 @@ class MessageError(QMessageBox):
     def __init__(self):
         super(MessageError, self).__init__()
         self.setStyleSheet(typically_style_background)
-        self.setWindowTitle("Пимилка")
+        self.setWindowTitle("Помилка")
         self.setFont(self.font_message)
         self.setIcon(QMessageBox.Warning)
         self.setStandardButtons(QMessageBox.Ok)
