@@ -124,6 +124,8 @@ class Ui(QtWidgets.QMainWindow):
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
 
         uic.loadUi("BendingPriceCalc.ui", self)
+
+        self.setWindowIcon(QtGui.QIcon('data/logo_4.png'))
         self.setGeometry(50, 50, 820, 920)
         self.setFixedSize(820, 920)
         self.m_w = None
@@ -293,8 +295,11 @@ class Ui(QtWidgets.QMainWindow):
         self.persentage_spinBox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
         self.discount_spinBox.setStyleSheet(style.typically_persentage_spinBox)
         self.discount_spinBox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
+        self.discount_customer_spinBox.setStyleSheet(style.typically_persentage_spinBox)
+        self.discount_customer_spinBox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
         self.persentage_spinBox.setReadOnly(False)
         self.discount_spinBox.setReadOnly(False)
+        self.discount_customer_spinBox.setReadOnly(False)
 
         #Курс валют
         self.date_euro_layout.setStyleSheet(style.typically_date_euro_layout)
@@ -314,7 +319,9 @@ class Ui(QtWidgets.QMainWindow):
         self.packing_label.setStyleSheet(style.typically_weight_label)
         self.packing_euro_label.setStyleSheet(style.typically_weight_label)
         self.comission_label.setStyleSheet(style.typically_weight_label)
+        self.discount_customer_label.setStyleSheet(style.typically_weight_label)
         self.percent_label.setStyleSheet(style.typically_weight_label)
+        self.percent_discount_customer_label.setStyleSheet(style.typically_weight_label)
         self.delivery_label.setStyleSheet(style.typically_weight_label)
         self.delivery_euro_label.setStyleSheet(style.typically_weight_label)
         self.discount_label.setStyleSheet(style.typically_weight_label)
@@ -378,8 +385,11 @@ class Ui(QtWidgets.QMainWindow):
         self.persentage_spinBox.setButtonSymbols(QAbstractSpinBox.NoButtons)
         self.discount_spinBox.setStyleSheet(style.update_persentage_spinBox)
         self.discount_spinBox.setButtonSymbols(QAbstractSpinBox.NoButtons)
+        self.discount_customer_spinBox.setStyleSheet(style.update_persentage_spinBox)
+        self.discount_customer_spinBox.setButtonSymbols(QAbstractSpinBox.NoButtons)
         self.persentage_spinBox.setReadOnly(True)
         self.discount_spinBox.setReadOnly(True)
+        self.discount_customer_spinBox.setReadOnly(True)
 
         #Курс валют
         self.date_euro_layout.setStyleSheet(style.update_date_euro_layout)
@@ -399,7 +409,9 @@ class Ui(QtWidgets.QMainWindow):
         self.packing_label.setStyleSheet(style.update_weight_label)
         self.packing_euro_label.setStyleSheet(style.update_weight_label)
         self.comission_label.setStyleSheet(style.update_weight_label)
+        self.discount_customer_label.setStyleSheet(style.update_weight_label)
         self.percent_label.setStyleSheet(style.update_weight_label)
+        self.percent_discount_customer_label.setStyleSheet(style.update_weight_label)
         self.delivery_label.setStyleSheet(style.update_weight_label)
         self.delivery_euro_label.setStyleSheet(style.update_weight_label)
         self.discount_label.setStyleSheet(style.update_weight_label)
@@ -812,6 +824,7 @@ class MessageError(QMessageBox):
     font_message.setPointSize(14)
     def __init__(self):
         super(MessageError, self).__init__()
+        self.setWindowIcon(QtGui.QIcon('data/logo_4.png'))
         self.setStyleSheet(typically_style_background)
         self.setWindowTitle("Помилка")
         self.setFont(self.font_message)

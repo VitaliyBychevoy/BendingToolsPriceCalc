@@ -473,6 +473,18 @@ class Pre_commercial_offer:
         name_company_font.name = "Times New Roman"
         work_sheet.cell(row=10, column=13).font = name_company_font
         work_sheet.cell(row=10, column=13).alignment = Alignment(horizontal="right", vertical='center')
+
+        #Разом
+        work_sheet.merge_cells(f'F{str(last_row+1)}:M{last_row+1}')
+        work_sheet[f"F{last_row+1}"].value = "Разом"
+        #work_sheet.cell(row=6, column=last_row+1).value = "Разом"
+        all_font = Font(size=9, bold=False)
+        all_font.name = "Times New Roman"
+
+
+        work_sheet[f"F{last_row + 1}"].font = all_font
+        work_sheet[f"F{last_row + 1}"].alignment = Alignment(horizontal="left", vertical='center')
+        print(str(last_row+1))
         wb.save(self.get_path_temp())
 class Commercial_offer:
     pass
