@@ -523,7 +523,9 @@ class Ui(QtWidgets.QMainWindow):
                 self.new_item.set_en_name_item(dict_item["en_name_item"])
                 self.new_item.set_ua_name_item(dict_item["ua_name_item"])
                 self.new_item.set_length_item(dict_item["length_item"])
+                self.new_item.set_image_path(dict_item["image_path"])
                 length_str = My_db.get_length(dict_item["length_item"])
+
                 self.new_item.set_length_item_mm(length_str)
                 self.new_item.set_weight_item(dict_item["weight"])
                 self.new_item.set_price_item(dict_item["price_item"])

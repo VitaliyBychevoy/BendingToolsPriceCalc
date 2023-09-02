@@ -1,5 +1,6 @@
 import openpyxl
 from openpyxl import *
+from openpyxl.drawing.image import Image
 from openpyxl.styles import Alignment
 from openpyxl.styles.borders import Border, Side
 import openpyxl.styles.numbers
@@ -318,6 +319,7 @@ class Pre_commercial_offer:
 
         #wb = load_workbook(new_path)
         wb = load_workbook(self.get_path_temp())
+        ws = wb.active
         work_sheet = wb["Лист1"]
 
         #Назва компанії
@@ -335,6 +337,8 @@ class Pre_commercial_offer:
         current_row = 0
         last_row = len(new_invoice.get_list_item()) + start_row
 
+
+        img = None
         for index in range(0, len(new_invoice.get_list_item())):
             current_row = start_row + index
             work_sheet.row_dimensions[current_row].height = 90
@@ -364,8 +368,17 @@ class Pre_commercial_offer:
             work_sheet[f"F{str(current_row)}"].border = thin_border
 
             work_sheet[f"G{str(current_row)}"].border = thin_border
+            print(new_invoice.get_list_item()[index].get_image_path())
+            img = openpyxl.drawing.image.Image(f"data/{new_invoice.get_list_item()[index].get_image_path()}")
+            img.height = 120
+            img.width = 80
+            print(type(img))
+            img.anchor = f"H{str(current_row)}"
+            ws[f"H{str(current_row)}"].alignment = Alignment(horizontal='center', vertical="center")
+            ws.add_image(img)
 
-            work_sheet[f"H{str(current_row)}"].border = thin_border
+            # wb.add_image(img, f"H{str(current_row)}")
+            # work_sheet[f"H{str(current_row)}"].border = thin_border
 
             #Вага
             work_sheet[f"J{str(current_row)}"].value = new_invoice.get_list_item()[index].get_weight_item()
@@ -418,6 +431,8 @@ class Pre_commercial_offer:
             work_sheet[f"P{str(current_row)}"].font = name_font
             work_sheet[f"P{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
             work_sheet[f"P{str(current_row)}"].border = thin_border
+
+        img = None
 
         #last_row += 1
         work_sheet[f"B{str(last_row)}"].value = ""
@@ -485,6 +500,8 @@ class Pre_commercial_offer:
         work_sheet[f"F{last_row + 1}"].font = all_font
         work_sheet[f"F{last_row + 1}"].alignment = Alignment(horizontal="left", vertical='center')
         print(str(last_row+1))
+
+        #додаємо зображення https://www.excel-learn.com/insert-image-excel-sheet-openpyxl/
         wb.save(self.get_path_temp())
 class Commercial_offer:
     pass
