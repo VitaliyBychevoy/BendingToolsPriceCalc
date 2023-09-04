@@ -501,7 +501,21 @@ class Pre_commercial_offer:
         work_sheet[f"F{last_row + 1}"].alignment = Alignment(horizontal="left", vertical='center')
         print(str(last_row+1))
 
-        #додаємо зображення https://www.excel-learn.com/insert-image-excel-sheet-openpyxl/
+        #Загальна ціна у EURO та грн
+        if len(new_invoice.get_list_item()) == 1:
+            work_sheet[f"N{str(last_row + 1)}"].value = f"=N{str(start_row)}"
+            work_sheet[f"P{str(last_row + 1)}"].value = f"=P{str(start_row)}"
+        else:
+            work_sheet[f"N{str(last_row + 1)}"].value = f"= СУММ(N{str(start_row)}:N{str(last_row)})"
+            work_sheet[f"P{str(last_row + 1)}"].value = f"= СУММ(P{str(start_row)}:P{str(last_row)})"
+
+        #ПДВ
+        work_sheet.merge_cells(f'F{str(last_row+2)}:M{last_row+2}')
+        work_sheet[f"F{last_row+2}"].value = "ПДВ"
+        work_sheet[f"F{last_row + 2}"].font = all_font
+        work_sheet[f"F{last_row + 2}"].alignment = Alignment(horizontal="left", vertical='center')
+
+
         wb.save(self.get_path_temp())
 class Commercial_offer:
     pass
