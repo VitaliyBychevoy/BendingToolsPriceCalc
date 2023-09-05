@@ -377,8 +377,6 @@ class Pre_commercial_offer:
             ws[f"H{str(current_row)}"].alignment = Alignment(horizontal='center', vertical="center")
             ws.add_image(img)
 
-            # wb.add_image(img, f"H{str(current_row)}")
-            # work_sheet[f"H{str(current_row)}"].border = thin_border
 
             #Вага
             work_sheet[f"J{str(current_row)}"].value = new_invoice.get_list_item()[index].get_weight_item()
@@ -457,8 +455,8 @@ class Pre_commercial_offer:
         work_sheet[f"I{str(last_row)}"].font = name_font
         work_sheet[f"I{str(last_row)}"].alignment = Alignment(horizontal="center", vertical='center')
 
-        #work_sheet[f"I{str(last_row)}"] = f"=СУММ(I17:I{str(last_row-1)})"
-        work_sheet[f"I{str(last_row)}"] = f"=СУММ(I17:I{str(last_row-1)})"
+
+        work_sheet[f"I{str(last_row)}"] = f"=SUM(I17:I{str(last_row-1)})"
         work_sheet[f"I{str(last_row)}"].number_format = openpyxl.styles.numbers.BUILTIN_FORMATS[2]
         work_sheet[f"I{str(last_row)}"].fill = PatternFill(fill_type='solid', start_color='ffff00',
                                                               end_color='ffff00')
@@ -503,18 +501,67 @@ class Pre_commercial_offer:
 
         #Загальна ціна у EURO та грн
         if len(new_invoice.get_list_item()) == 1:
-            work_sheet[f"N{str(last_row + 1)}"].value = f"=N{str(start_row)}"
-            work_sheet[f"P{str(last_row + 1)}"].value = f"=P{str(start_row)}"
+            work_sheet[f"N{str(last_row + 1)}"] = f"N{str(start_row)}"
+
+            work_sheet[f"P{str(last_row + 1)}"] = f"P{str(start_row)}"
         else:
-            work_sheet[f"N{str(last_row + 1)}"].value = f"= СУММ(N{str(start_row)}:N{str(last_row)})"
-            work_sheet[f"P{str(last_row + 1)}"].value = f"= СУММ(P{str(start_row)}:P{str(last_row)})"
+           # work_sheet[f"N{str(last_row + 1)}"] = f'=СУММ(N{str(start_row)}:N{str(last_row)})'
+            work_sheet[f"N{str(last_row + 1)}"] = f'=SUM(N{str(start_row)}:N{str(last_row)})'
+            work_sheet[f"P{str(last_row + 1)}"] = f"=SUM(P{str(start_row)}:P{str(last_row)})"
+        work_sheet[f"F{str(last_row + 1)}"] .border = thin_border
+        work_sheet[f"G{str(last_row + 1)}"] .border = thin_border
+        work_sheet[f"H{str(last_row + 1)}"] .border = thin_border
+        work_sheet[f"I{str(last_row + 1)}"] .border = thin_border
+        work_sheet[f"J{str(last_row + 1)}"] .border = thin_border
+        work_sheet[f"K{str(last_row + 1)}"] .border = thin_border
+        work_sheet[f"L{str(last_row + 1)}"] .border = thin_border
+        work_sheet[f"M{str(last_row + 1)}"] .border = thin_border
+        work_sheet[f"N{str(last_row + 1)}"] .border = thin_border
+        work_sheet[f"P{str(last_row + 1)}"] .border = thin_border
 
         #ПДВ
         work_sheet.merge_cells(f'F{str(last_row+2)}:M{last_row+2}')
-        work_sheet[f"F{last_row+2}"].value = "ПДВ"
+        work_sheet[f"F{last_row+2}"].value = "Податок на додану вартість (ПДВ)"
         work_sheet[f"F{last_row + 2}"].font = all_font
         work_sheet[f"F{last_row + 2}"].alignment = Alignment(horizontal="left", vertical='center')
+        work_sheet[f"F{last_row + 2}"].border = thin_border
 
+        work_sheet[f"G{str(last_row + 2)}"] .border = thin_border
+        work_sheet[f"H{str(last_row + 2)}"] .border = thin_border
+        work_sheet[f"I{str(last_row + 2)}"] .border = thin_border
+        work_sheet[f"J{str(last_row + 2)}"] .border = thin_border
+        work_sheet[f"K{str(last_row + 2)}"] .border = thin_border
+        work_sheet[f"L{str(last_row + 2)}"] .border = thin_border
+        work_sheet[f"M{str(last_row + 2)}"] .border = thin_border
+
+
+
+
+        work_sheet[f"N{str(last_row + 2)}"] .border = thin_border
+        work_sheet[f"P{str(last_row + 2)}"] .border = thin_border
+
+        #Загальна вартість з ПДВ
+        work_sheet.merge_cells(f'F{str(last_row+3)}:M{last_row+3}')
+        work_sheet[f"F{last_row+3}"].value = "Загальна вартість з ПДВ"
+        work_sheet[f"F{last_row + 3}"].font = all_font
+        work_sheet[f"F{last_row + 3}"].alignment = Alignment(horizontal="left", vertical='center')
+        work_sheet[f"F{last_row + 3}"].border = thin_border
+
+        work_sheet[f"G{str(last_row + 3)}"] .border = thin_border
+        work_sheet[f"H{str(last_row + 3)}"] .border = thin_border
+        work_sheet[f"I{str(last_row + 3)}"] .border = thin_border
+        work_sheet[f"J{str(last_row + 3)}"] .border = thin_border
+        work_sheet[f"K{str(last_row + 3)}"] .border = thin_border
+        work_sheet[f"L{str(last_row + 3)}"] .border = thin_border
+
+        work_sheet[f"M{str(last_row + 3)}"] .border = thin_border
+        work_sheet[f"N{str(last_row + 3)}"] .border = thin_border
+        work_sheet[f"P{str(last_row + 3)}"] .border = thin_border
+
+        #Рамка порожніх ячеек
+        work_sheet[f"O{last_row + 1}"].border = thin_border
+        work_sheet[f"O{last_row + 2}"].border = thin_border
+        work_sheet[f"O{last_row + 3}"].border = thin_border
 
         wb.save(self.get_path_temp())
 class Commercial_offer:

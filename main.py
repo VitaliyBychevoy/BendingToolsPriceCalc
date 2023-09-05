@@ -101,11 +101,11 @@ def get_rate() -> str:
             rate_full_string = None
             for item in td_list:
                 rate_full_string = item.find("div", {"class": "sc-1x32wa2-9 bKmKjX"}).text
-            rate = rate_full_string[0:6]
+            rate = rate_full_string[0:5]
             print("rate ok")
             return rate
         else:
-            return "00.000"
+            return "00.00"
     except requests.exceptions.ConnectionError:
         return "00.000"
 
