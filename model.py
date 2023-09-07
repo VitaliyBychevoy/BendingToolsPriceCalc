@@ -151,6 +151,7 @@ class Invoice:
             total_weight: float = 0.0,
             commission_percentage: float = 0.0,
             tecnostamp_discount: float = 0.0,
+            customer_discount: float = 0.0
     ) -> None:
         self.rate = rate
         self.list_item = list_item
@@ -160,6 +161,7 @@ class Invoice:
         self.delivery_price = delivery_price
         self.commission_percentage = commission_percentage
         self.tecnostamp_discount = tecnostamp_discount
+        self.customer_discount = customer_discount
 
     def set_rate(self, new_rate: float) -> None:
         self.rate = new_rate
@@ -450,7 +452,6 @@ class Pre_commercial_offer:
         work_sheet[f"G{str(last_row)}"].border = thin_border
         work_sheet[f"H{str(last_row)}"].value = ""
         work_sheet[f"H{str(last_row)}"].border = thin_border
-        #work_sheet[f"I{str(last_row)}"].value = f"=СУММ({work_sheet[f'I{str(start_row)}'].value}:{work_sheet[f'I{str(last_row-1)}'].value}"
 
         work_sheet[f"I{str(last_row)}"].font = name_font
         work_sheet[f"I{str(last_row)}"].alignment = Alignment(horizontal="center", vertical='center')
@@ -501,9 +502,9 @@ class Pre_commercial_offer:
 
         #Загальна ціна у EURO та грн
         if len(new_invoice.get_list_item()) == 1:
-            work_sheet[f"N{str(last_row + 1)}"] = f"N{str(start_row)}"
+            work_sheet[f"N{str(last_row + 1)}"] = f"=N{str(start_row)}"
 
-            work_sheet[f"P{str(last_row + 1)}"] = f"P{str(start_row)}"
+            work_sheet[f"P{str(last_row + 1)}"] = f"=P{str(start_row)}"
         else:
            # work_sheet[f"N{str(last_row + 1)}"] = f'=СУММ(N{str(start_row)}:N{str(last_row)})'
             work_sheet[f"N{str(last_row + 1)}"] = f'=SUM(N{str(start_row)}:N{str(last_row)})'
@@ -534,11 +535,11 @@ class Pre_commercial_offer:
         work_sheet[f"L{str(last_row + 2)}"] .border = thin_border
         work_sheet[f"M{str(last_row + 2)}"] .border = thin_border
 
-
-
-
         work_sheet[f"N{str(last_row + 2)}"] .border = thin_border
+        work_sheet[f"N{str(last_row + 2)}"] = f"=N{str(last_row + 1)}*0.2"
+
         work_sheet[f"P{str(last_row + 2)}"] .border = thin_border
+        work_sheet[f"P{str(last_row + 2)}"] = f"=P{str(last_row + 1)}*0.2"
 
         #Загальна вартість з ПДВ
         work_sheet.merge_cells(f'F{str(last_row+3)}:M{last_row+3}')
@@ -555,8 +556,12 @@ class Pre_commercial_offer:
         work_sheet[f"L{str(last_row + 3)}"] .border = thin_border
 
         work_sheet[f"M{str(last_row + 3)}"] .border = thin_border
+        work_sheet[f"N{str(last_row + 3)}"] = f"=N{str(last_row + 1)}+N{str(last_row + 2)} "
         work_sheet[f"N{str(last_row + 3)}"] .border = thin_border
+
+        work_sheet[f"P{str(last_row + 3)}"] = f"=P{str(last_row + 1)}+P{str(last_row + 2)} "
         work_sheet[f"P{str(last_row + 3)}"] .border = thin_border
+
 
         #Рамка порожніх ячеек
         work_sheet[f"O{last_row + 1}"].border = thin_border

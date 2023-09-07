@@ -781,7 +781,7 @@ class Ui(QtWidgets.QMainWindow):
         print("Pre commercial offer")
         #if self.company_name.text() in ["", " "] or \
         if self.company_value.currentText() == "Оберіть компанію" or\
-                self.EURO_value.text() in ["", " ", "00,000", "0,0", "0"] or \
+                self.EURO_value.text() in ["", " ", "00,000", "00,00","0,0", "0"] or \
                 self.table.rowCount() < 1 or \
                 self.packing_value.text() in ["", " ", "00,000", "0,0", "0"] or \
                 self.delivery_value.text() in ["", " ", "00,000", "0,0", "0"]:
@@ -815,7 +815,7 @@ class Ui(QtWidgets.QMainWindow):
             shutil.copy("data/Зразок ТКП.xlsx", self.pco.get_path_temp())
 
 
-
+#discount_customer_spinBox
             #Заповнюємо новий файл
             self.pco.fill_xlsx(self.my_invoice)
             #
