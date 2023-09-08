@@ -293,12 +293,12 @@ class Ui(QtWidgets.QMainWindow):
         #SpinBox
         self.persentage_spinBox.setStyleSheet(style.typically_persentage_spinBox)
         self.persentage_spinBox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
-        self.discount_spinBox.setStyleSheet(style.typically_persentage_spinBox)
-        self.discount_spinBox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
+        self.provider_discount_spinBox.setStyleSheet(style.typically_persentage_spinBox)
+        self.provider_discount_spinBox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
         self.discount_customer_spinBox.setStyleSheet(style.typically_persentage_spinBox)
         self.discount_customer_spinBox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
         self.persentage_spinBox.setReadOnly(False)
-        self.discount_spinBox.setReadOnly(False)
+        self.provider_discount_spinBox.setReadOnly(False)
         self.discount_customer_spinBox.setReadOnly(False)
 
         #Курс валют
@@ -383,12 +383,12 @@ class Ui(QtWidgets.QMainWindow):
         #SpinBox
         self.persentage_spinBox.setStyleSheet(style.update_persentage_spinBox)
         self.persentage_spinBox.setButtonSymbols(QAbstractSpinBox.NoButtons)
-        self.discount_spinBox.setStyleSheet(style.update_persentage_spinBox)
-        self.discount_spinBox.setButtonSymbols(QAbstractSpinBox.NoButtons)
+        self.provider_discount_spinBox.setStyleSheet(style.update_persentage_spinBox)
+        self.provider_discount_spinBox.setButtonSymbols(QAbstractSpinBox.NoButtons)
         self.discount_customer_spinBox.setStyleSheet(style.update_persentage_spinBox)
         self.discount_customer_spinBox.setButtonSymbols(QAbstractSpinBox.NoButtons)
         self.persentage_spinBox.setReadOnly(True)
-        self.discount_spinBox.setReadOnly(True)
+        self.provider_discount_spinBox.setReadOnly(True)
         self.discount_customer_spinBox.setReadOnly(True)
 
         #Курс валют
@@ -529,7 +529,7 @@ class Ui(QtWidgets.QMainWindow):
                 self.new_item.set_length_item_mm(length_str)
                 self.new_item.set_weight_item(dict_item["weight"])
                 self.new_item.set_price_item(dict_item["price_item"])
-                self.new_item.set_discount_item(self.discount_spinBox.value())
+                self.new_item.set_discount_item(self.provider_discount_spinBox.value())
                 self.new_item.set_amount_item(self.quantity_value.value())
                 print(self.new_item.get_type_holder())
                 print(self.new_item.get_type_item())
@@ -777,6 +777,7 @@ class Ui(QtWidgets.QMainWindow):
         self.m_w.show()
 
     # Кнопка створення попередньої таблиці
+    """
     def create_pre_commercial_offer(self) -> None:
         print("Pre commercial offer")
         #if self.company_name.text() in ["", " "] or \
@@ -802,23 +803,32 @@ class Ui(QtWidgets.QMainWindow):
             error.exec_()
         else:
             print("Let`s create pre commercial offer")
+            self.my_invoice.set_customer_discount(self.discount_customer_spinBox.value())
+            print("Discount for customer: ",
+                  self.my_invoice.get_customer_discount(),
+                  ". ",
+                  type(self.my_invoice.get_customer_discount()),
+                  )
 
             self.pco = Pre_commercial_offer()
             #self.pco.set_company_name(self.company_name.text())
             self.pco.set_company_name(self.company_value.currentText())
             self.pco.set_rate(new_rate=self.EURO_value.text())
-            self.pco.set_discount(self.discount_spinBox.value())
+            self.pco.set_discount(self.provider_discount_spinBox.value())
             #self.pco.set_path_temp(f"data/ТКП {self.pco.get_company_name()} I{self.time_label.text().replace(':', '_')}I {self.date_value.text().replace(':', '_')}.xlsx")
             self.pco.set_path_temp(
                 f"data/ТКП {self.pco.get_company_name()} I{self.time_label.text().replace(':', '_')}I {self.date_value.text().replace(':', '_')}.xlsx")
             # Копиюєм попередній порожній зразок комерційної пропозиції
             shutil.copy("data/Зразок ТКП.xlsx", self.pco.get_path_temp())
+   """
+    def create_pre_commercial_offer(self):
+        #Створюємо новий файл xlsx
 
 
 #discount_customer_spinBox
             #Заповнюємо новий файл
             self.pco.fill_xlsx(self.my_invoice)
-            #
+
 
 class MessageError(QMessageBox):
     font_message = QtGui.QFont()

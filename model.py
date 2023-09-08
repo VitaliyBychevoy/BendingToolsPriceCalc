@@ -150,7 +150,7 @@ class Invoice:
             max_length: str = "0.0",
             total_weight: float = 0.0,
             commission_percentage: float = 0.0,
-            tecnostamp_discount: float = 0.0,
+            provider_discount: float = 0.0,
             customer_discount: float = 0.0
     ) -> None:
         self.rate = rate
@@ -160,8 +160,10 @@ class Invoice:
         self.packing_price = packing_price
         self.delivery_price = delivery_price
         self.commission_percentage = commission_percentage
-        self.tecnostamp_discount = tecnostamp_discount
+        self.provider_discount = provider_discount
         self.customer_discount = customer_discount
+
+#tecnostamp_discount
 
     def set_rate(self, new_rate: float) -> None:
         self.rate = new_rate
@@ -244,11 +246,11 @@ class Invoice:
     def get_delivery_price(self) -> float:
         return self.delivery_price
 
-    def set_tecnostamp_discount(self, new_tecnostamp_discount: str) -> None:
-        self.tecnostamp_discount = new_tecnostamp_discount
+    def set_provider_discount(self, new_provider_discount: str) -> None:
+        self.provider_discount = new_provider_discount
 
-    def get_tecnostamp_discount(self) -> float:
-        return self.tecnostamp_discount
+    def get_provider_discount(self) -> float:
+        return self.provider_discount
 
     def show_list(self) -> None:
         print("START LIST")
@@ -261,6 +263,12 @@ class Invoice:
         for i in self.get_list_item():
             result_list.append(i.get_code_item())
         return result_list
+
+    def set_customer_discount(self, new_cus_discount: str) -> None:
+        self.customer_discount = new_cus_discount
+
+    def get_customer_discount(self) -> float:
+        return self.customer_discount
 
 
 class Pre_commercial_offer:
@@ -500,6 +508,7 @@ class Pre_commercial_offer:
         work_sheet[f"F{last_row + 1}"].alignment = Alignment(horizontal="left", vertical='center')
         print(str(last_row+1))
 
+
         #Загальна ціна у EURO та грн
         if len(new_invoice.get_list_item()) == 1:
             work_sheet[f"N{str(last_row + 1)}"] = f"=N{str(start_row)}"
@@ -567,6 +576,15 @@ class Pre_commercial_offer:
         work_sheet[f"O{last_row + 1}"].border = thin_border
         work_sheet[f"O{last_row + 2}"].border = thin_border
         work_sheet[f"O{last_row + 3}"].border = thin_border
+
+        current_row = last_row + 3
+        if new_invoice.get_customer_discount() != 0:
+            work_sheet.merge_cells(
+                f'F{str(current_row)}:M{current_row}'
+            )
+            work_sheet[f"F{current_row}"].value = \
+                f"Знижка для компанії "
+
 
         wb.save(self.get_path_temp())
 class Commercial_offer:
