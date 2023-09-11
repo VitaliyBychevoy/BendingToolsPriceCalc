@@ -151,7 +151,8 @@ class Invoice:
             total_weight: float = 0.0,
             commission_percentage: float = 0.0,
             provider_discount: float = 0.0,
-            customer_discount: float = 0.0
+            customer_discount: float = 0.0,
+            customer_name: str = ""
     ) -> None:
         self.rate = rate
         self.list_item = list_item
@@ -162,6 +163,7 @@ class Invoice:
         self.commission_percentage = commission_percentage
         self.provider_discount = provider_discount
         self.customer_discount = customer_discount
+        self.customer_name = customer_name
 
 #tecnostamp_discount
 
@@ -230,6 +232,7 @@ class Invoice:
                 else:
                     self.max_length = self.list_item[i + 1].get_length_item_mm()
                     self.max_length = str(float(self.max_length)/10) + " см"
+
     def get_max_length(self) -> str:
         return self.max_length
 
@@ -270,6 +273,11 @@ class Invoice:
     def get_customer_discount(self) -> float:
         return self.customer_discount
 
+    def set_customer_name(self, new_customer_name: str)-> None:
+        self.customer_name = new_customer_name
+
+    def get_customer_name(self) ->str:
+        return self.customer_name
 
 class Pre_commercial_offer:
 

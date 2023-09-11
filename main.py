@@ -13,6 +13,7 @@ import style
 from vectortool_customers.customers_db import *
 from model import Invoice, Item, Pre_commercial_offer
 from db_handler import *
+from BendingPreCommercialOffer import *
 import mainwindow
 from style import *
 
@@ -20,6 +21,7 @@ from style import *
 
 acceptable_character = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."]
 
+zero_spinBox = ("", " ", "00,000", "00,00","0,0", "0")
 
 def check_valid_symbols(number: str) -> bool:
     for letter in number:
@@ -822,12 +824,84 @@ class Ui(QtWidgets.QMainWindow):
             shutil.copy("data/Зразок ТКП.xlsx", self.pco.get_path_temp())
    """
     def create_pre_commercial_offer(self):
+
+        #перевіряємо чи усі потрібні дані були надані користувачем
+        check = False
+        while check:
+            check = self.check_data_for_pre_commercial()
+
+        #Додаємо у інвойс ім'я клієнта-компаніі
+        self.my_invoice.set_customer_name(
+            self.company_value.currentText()
+        )
+
+        #Додаємо у інвойс розмір знижки для клієнта-компаніі
+        self.my_invoice.set_customer_discount(
+            self.discount_customer_spinBox.text()
+        )
+
+        #Формуємо ім'я мойбутньго файла
+        pre_commercial_offer_name = \
+            (name_offer(self.my_invoice.get_customer_name()))
+
+
         #Створюємо новий файл xlsx
+        wb = Workbook()
+
+        sheet = wb.active
+
+
+
+
+
+        sheet.column_dimensions['A'].width = 1
+        sheet.column_dimensions['B'].width = 1.57
+        sheet.column_dimensions['D'].width = 24.43
+
+        path = QFileDialog.getSaveFileName(
+                None,
+                None,
+                f"./{pre_commercial_offer_name}",
+                '*.xlsx;;*.xls'
+            )[0]
+        #Збереження файла
+        wb.save(path)
+        wb.close()
+
+
+
+
+    # Перевіряємо наявність усіх даних для прорахунку
+    def check_data_for_pre_commercial(self) -> bool:
+
+        if self.company_value.currentText() == "Оберіть компанію" or\
+               self.EURO_value.text() in zero_spinBox or \
+                self.table.rowCount() < 1 or \
+                self.packing_value.text() in zero_spinBox or \
+                self.delivery_value.text() in zero_spinBox:
+            error = MessageError()
+            error_message: str = ""
+           # if self.company_name.text() in ["", " "]:
+            if self.company_value.currentText() == "Оберіть компанію":
+                error_message += "Вкажіть назву компанії клієтна.\n"
+            if self.EURO_value.text() in zero_spinBox:
+                error_message += "Вкажіть курс EURO.\n"
+            if self.table.rowCount() < 1:
+                error_message += "Додайте хочаб один виріб.\n"
+            if self.packing_value.text() in zero_spinBox:
+                error_message += "Зазначте вартість пакування.\n"
+            if self.delivery_value.text() in zero_spinBox:
+                error_message += "Зазначте вартість доставки."
+            error.setText(error_message)
+            error.exec_()
+            return False
+        else:
+            return True
 
 
 #discount_customer_spinBox
             #Заповнюємо новий файл
-            self.pco.fill_xlsx(self.my_invoice)
+        #self.pco.fill_xlsx(self.my_invoice)
 
 
 class MessageError(QMessageBox):

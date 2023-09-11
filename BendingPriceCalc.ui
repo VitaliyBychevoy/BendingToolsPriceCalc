@@ -1374,7 +1374,7 @@ color:rgb(255, 255, 255);</string>
      <string>EURO</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="discount_spinBox">
+   <widget class="QSpinBox" name="provider_discount_spinBox">
     <property name="geometry">
      <rect>
       <x>495</x>
