@@ -847,16 +847,18 @@ class Ui(QtWidgets.QMainWindow):
 
         #Створюємо новий файл xlsx
         wb = Workbook()
-
+        #Активуємо лист
         sheet = wb.active
 
 
+        row_style(sheet)
 
+        #Обороблюємо  колонки
+        column_style(sheet)
 
+        merge_cell(sheet)
 
-        sheet.column_dimensions['A'].width = 1
-        sheet.column_dimensions['B'].width = 1.57
-        sheet.column_dimensions['D'].width = 24.43
+        fill_before_table(sheet)
 
         path = QFileDialog.getSaveFileName(
                 None,
