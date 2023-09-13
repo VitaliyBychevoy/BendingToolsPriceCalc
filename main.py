@@ -840,6 +840,11 @@ class Ui(QtWidgets.QMainWindow):
             self.discount_customer_spinBox.text()
         )
 
+        #Додаємо у інвойс розмір знижки від постачальника
+        self.my_invoice.set_provider_discount(
+            self.provider_discount_spinBox.text()
+        )
+
         #Формуємо ім'я мойбутньго файла
         pre_commercial_offer_name = \
             (name_offer(self.my_invoice.get_customer_name()))
@@ -856,9 +861,51 @@ class Ui(QtWidgets.QMainWindow):
         #Обороблюємо  колонки
         column_style(sheet)
 
-        merge_cell(sheet)
+        #Поєднуємо комірки  до таблиці
+        merge_cells_before_table(sheet)
 
-        fill_before_table(sheet)
+        #Информація про компанію
+        fill_company_info(sheet)
+
+        #Заповнюємо дату до таблиці
+        fill_today_before_table(sheet)
+
+        #Заповнюємо назву компанії
+        fill_customer_name(
+            sheet,
+            self.my_invoice.get_customer_name()
+        )
+
+        #Заповнюємо назву таблиці
+        fill_title_table(sheet)
+
+        # Заповнюємо назву таблиці
+        fill_table_head(sheet)
+
+        # Заповнюємо номера колонок
+        fill_number_string(sheet)
+
+        current_row = 16
+        empty_string(sheet, current_row)
+        current_row += 1
+
+        for index in range(len(self.my_invoice.get_list_item())):
+            #work_sheet.row_dimensions[current_row].height = 90
+            sheet.row_dimensions[current_row].height = 100
+            write_row(
+                sheet,
+                self.my_invoice.get_list_item()[index],
+                current_row,
+                index,
+                self.my_invoice.get_provider_discount(),
+                self.my_invoice.get_rate()
+            )
+            current_row += 1
+
+        print("Curent_row: ", current_row)
+        print("Discount: ", self.my_invoice.get_provider_discount())
+        print("Rate: ", self.my_invoice.get_rate())
+
 
         path = QFileDialog.getSaveFileName(
                 None,
@@ -866,6 +913,7 @@ class Ui(QtWidgets.QMainWindow):
                 f"./{pre_commercial_offer_name}",
                 '*.xlsx;;*.xls'
             )[0]
+
         #Збереження файла
         wb.save(path)
         wb.close()

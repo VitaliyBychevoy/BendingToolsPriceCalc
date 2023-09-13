@@ -276,7 +276,7 @@ class Invoice:
     def set_customer_name(self, new_customer_name: str)-> None:
         self.customer_name = new_customer_name
 
-    def get_customer_name(self) ->str:
+    def get_customer_name(self) -> str:
         return self.customer_name
 
 class Pre_commercial_offer:
@@ -364,7 +364,8 @@ class Pre_commercial_offer:
             #Номер позиції
 
             work_sheet[f"B{str(current_row)}"].font = position_font
-            work_sheet[f"B{str(current_row)}"].alignment = Alignment(horizontal="center", vertical='center')
+            work_sheet[f"B{str(current_row)}"].alignment = \
+                Alignment(horizontal="center", vertical='center')
             work_sheet[f"B{str(current_row)}"].value = index + 1
             work_sheet[f"B{str(current_row)}"].border = thin_border
 
@@ -382,7 +383,7 @@ class Pre_commercial_offer:
             #Назва українською
             work_sheet[f"F{str(current_row)}"].value = new_invoice.get_list_item()[index].get_ua_name_item()
             work_sheet[f"F{str(current_row)}"].font = name_font
-            work_sheet[f"F{str(current_row)}"].alignment = Alignment(horizontal="left", vertical='center',wrapText=True)
+            work_sheet[f"F{str(current_row)}"].alignment = Alignment(horizontal="left", vertical='center', wrapText=True)
             work_sheet[f"F{str(current_row)}"].border = thin_border
 
             work_sheet[f"G{str(current_row)}"].border = thin_border
