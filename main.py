@@ -23,6 +23,7 @@ acceptable_character = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "
 
 zero_spinBox = ("", " ", "00,000", "00,00","0,0", "0")
 
+
 def check_valid_symbols(number: str) -> bool:
     for letter in number:
         if letter not in acceptable_character:
@@ -825,6 +826,8 @@ class Ui(QtWidgets.QMainWindow):
    """
     def create_pre_commercial_offer(self):
 
+
+
         #перевіряємо чи усі потрібні дані були надані користувачем
         check = False
         while check:
@@ -833,6 +836,14 @@ class Ui(QtWidgets.QMainWindow):
         #Додаємо у інвойс ім'я клієнта-компаніі
         self.my_invoice.set_customer_name(
             self.company_value.currentText()
+        )
+
+        #Додаємо packing
+        self.my_invoice.set_packing_price(self.packing_value.text())
+
+        #Додаємо калькуляцію у інвойс
+        self.my_invoice.set_commission_percentage(
+            self.persentage_spinBox.text()
         )
 
         #Додаємо у інвойс розмір знижки для клієнта-компаніі
@@ -891,16 +902,38 @@ class Ui(QtWidgets.QMainWindow):
 
         for index in range(len(self.my_invoice.get_list_item())):
             #work_sheet.row_dimensions[current_row].height = 90
-            sheet.row_dimensions[current_row].height = 100
+            sheet.row_dimensions[current_row].height = 120
             write_row(
                 sheet,
                 self.my_invoice.get_list_item()[index],
                 current_row,
                 index,
                 self.my_invoice.get_provider_discount(),
-                self.my_invoice.get_rate()
+                str(self.my_invoice.get_rate())
             )
             current_row += 1
+
+        #Заповнюємо останню строку таблиці (загальна вага)
+        fill_last_row_table(
+            sheet,
+            len(self.my_invoice.get_list_item()),
+            current_row
+        )
+
+        #Заповнюємо вартість для клієнтів
+        set_price(sheet, get_price_item_for_customer(self.my_invoice))
+
+
+
+        current_row += 1
+
+        #Строка "Разом" (сума колонок "N" та "P")
+        fill_total_bill(sheet, current_row)
+
+        current_row += 1
+
+
+
 
         print("Curent_row: ", current_row)
         print("Discount: ", self.my_invoice.get_provider_discount())

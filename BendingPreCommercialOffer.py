@@ -8,6 +8,7 @@ import openpyxl.styles.numbers
 from openpyxl.styles import Font, Fill #Стилі для текста
 from openpyxl.styles import PatternFill #Cтили для ячеєк
 
+import model
 from vectortool_customers.customers_db import *
 from model import *
 
@@ -40,6 +41,8 @@ position_font.name = "Times New Roman"
 numbers_table_font = Font(size=7)
 numbers_table_font.name = "Times New Roman"
 
+total_bill_font = Font(size=8)
+total_bill_font.name = "Times New Roman"
 
 #Рамка
 thin_border = Border(left=Side(style='thin'),
@@ -457,6 +460,8 @@ def empty_string(
 
     sheet[f'H{str(number_string)}'].border = thin_border
 
+
+
     sheet[f'I{str(number_string)}'].border = thin_border
     sheet[f'I{str(number_string)}'].fill = PatternFill(
         fill_type='solid', start_color='ffff00', end_color='ffff00')
@@ -531,6 +536,11 @@ def write_row(
     sheet[f"G{str(number_string)}"].border = thin_border
 
     sheet[f"H{str(number_string)}"].border = thin_border
+    img = openpyxl.drawing.image.Image(f"data/{item.get_image_path()}")
+    img.height = 160
+    img.width = 140
+    img.anchor = f"H{str(number_string)}"
+    sheet.add_image(img)
 
     sheet[f"K{str(number_string)}"].border = thin_border
     sheet[f"K{str(number_string)}"].value = item.get_amount_item()
@@ -601,4 +611,133 @@ def write_row(
     )
 
     sheet[f"N{str(number_string)}"].border = thin_border
+    sheet[f"N{str(number_string)}"].value = \
+        f"= M{str(number_string)} * K{str(number_string)}"
+    sheet[f"N{str(number_string)}"].font = numbers_table_font
+    sheet[f"N{str(number_string)}"].alignment = Alignment(
+        horizontal="right",
+        vertical='center'
+    )
+
+
     sheet[f"P{str(number_string)}"].border = thin_border
+    sheet[f"P{str(number_string)}"].value = \
+        f"= O{str(number_string)} * K{str(number_string)}"
+    sheet[f"P{str(number_string)}"].font = numbers_table_font
+    sheet[f"P{str(number_string)}"].alignment = Alignment(
+        horizontal="right",
+        vertical='center'
+    )
+
+
+def total_weight(last_string: int) -> str:
+    return f"=SUM(I17:I{str(last_string)})"
+
+
+def fill_last_row_table(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        amount_items: int,
+        current_row: int
+) -> None:
+    empty_string(
+        sheet,
+        current_row
+    )
+    if amount_items < 2:
+        sheet[f"I{str(current_row)}"] = \
+            f"=SUM(I17:I17)"
+    else:
+        sheet[f"I{str(current_row)}"] = \
+            total_weight(current_row - 1)
+        sheet[f"I{str(current_row)}"].alignment = Alignment(
+            horizontal="center",
+            vertical='center'
+        )
+        sheet[f"I{str(current_row)}"].font = numbers_table_font
+        sheet[f"I{str(current_row)}"].fill = PatternFill(
+            fill_type='solid',
+            start_color='ffff00',
+            end_color='ffff00'
+        )
+
+
+def fill_total_bill(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        current_row: int
+) -> None:
+    sheet.merge_cells(f'F{str(current_row)}:M{str(current_row)}')
+    sheet[f"F{str(current_row)}"].font = total_bill_font
+    sheet[f"F{str(current_row)}"].value = "Разом"
+    sheet[f"F{str(current_row)}"].border = thin_border
+    sheet[f"G{str(current_row)}"].border = thin_border
+    sheet[f"H{str(current_row)}"].border = thin_border
+    sheet[f"I{str(current_row)}"].border = thin_border
+    sheet[f"J{str(current_row)}"].border = thin_border
+    sheet[f"K{str(current_row)}"].border = thin_border
+    sheet[f"L{str(current_row)}"].border = thin_border
+    sheet[f"M{str(current_row)}"].border = thin_border
+
+
+
+    sheet[f"N{str(current_row)}"] = \
+        f"=SUM(N17:N{str(current_row-2)})"
+    sheet[f"N{str(current_row)}"].font = numbers_table_font
+    sheet[f"N{str(current_row)}"].border = thin_border
+
+    sheet[f"O{str(current_row)}"].font = numbers_table_font
+    sheet[f"O{str(current_row)}"].border = thin_border
+
+    sheet[f"P{str(current_row)}"] = \
+        f"=SUM(P17:P{str(current_row-2)})"
+    sheet[f"P{str(current_row)}"].font = numbers_table_font
+    sheet[f"P{str(current_row)}"].border = thin_border
+
+
+def get_price_item_for_customer(invoce: Invoice) -> list:
+    #Загальна ціна покупки (ціна * кількість)
+
+    total_price: float = sum([
+        invoce.get_list_item()[index].get_amount_item() *
+        ((100-float(invoce.get_provider_discount()))/100) *
+        invoce.get_list_item()[index].get_price_item()
+        for index in range(len(invoce.get_list_item()))
+    ])
+
+    print("Total price: ", total_price, " ", type(total_price))
+    print("get price: ",
+          invoce.get_packing_price(), " ", type(invoce.get_packing_price()))
+
+    total_price = total_price + float(invoce.get_packing_price().replace(",","."))
+
+    print("Total price (+packing): ", total_price, " ", type(total_price))
+
+    total_price = round(total_price * model.BANK_TAX, 2)
+
+    print("Total price(+BANK_TAX): ", total_price, " ", type(total_price))
+
+    total_price = round((total_price /
+                   ((100 - float(invoce.get_commission_percentage().replace(",","."))) / 100)), 2)
+    print("Total price(+Commission): ", total_price, " ", type(total_price))
+
+    total_price = round(total_price * float(invoce.get_rate().replace(",", ".")), 2)
+    print("Total price(UA): ", total_price, " ", type(total_price), " грн.")
+
+    prices_item = [item.get_price_item() for item in invoce.get_list_item()]
+    print(prices_item)
+    sum_prices_item = sum(prices_item)
+    price_item_ua =[]
+    for index in  range(len(invoce.get_list_item())):
+        price_item_ua.append(round(
+            ((100 * invoce.get_list_item()[index].get_price_item() / sum_prices_item) * total_price / 100),  2))
+
+    print("price_item_ua ", price_item_ua)
+    print("sum(price_item_ua: )", sum(price_item_ua))
+    return price_item_ua
+
+def set_price(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        list_price: list
+) -> None:
+    start_row: int = 17
+    for index in len(list_price):
+        sheet[f"O{start_row}"].value = list_price[index]

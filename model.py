@@ -11,6 +11,15 @@ from vectortool_customers.customers_db import *
 DB_FOLDER = "data/DB_bending.xlsx"
 
 
+#Bank tax
+BANK_TAX: float = 1.002
+
+#Transfer_currency
+TRANSFER_CURRENCY: int = 1100
+
+#брокер
+BROKER: int = 2500
+
 class Item:
 
     def __init__(
@@ -23,6 +32,7 @@ class Item:
             length_item_mm: str = None,
             weight: float = 0.0,
             price_item: float = 0.0,
+            price_for_customer_ua: float = 0.0,
             discount_item: float = 0.0,
             cross_section_param: dict = None,
             image_path: str = None,
@@ -39,6 +49,7 @@ class Item:
         self.length_item_mm: str = length_item_mm
         self.weight: float = weight
         self.price_item: float = price_item
+        self.price_for_customer_ua = price_for_customer_ua
         self.discount_item: float = discount_item
         self.cross_section_param: dict = cross_section_param
         self.image_path: str = image_path
@@ -93,6 +104,12 @@ class Item:
 
     def get_price_item(self) -> float:
         return self.price_item
+
+    def set_price_for_customer_ua(self,  price: float) -> None:
+        self.price_for_customer_ua = price
+
+    def price_for_customer_ua(self) -> float:
+        return self.price_for_customer_ua
 
     def set_discount_item(self, percent: float) -> None:
         self.discount_item = percent
@@ -149,10 +166,11 @@ class Invoice:
             delivery_price: float = 0.0,
             max_length: str = "0.0",
             total_weight: float = 0.0,
-            commission_percentage: float = 0.0,
-            provider_discount: float = 0.0,
-            customer_discount: float = 0.0,
-            customer_name: str = ""
+            commission_percentage: str = "0.0",
+            provider_discount: str = "0.0",
+            customer_discount: str = "0.0",
+            customer_name: str = "",
+
     ) -> None:
         self.rate = rate
         self.list_item = list_item
@@ -236,23 +254,28 @@ class Invoice:
     def get_max_length(self) -> str:
         return self.max_length
 
-
-    def set_packing_price(self, new_packing_price: float) -> None:
+    def set_packing_price(self, new_packing_price: str) -> None:
         self.packing_price = new_packing_price
 
-    def get_packing_price(self) -> float:
+    def get_packing_price(self) -> str:
         return self.packing_price
 
-    def set_delivery_price(self, new_delivery_price: float) -> None:
+    def set_delivery_price(self, new_delivery_price: str) -> None:
         self.delivery_price = new_delivery_price
 
-    def get_delivery_price(self) -> float:
+    def get_delivery_price(self) -> str:
         return self.delivery_price
+
+    def set_commission_percentage(self, commission: str) -> None:
+        self.commission_percentage = commission
+
+    def get_commission_percentage(self) -> str:
+        return self.commission_percentage
 
     def set_provider_discount(self, new_provider_discount: str) -> None:
         self.provider_discount = new_provider_discount
 
-    def get_provider_discount(self) -> float:
+    def get_provider_discount(self) -> str:
         return self.provider_discount
 
     def show_list(self) -> None:
@@ -270,7 +293,7 @@ class Invoice:
     def set_customer_discount(self, new_cus_discount: str) -> None:
         self.customer_discount = new_cus_discount
 
-    def get_customer_discount(self) -> float:
+    def get_customer_discount(self) -> str:
         return self.customer_discount
 
     def set_customer_name(self, new_customer_name: str)-> None:
