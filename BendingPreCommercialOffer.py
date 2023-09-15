@@ -44,6 +44,9 @@ numbers_table_font.name = "Times New Roman"
 total_bill_font = Font(size=8)
 total_bill_font.name = "Times New Roman"
 
+discount_font = Font(size=8, bold=True)
+discount_font.name = "Times New Roman"
+
 #Рамка
 thin_border = Border(left=Side(style='thin'),
                      right=Side(style='thin'),
@@ -610,6 +613,8 @@ def write_row(
         vertical='center'
     )
 
+    sheet[f"M{str(number_string)}"].number_format = '#,##0.00'
+
     sheet[f"N{str(number_string)}"].border = thin_border
     sheet[f"N{str(number_string)}"].value = \
         f"= M{str(number_string)} * K{str(number_string)}"
@@ -618,7 +623,7 @@ def write_row(
         horizontal="right",
         vertical='center'
     )
-
+    sheet[f"N{str(number_string)}"].number_format = '#,##0.00'
 
     sheet[f"P{str(number_string)}"].border = thin_border
     sheet[f"P{str(number_string)}"].value = \
@@ -683,6 +688,8 @@ def fill_total_bill(
         f"=SUM(N17:N{str(current_row-2)})"
     sheet[f"N{str(current_row)}"].font = numbers_table_font
     sheet[f"N{str(current_row)}"].border = thin_border
+    sheet[f"N{str(current_row)}"].number_format = '#,##0.00'
+
 
     sheet[f"O{str(current_row)}"].font = numbers_table_font
     sheet[f"O{str(current_row)}"].border = thin_border
@@ -691,6 +698,7 @@ def fill_total_bill(
         f"=SUM(P17:P{str(current_row-2)})"
     sheet[f"P{str(current_row)}"].font = numbers_table_font
     sheet[f"P{str(current_row)}"].border = thin_border
+    sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
 
 
 def get_price_item_for_customer(invoce: Invoice) -> list:
@@ -726,7 +734,7 @@ def get_price_item_for_customer(invoce: Invoice) -> list:
     print(prices_item)
     sum_prices_item = sum(prices_item)
     price_item_ua =[]
-    for index in  range(len(invoce.get_list_item())):
+    for index in range(len(invoce.get_list_item())):
         price_item_ua.append(round(
             ((100 * invoce.get_list_item()[index].get_price_item() / sum_prices_item) * total_price / 100),  2))
 
@@ -734,10 +742,168 @@ def get_price_item_for_customer(invoce: Invoice) -> list:
     print("sum(price_item_ua: )", sum(price_item_ua))
     return price_item_ua
 
+
 def set_price(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
         list_price: list
 ) -> None:
     start_row: int = 17
-    for index in len(list_price):
+    for index in range(len(list_price)):
         sheet[f"O{start_row}"].value = list_price[index]
+        start_row += 1
+
+
+def fill_tax(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        current_row: int
+) -> None:
+    sheet.merge_cells(f'F{str(current_row)}:M{str(current_row)}')
+    sheet[f"F{str(current_row)}"].font = total_bill_font
+    sheet[f"F{str(current_row)}"].value = \
+        "Податок на додану вартість (ПДВ)"
+    sheet[f"F{str(current_row)}"].border = thin_border
+    sheet[f"G{str(current_row)}"].border = thin_border
+    sheet[f"H{str(current_row)}"].border = thin_border
+    sheet[f"I{str(current_row)}"].border = thin_border
+    sheet[f"J{str(current_row)}"].border = thin_border
+    sheet[f"K{str(current_row)}"].border = thin_border
+    sheet[f"L{str(current_row)}"].border = thin_border
+    sheet[f"M{str(current_row)}"].border = thin_border
+
+    sheet[f"N{str(current_row)}"] = \
+        f"=N{str(current_row-1)}*0.2"
+    sheet[f"N{str(current_row)}"].font = numbers_table_font
+    sheet[f"N{str(current_row)}"].border = thin_border
+    sheet[f"N{str(current_row)}"].number_format = '#,##0.00'
+
+
+    #sheet[f"O{str(current_row)}"].font = numbers_table_font
+    sheet[f"O{str(current_row)}"].border = thin_border
+
+    sheet[f"P{str(current_row)}"] = \
+        f"=P{str(current_row-1)}*0.2"
+    sheet[f"P{str(current_row)}"].font = numbers_table_font
+    sheet[f"P{str(current_row)}"].border = thin_border
+    sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
+
+
+def fill_total_tax(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        current_row: int,
+) -> None:
+    sheet.merge_cells(f'F{str(current_row)}:M{str(current_row)}')
+    sheet[f"F{str(current_row)}"].font = total_bill_font
+    sheet[f"F{str(current_row)}"].value = \
+        "Загальна вартість з ПДВ"
+    sheet[f"F{str(current_row)}"].border = thin_border
+    sheet[f"G{str(current_row)}"].border = thin_border
+    sheet[f"H{str(current_row)}"].border = thin_border
+    sheet[f"I{str(current_row)}"].border = thin_border
+    sheet[f"J{str(current_row)}"].border = thin_border
+    sheet[f"K{str(current_row)}"].border = thin_border
+    sheet[f"L{str(current_row)}"].border = thin_border
+    sheet[f"M{str(current_row)}"].border = thin_border
+
+    sheet[f"N{str(current_row)}"] = \
+        f"=N{str(current_row-1)}+N{str(current_row-2)}"
+    sheet[f"N{str(current_row)}"].font = numbers_table_font
+    sheet[f"N{str(current_row)}"].border = thin_border
+    sheet[f"N{str(current_row)}"].number_format = '#,##0.00'
+
+
+    sheet[f"O{str(current_row)}"].font = numbers_table_font
+    sheet[f"O{str(current_row)}"].border = thin_border
+
+    sheet[f"P{str(current_row)}"] = \
+        f"=P{str(current_row-1)}+P{str(current_row-2)}"
+    sheet[f"P{str(current_row)}"].font = numbers_table_font
+    sheet[f"P{str(current_row)}"].border = thin_border
+    sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
+
+
+def fill_discount_customer_value(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        current_row: int,
+        customer_name: str,
+        customer_discount: str
+) -> None:
+    sheet.merge_cells(f'F{str(current_row)}:M{str(current_row)}')
+    sheet[f'F{str(current_row)}'] =\
+         f"Знижка для компанії" + \
+         f" {get_full_name_company(customer_name)}" + \
+         f"  {customer_discount}%"
+    sheet[f'F{str(current_row)}'].font = discount_font
+    sheet[f"F{str(current_row)}"].border = thin_border
+    sheet[f"G{str(current_row)}"].border = thin_border
+    sheet[f"H{str(current_row)}"].border = thin_border
+    sheet[f"I{str(current_row)}"].border = thin_border
+    sheet[f"J{str(current_row)}"].border = thin_border
+    sheet[f"K{str(current_row)}"].border = thin_border
+    sheet[f"L{str(current_row)}"].border = thin_border
+    sheet[f"M{str(current_row)}"].border = thin_border
+
+    sheet[f"N{str(current_row)}"] = \
+        f"=N{str(current_row-1)}*({float(customer_discount)}/100)"
+    sheet[f"N{str(current_row)}"].font = discount_font
+    sheet[f"N{str(current_row)}"].border = thin_border
+    sheet[f"N{str(current_row)}"].number_format = '#,##0.00'
+
+    sheet[f"O{str(current_row)}"].border = thin_border
+
+    sheet[f"P{str(current_row)}"] = \
+        f"=P{str(current_row-1)}*({float(customer_discount)}/100)"
+    sheet[f"P{str(current_row)}"].font = discount_font
+    sheet[f"P{str(current_row)}"].border = thin_border
+    sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
+
+
+def fill_total_tax_discount(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        current_row: int,
+) -> None:
+    sheet.merge_cells(f'F{str(current_row)}:M{str(current_row)}')
+    sheet[f'F{str(current_row)}'] =\
+         f"Вартість з урахуванням знижки"
+
+    sheet[f'F{str(current_row)}'].font = discount_font
+    sheet[f"F{str(current_row)}"].border = thin_border
+    sheet[f"G{str(current_row)}"].border = thin_border
+    sheet[f"H{str(current_row)}"].border = thin_border
+    sheet[f"I{str(current_row)}"].border = thin_border
+    sheet[f"J{str(current_row)}"].border = thin_border
+    sheet[f"K{str(current_row)}"].border = thin_border
+    sheet[f"L{str(current_row)}"].border = thin_border
+    sheet[f"M{str(current_row)}"].border = thin_border
+
+    sheet[f"N{str(current_row)}"] = \
+        f"=N{str(current_row-2)}-N{str(current_row-1)}"
+    sheet[f"N{str(current_row)}"].font = discount_font
+    sheet[f"N{str(current_row)}"].border = thin_border
+    sheet[f"N{str(current_row)}"].number_format = '#,##0.00'
+
+    sheet[f"O{str(current_row)}"].border = thin_border
+
+    sheet[f"P{str(current_row)}"] = \
+        f"=P{str(current_row-2)}-P{str(current_row-1)}"
+    sheet[f"P{str(current_row)}"].font = discount_font
+    sheet[f"P{str(current_row)}"].border = thin_border
+    sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
+
+
+def fill_delivery_value(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        current_row: int,
+) -> None:
+    sheet.merge_cells(f'F{str(current_row)}:M{str(current_row)}')
+    sheet[f'F{str(current_row)}'] =\
+         f"Вартість доставки до складу у місті Київ"
+
+    sheet[f'F{str(current_row)}'].font = total_bill_font
+    sheet[f"F{str(current_row)}"].border = thin_border
+    sheet[f"G{str(current_row)}"].border = thin_border
+    sheet[f"H{str(current_row)}"].border = thin_border
+    sheet[f"I{str(current_row)}"].border = thin_border
+    sheet[f"J{str(current_row)}"].border = thin_border
+    sheet[f"K{str(current_row)}"].border = thin_border
+    sheet[f"L{str(current_row)}"].border = thin_border
+    sheet[f"M{str(current_row)}"].border = thin_border

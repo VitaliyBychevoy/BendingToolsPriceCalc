@@ -932,13 +932,37 @@ class Ui(QtWidgets.QMainWindow):
 
         current_row += 1
 
-
-
+        #Строка ПДВ
+        fill_tax(sheet, current_row)
+        current_row += 1
 
         print("Curent_row: ", current_row)
-        print("Discount: ", self.my_invoice.get_provider_discount())
+        print("Discount provider: ", self.my_invoice.get_provider_discount())
+        print(
+            "Discount customer: ",
+            self.my_invoice.get_customer_discount(),
+            " ",
+            type(self.my_invoice.get_customer_discount())
+        )
         print("Rate: ", self.my_invoice.get_rate())
 
+        fill_total_tax(sheet, current_row)
+        current_row += 1
+
+        if self.my_invoice.get_customer_discount() != "0":
+
+            #Знижка для клієнта
+            fill_discount_customer_value(
+                sheet,
+                current_row,
+                self.my_invoice.get_customer_name(),
+                self.my_invoice.get_customer_discount()
+            )
+            current_row += 1
+            #Ціна з урахуванням знижки
+            fill_total_tax_discount(sheet, current_row)
+
+        fill_delivery_value(sheet, current_row)
 
         path = QFileDialog.getSaveFileName(
                 None,
