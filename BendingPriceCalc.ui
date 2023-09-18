@@ -1986,7 +1986,7 @@ color: rgb(255, 253, 240);</string>
 color:rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>Вартість переводу</string>
+     <string>Вартість переказу</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="transaction_value">

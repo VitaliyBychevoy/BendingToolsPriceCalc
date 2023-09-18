@@ -21,7 +21,7 @@ from style import *
 
 acceptable_character = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."]
 
-zero_spinBox = ("", " ", "00,000", "00,00","0,0", "0")
+zero_spinBox = ("", " ", "00,000", "00,00", "0,0", "0")
 
 
 def check_valid_symbols(number: str) -> bool:
@@ -238,6 +238,17 @@ class Ui(QtWidgets.QMainWindow):
         #Кнопка Створити xlsx
         self.pre_commercial_offer_button.clicked.connect(self.create_pre_commercial_offer)
 
+        #Вартість переводу
+        self.transaction_value.textChanged.connect(self.check_transaction_value)
+
+        #Податок банка
+        self.bank_tax_value.textChanged.connect(self.check_bank_tax_value)
+
+        #Брокерські послуги
+        self.brokerage_services_value.textChanged.connect(self.check_brokerage_services_value)
+
+        #Вартість оформлення документів
+        self.delivery_document_value.textChanged.connect(self.check_delivery_document_value)
 
         self.show()
 
@@ -292,6 +303,16 @@ class Ui(QtWidgets.QMainWindow):
         self.packing_value.setStyleSheet(style.typically_style_editline)
         self.delivery_value.setEnabled(True)
         self.delivery_value.setStyleSheet(style.typically_style_editline)
+        self.brokerage_services_value.setEnabled(True)
+        self.brokerage_services_value.setStyleSheet(style.typically_style_editline)
+        self.brokerage_services_value.setEnabled(True)
+        self.brokerage_services_value.setStyleSheet(style.typically_style_editline)
+        self.delivery_document_value.setEnabled(True)
+        self.delivery_document_value.setStyleSheet(style.typically_style_editline)
+        self.transaction_value.setEnabled(True)
+        self.transaction_value.setStyleSheet(style.typically_style_editline)
+        self.bank_tax_value.setEnabled(True)
+        self.bank_tax_value.setStyleSheet(style.typically_style_editline)
 
         #SpinBox
         self.persentage_spinBox.setStyleSheet(style.typically_persentage_spinBox)
@@ -326,8 +347,19 @@ class Ui(QtWidgets.QMainWindow):
         self.percent_label.setStyleSheet(style.typically_weight_label)
         self.percent_discount_customer_label.setStyleSheet(style.typically_weight_label)
         self.delivery_label.setStyleSheet(style.typically_weight_label)
+
+        self.delivery_document_label.setStyleSheet(style.typically_weight_label)
+
         self.delivery_euro_label.setStyleSheet(style.typically_weight_label)
         self.discount_label.setStyleSheet(style.typically_weight_label)
+        self.bank_tax_label.setStyleSheet(style.typically_weight_label)
+        self.delivery_document_euro_label.setStyleSheet(style.typically_weight_label)
+        self.brokerage_services_uah_label.setStyleSheet(style.typically_weight_label)
+        self.transaction_label.setStyleSheet(style.typically_weight_label)
+        self.brokerage_services_label.setStyleSheet(style.typically_weight_label)
+        self.transaction_uah_label.setStyleSheet(style.typically_weight_label)
+        self.discount_label.setStyleSheet(style.typically_weight_label)
+        self.percent_bank_tax_label.setStyleSheet(style.typically_weight_label)
         self.percent_discount_label.setStyleSheet(style.typically_weight_label)
 
     def set_update_style(self) -> None:
@@ -381,7 +413,16 @@ class Ui(QtWidgets.QMainWindow):
         self.packing_value.setStyleSheet(style.update_style_editline)
         self.delivery_value.setEnabled(False)
         self.delivery_value.setStyleSheet(style.update_style_editline)
-
+        self.delivery_document_value.setEnabled(False)
+        self.delivery_document_value.setStyleSheet(style.update_style_editline)
+        self.brokerage_services_value.setEnabled(False)
+        self.brokerage_services_value.setStyleSheet(style.update_style_editline)
+        self.bank_tax_value.setEnabled(False)
+        self.bank_tax_value.setStyleSheet(style.update_style_editline)
+        self.transaction_value.setEnabled(False)
+        self.transaction_value.setStyleSheet(style.update_style_editline)
+        self.delivery_document_value.setEnabled(False)
+        self.delivery_document_value.setStyleSheet(style.update_style_editline)
 
         #SpinBox
         self.persentage_spinBox.setStyleSheet(style.update_persentage_spinBox)
@@ -416,9 +457,20 @@ class Ui(QtWidgets.QMainWindow):
         self.percent_label.setStyleSheet(style.update_weight_label)
         self.percent_discount_customer_label.setStyleSheet(style.update_weight_label)
         self.delivery_label.setStyleSheet(style.update_weight_label)
+
+        #self.delivery_label.setStyleSheet(style.update_weight_label)
+        self.delivery_document_label.setStyleSheet(style.update_weight_label)
+
         self.delivery_euro_label.setStyleSheet(style.update_weight_label)
+        self.transaction_uah_label.setStyleSheet(style.update_weight_label)
+        self.delivery_document_euro_label.setStyleSheet(style.update_weight_label)
+        self.brokerage_services_uah_label.setStyleSheet(style.update_weight_label)
+        self.bank_tax_label.setStyleSheet(style.update_weight_label)
+        self.transaction_label.setStyleSheet(style.update_weight_label)
+        self.brokerage_services_label.setStyleSheet(style.update_weight_label)
         self.discount_label.setStyleSheet(style.update_weight_label)
         self.percent_discount_label.setStyleSheet(style.update_weight_label)
+        self.percent_bank_tax_label.setStyleSheet(style.update_weight_label)
 
     #Додаємо одиницю до кількості екземплярів виробу
     def add_one_item(self) -> None:
@@ -774,6 +826,19 @@ class Ui(QtWidgets.QMainWindow):
     def check_delivery_number(self) -> None:
         self.delivery_value.setText(self.new_check_number(self.delivery_value.text()))
 
+    def check_transaction_value(self) -> None:
+        self.transaction_value.setText(self.new_check_number(self.transaction_value.text()))
+
+    def check_bank_tax_value(self) -> None:
+        self.bank_tax_value.setText(self.new_check_number(self.bank_tax_value.text()))
+
+    def check_brokerage_services_value(self) -> None:
+        self.brokerage_services_value.setText(self.new_check_number(self.brokerage_services_value.text()))
+
+    def check_delivery_document_value(self) -> None:
+        self.delivery_document_value.setText(self.new_check_number(self.delivery_document_value.text()))
+
+
     # Кнопка створення пошукового вікна
     def search_item(self) -> None:
         self.m_w = Search()
@@ -826,8 +891,6 @@ class Ui(QtWidgets.QMainWindow):
    """
     def create_pre_commercial_offer(self):
 
-
-
         #перевіряємо чи усі потрібні дані були надані користувачем
         check = False
         while check:
@@ -854,6 +917,26 @@ class Ui(QtWidgets.QMainWindow):
         #Додаємо у інвойс розмір знижки від постачальника
         self.my_invoice.set_provider_discount(
             self.provider_discount_spinBox.text()
+        )
+
+        #Додаємо у інвойс вартість  документів
+        self.my_invoice.set_price_document(
+            self.delivery_document_value.text()
+        )
+
+        #Додаємо відсоток для банка
+        self.my_invoice.set_bank_tax(
+            self.bank_tax_value.text()
+        )
+
+        #Додаємо у інвойс вартість переказу
+        self.my_invoice.set_transaction_price(
+            self.transaction_value.text()
+        )
+
+        #Додаємо у інвойс брокерські послуги
+        self.my_invoice.set_transaction_price(
+            self.brokerage_services_value.text()
         )
 
         #Формуємо ім'я мойбутньго файла
@@ -975,15 +1058,13 @@ class Ui(QtWidgets.QMainWindow):
         wb.save(path)
         wb.close()
 
-
-
-
     # Перевіряємо наявність усіх даних для прорахунку
     def check_data_for_pre_commercial(self) -> bool:
 
         if self.company_value.currentText() == "Оберіть компанію" or\
                self.EURO_value.text() in zero_spinBox or \
                 self.table.rowCount() < 1 or \
+                self.delivery_document_value.text() in zero_spinBox or \
                 self.packing_value.text() in zero_spinBox or \
                 self.delivery_value.text() in zero_spinBox:
             error = MessageError()
@@ -993,6 +1074,8 @@ class Ui(QtWidgets.QMainWindow):
                 error_message += "Вкажіть назву компанії клієтна.\n"
             if self.EURO_value.text() in zero_spinBox:
                 error_message += "Вкажіть курс EURO.\n"
+            if self.delivery_document_value.text() in zero_spinBox:
+                error_message += "Вкажіть вартість документу\n"
             if self.table.rowCount() < 1:
                 error_message += "Додайте хочаб один виріб.\n"
             if self.packing_value.text() in zero_spinBox:

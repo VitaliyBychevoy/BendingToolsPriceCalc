@@ -170,6 +170,11 @@ class Invoice:
             provider_discount: str = "0.0",
             customer_discount: str = "0.0",
             customer_name: str = "",
+            price_document: str = "",
+            transaction_price: str = "",
+            brokerage_price: str = "",
+            bank_tax: str = ""
+
 
     ) -> None:
         self.rate = rate
@@ -182,6 +187,10 @@ class Invoice:
         self.provider_discount = provider_discount
         self.customer_discount = customer_discount
         self.customer_name = customer_name
+        self.price_document = price_document
+        self.transaction_price = transaction_price
+        self.brokerage_price = brokerage_price
+        self.bank_tax = bank_tax
 
 #tecnostamp_discount
 
@@ -302,6 +311,30 @@ class Invoice:
     def get_customer_name(self) -> str:
         return self.customer_name
 
+    def set_price_document(self, new_price_documen: str) -> None:
+        self.price_document = new_price_documen
+
+    def get_price_document(self) -> str:
+        return self.price_document
+
+    def set_transaction_price(self, new_transaction_price: str) -> None:
+        self.transaction_price = new_transaction_price
+
+    def get_transaction_price(self) -> str:
+        return self.transaction_price
+
+    def set_brokerage_price(self, new_brokerage: str) -> None:
+        self.brokerage_price = new_brokerage
+
+    def get_brokerage_price(self) -> str:
+        return self.brokerage_price
+
+    def set_bank_tax(self, new_tax: str) -> None:
+        self.bank_tax = new_tax
+
+    def get_bank_tax(self) -> str:
+        return self.bank_tax
+
 class Pre_commercial_offer:
 
     def __init__(
@@ -366,10 +399,7 @@ class Pre_commercial_offer:
         #Назва компанії
         #work_sheet.merge_cells(start_row=10, start_column=13, end_row=10, end_column=16)
 
-
-
         start_row = 17
-
 
 
         work_sheet.insert_rows(len(new_invoice.get_list_item()))
