@@ -91,11 +91,27 @@ def column_style(
     sheet.column_dimensions['L'].fill = (PatternFill(fill_type='solid',
                                                      start_color='ffff00',
                                                      end_color='ffff00'))
-    sheet.column_dimensions['M'].width = 9 * 1.08
-    sheet.column_dimensions['N'].width = 9 * 1.08
+    sheet.column_dimensions['M'].fill = (PatternFill(fill_type='solid',
+                                                     start_color='ffff00',
+                                                     end_color='ffff00'))
+    sheet.column_dimensions['M'].width = 9 * 1.9
+    sheet.column_dimensions['N'].width = 9 * 1.9
+    sheet.column_dimensions['N'].fill = (PatternFill(fill_type='solid',
+                                                     start_color='ffff00',
+                                                     end_color='ffff00'))
     sheet.column_dimensions['O'].width = 9 * 1.08
     sheet.column_dimensions['P'].width = 9 * 1.08
-    sheet.column_dimensions['Q'].width = 1 * 1.72
+    sheet.column_dimensions['Q'].width = 9 * 1.08
+    sheet.column_dimensions['R'].width = 9 * 1.08
+    sheet.column_dimensions['S'].width = 9 * 1.2
+    sheet.column_dimensions['S'].fill = (PatternFill(fill_type='solid',
+                                                     start_color='ffff00',
+                                                     end_color='ffff00'))
+    sheet.column_dimensions['T'].width = 9 * 1.5
+    sheet.column_dimensions['T'].fill = (PatternFill(fill_type='solid',
+                                                     start_color='ffff00',
+                                                     end_color='ffff00'))
+    sheet.column_dimensions['U'].width = 1 * 1.72
 
 
 #Оброблюємо строки до таблички
@@ -119,7 +135,7 @@ def merge_cells_before_table(
         sheet: openpyxl.worksheet.worksheet.Worksheet
 ) -> None:
     sheet.merge_cells(f'B8:P8')
-    sheet.merge_cells(f'M10:P10')
+    sheet.merge_cells(f'O10:R10')
     sheet.merge_cells(f'B12:P12')
 
 
@@ -171,13 +187,13 @@ def fill_customer_name(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
         customer_name: str
 ) -> None:
-    sheet["M10"].font = customer_name_font
-    sheet['M10'].alignment = Alignment(
+    sheet["O10"].font = customer_name_font
+    sheet['O10'].alignment = Alignment(
         horizontal="right",
         vertical='top',
         wrapText=True
     )
-    sheet["M10"].value = get_full_name_company(customer_name)
+    sheet["O10"].value = get_full_name_company(customer_name)
 
 #Заповнюємо назву таблиці
 def fill_title_table(
@@ -285,23 +301,27 @@ def fill_table_head(
     sheet['L14'].fill = PatternFill(
         fill_type='solid', start_color='ffff00', end_color='ffff00')
 
-    sheet['M14'].value = "Ціна од. EURO"
+    sheet['M14'].value = "Вартість позиції"
     sheet['M14'].font = table_head_font
     sheet['M14'].border = thin_border
     sheet['M14'].alignment = Alignment(
         horizontal="center",
         vertical='center'
     )
+    sheet['M14'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
 
-    sheet['N14'].value = "Ціна разом EURO"
+    sheet['N14'].value = "Відсоток від вартості позиції"
     sheet['N14'].font = table_head_font
     sheet['N14'].border = thin_border
     sheet['N14'].alignment = Alignment(
         horizontal="center",
         vertical='center'
     )
+    sheet['N14'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
 
-    sheet['O14'].value = "Ціна од. ГРН"
+    sheet['O14'].value = "Ціна од. EURO"
     sheet['O14'].font = table_head_font
     sheet['O14'].border = thin_border
     sheet['O14'].alignment = Alignment(
@@ -309,13 +329,49 @@ def fill_table_head(
         vertical='center'
     )
 
-    sheet['P14'].value = "Ціна разом ГРН"
+    sheet['P14'].value = "Ціна разом EURO"
     sheet['P14'].font = table_head_font
     sheet['P14'].border = thin_border
     sheet['P14'].alignment = Alignment(
         horizontal="center",
         vertical='center'
     )
+
+    sheet['Q14'].value = "Ціна од. ГРН"
+    sheet['Q14'].font = table_head_font
+    sheet['Q14'].border = thin_border
+    sheet['Q14'].alignment = Alignment(
+        horizontal="center",
+        vertical='center'
+    )
+
+    sheet['R14'].value = "Ціна разом ГРН"
+    sheet['R14'].font = table_head_font
+    sheet['R14'].border = thin_border
+    sheet['R14'].alignment = Alignment(
+        horizontal="center",
+        vertical='center'
+    )
+
+    sheet['S14'].value = "1C за одиницю UAH"
+    sheet['S14'].font = table_head_font
+    sheet['S14'].border = thin_border
+    sheet['S14'].alignment = Alignment(
+        horizontal="center",
+        vertical='center'
+    )
+    sheet['S14'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
+
+    sheet['T14'].value = "1C разом UAH"
+    sheet['T14'].font = table_head_font
+    sheet['T14'].border = thin_border
+    sheet['T14'].alignment = Alignment(
+        horizontal="center",
+        vertical='center'
+    )
+    sheet['T14'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
 
 def fill_number_string(
         sheet: openpyxl.worksheet.worksheet.Worksheet
@@ -402,23 +458,17 @@ def fill_number_string(
     sheet['L15'].fill = PatternFill(
         fill_type='solid', start_color='ffff00', end_color='ffff00')
 
-    sheet['M15'].value = 6
     sheet['M15'].font = table_head_font
     sheet['M15'].border = thin_border
-    sheet['M15'].alignment = Alignment(
-        horizontal="center",
-        vertical='center'
-    )
+    sheet['M15'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
 
-    sheet['N15'].value = 7
     sheet['N15'].font = table_head_font
     sheet['N15'].border = thin_border
-    sheet['N15'].alignment = Alignment(
-        horizontal="center",
-        vertical='center'
-    )
+    sheet['N15'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
 
-    sheet['O15'].value = 8
+    sheet['015'].value = 6
     sheet['O15'].font = table_head_font
     sheet['O15'].border = thin_border
     sheet['O15'].alignment = Alignment(
@@ -426,10 +476,26 @@ def fill_number_string(
         vertical='center'
     )
 
-    sheet['P15'].value = 9
+    sheet['P15'].value = 7
     sheet['P15'].font = table_head_font
     sheet['P15'].border = thin_border
     sheet['P15'].alignment = Alignment(
+        horizontal="center",
+        vertical='center'
+    )
+
+    sheet['Q15'].value = 8
+    sheet['Q15'].font = table_head_font
+    sheet['Q15'].border = thin_border
+    sheet['Q15'].alignment = Alignment(
+        horizontal="center",
+        vertical='center'
+    )
+
+    sheet['R15'].value = 9
+    sheet['R15'].font = table_head_font
+    sheet['R15'].border = thin_border
+    sheet['R15'].alignment = Alignment(
         horizontal="center",
         vertical='center'
     )
@@ -751,6 +817,16 @@ def set_price(
     for index in range(len(list_price)):
         sheet[f"O{start_row}"].value = list_price[index]
         start_row += 1
+
+
+# def set_price(
+#         sheet: openpyxl.worksheet.worksheet.Worksheet,
+#         invoice: Invoice
+# ) -> None:
+#     start_row: int = 17
+#     for index in range(len(invoice.get_list_item())):
+#         sheet[f"O{start_row}"].value = invoice.get_list_item()[index].
+#         start_row += 1
 
 
 def fill_tax(

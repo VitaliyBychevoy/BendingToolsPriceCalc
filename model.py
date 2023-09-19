@@ -173,9 +173,9 @@ class Invoice:
             price_document: str = "",
             transaction_price: str = "",
             brokerage_price: str = "",
-            bank_tax: str = ""
-
-
+            bank_tax: str = "",
+            total_price_ua: float = 0.0,
+            total_delivery_price_ua: float = 0.0
     ) -> None:
         self.rate = rate
         self.list_item = list_item
@@ -191,6 +191,7 @@ class Invoice:
         self.transaction_price = transaction_price
         self.brokerage_price = brokerage_price
         self.bank_tax = bank_tax
+        self.total_price_ua = total_price_ua
 
 #tecnostamp_discount
 
@@ -334,6 +335,46 @@ class Invoice:
 
     def get_bank_tax(self) -> str:
         return self.bank_tax
+
+    def set_total_price_ua(self, new_price: float) -> None:
+        self.total_price_ua = new_price
+
+    def get_total_price_ua(self) -> float:
+        return self.total_price_ua
+
+    def set_total_delivery_price_ua(self, new_price: float) -> None:
+        self.total_delivery_price_ua = new_price
+
+    def get_total_delivery_price_ua(self) -> float:
+        return self.total_delivery_price_ua
+    def calculate_total_price_ua(self) -> float:
+        pass
+        #
+    #Вартість доставки у UAH
+    def calculate_total_delivery_price_ua(self) -> float:
+
+        delivery: float =\
+            float(self.get_delivery_price().replace(",","."))
+        document: float =\
+            float(self.get_price_document().replace(",","."))
+        return round(
+            self.get_rate() * (
+                    delivery + document + (delivery + document) * 0.2),
+            2)
+    def invoice_input_toString(self) -> None:
+        print("#"*5, "INVOICE OBJECT","#"*5)
+        print("Customer name is ", self.get_customer_name() + ".")
+        print("Rate ", self.get_rate(), " uah/euro.")
+        print("Commission ", self.get_commission_percentage(), "%.")
+        print("Discount for customer ", self.get_customer_discount(), "%.")
+        print("Provider discount", self.get_provider_discount(), "%.")
+        print("Bank tax", self.get_bank_tax(), "%.")
+        print("Packing price", self.get_packing_price(), "euro.")
+        print("Delivery price", self.get_delivery_price(), "euro.")
+        print("Document price", self.get_price_document(), "euro.")
+        print("Transfer price", self.get_transaction_price(), "uah.")
+        print("Brokerage price", self.get_brokerage_price(), "uah.")
+        print("#"*25)
 
 class Pre_commercial_offer:
 

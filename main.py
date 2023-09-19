@@ -889,12 +889,11 @@ class Ui(QtWidgets.QMainWindow):
             # Копиюєм попередній порожній зразок комерційної пропозиції
             shutil.copy("data/Зразок ТКП.xlsx", self.pco.get_path_temp())
    """
-    def create_pre_commercial_offer(self):
+    def create_pre_commercial_offer(self) -> None:
 
         #перевіряємо чи усі потрібні дані були надані користувачем
-        check = False
-        while check:
-            check = self.check_data_for_pre_commercial()
+        if not self.check_data_for_pre_commercial():
+            return
 
         #Додаємо у інвойс ім'я клієнта-компаніі
         self.my_invoice.set_customer_name(
@@ -919,6 +918,11 @@ class Ui(QtWidgets.QMainWindow):
             self.provider_discount_spinBox.text()
         )
 
+        #Додаємо у інвойс вартість доставки
+        self.my_invoice.set_delivery_price(
+            self.delivery_value.text()
+        )
+
         #Додаємо у інвойс вартість  документів
         self.my_invoice.set_price_document(
             self.delivery_document_value.text()
@@ -935,14 +939,16 @@ class Ui(QtWidgets.QMainWindow):
         )
 
         #Додаємо у інвойс брокерські послуги
-        self.my_invoice.set_transaction_price(
+        self.my_invoice.set_brokerage_price(
             self.brokerage_services_value.text()
         )
+
 
         #Формуємо ім'я мойбутньго файла
         pre_commercial_offer_name = \
             (name_offer(self.my_invoice.get_customer_name()))
 
+        self.my_invoice.invoice_input_toString()
 
         #Створюємо новий файл xlsx
         wb = Workbook()
@@ -979,84 +985,92 @@ class Ui(QtWidgets.QMainWindow):
         # Заповнюємо номера колонок
         fill_number_string(sheet)
 
-        current_row = 16
-        empty_string(sheet, current_row)
-        current_row += 1
+        # current_row = 16
+        # empty_string(sheet, current_row)
+        # current_row += 1
 
-        for index in range(len(self.my_invoice.get_list_item())):
-            #work_sheet.row_dimensions[current_row].height = 90
-            sheet.row_dimensions[current_row].height = 120
-            write_row(
-                sheet,
-                self.my_invoice.get_list_item()[index],
-                current_row,
-                index,
-                self.my_invoice.get_provider_discount(),
-                str(self.my_invoice.get_rate())
-            )
-            current_row += 1
+        # for index in range(len(self.my_invoice.get_list_item())):
+        #     sheet.row_dimensions[current_row].height = 120
+        #     write_row(
+        #         sheet,
+        #         self.my_invoice.get_list_item()[index],
+        #         current_row,
+        #         index,
+        #         self.my_invoice.get_provider_discount(),
+        #         str(self.my_invoice.get_rate())
+        #     )
+        #     current_row += 1
 
         #Заповнюємо останню строку таблиці (загальна вага)
-        fill_last_row_table(
-            sheet,
-            len(self.my_invoice.get_list_item()),
-            current_row
-        )
+        # fill_last_row_table(
+        #     sheet,
+        #     len(self.my_invoice.get_list_item()),
+        #     current_row
+        # )
 
         #Заповнюємо вартість для клієнтів
-        set_price(sheet, get_price_item_for_customer(self.my_invoice))
+        #set_price(sheet, get_price_item_for_customer(self.my_invoice))
+        # set_price(sheet, self.my_invoice)
 
 
+        # current_row += 1
+        #
+        # #Строка "Разом" (сума колонок "N" та "P")
+        # fill_total_bill(sheet, current_row)
+        #
+        # current_row += 1
 
-        current_row += 1
+        # #Строка ПДВ
+        # fill_tax(sheet, current_row)
+        # current_row += 1
 
-        #Строка "Разом" (сума колонок "N" та "P")
-        fill_total_bill(sheet, current_row)
+        # print("Curent_row: ", current_row)
+        # print("Discount provider: ", self.my_invoice.get_provider_discount())
+        # print(
+        #     "Discount customer: ",
+        #     self.my_invoice.get_customer_discount(),
+        #     " ",
+        #     type(self.my_invoice.get_customer_discount())
+        # )
+        # print("Rate: ", self.my_invoice.get_rate())
+        #
+        # fill_total_tax(sheet, current_row)
+        # current_row += 1
+        #
+        # if self.my_invoice.get_customer_discount() != "0":
+        #
+        #     #Знижка для клієнта
+        #     fill_discount_customer_value(
+        #         sheet,
+        #         current_row,
+        #         self.my_invoice.get_customer_name(),
+        #         self.my_invoice.get_customer_discount()
+        #     )
+        #     current_row += 1
+        #     #Ціна з урахуванням знижки
+        #     fill_total_tax_discount(sheet, current_row)
+        #
+        # fill_delivery_value(sheet, current_row)
 
-        current_row += 1
 
-        #Строка ПДВ
-        fill_tax(sheet, current_row)
-        current_row += 1
+        qf = QFileDialog()
 
-        print("Curent_row: ", current_row)
-        print("Discount provider: ", self.my_invoice.get_provider_discount())
-        print(
-            "Discount customer: ",
-            self.my_invoice.get_customer_discount(),
-            " ",
-            type(self.my_invoice.get_customer_discount())
-        )
-        print("Rate: ", self.my_invoice.get_rate())
 
-        fill_total_tax(sheet, current_row)
-        current_row += 1
-
-        if self.my_invoice.get_customer_discount() != "0":
-
-            #Знижка для клієнта
-            fill_discount_customer_value(
-                sheet,
-                current_row,
-                self.my_invoice.get_customer_name(),
-                self.my_invoice.get_customer_discount()
-            )
-            current_row += 1
-            #Ціна з урахуванням знижки
-            fill_total_tax_discount(sheet, current_row)
-
-        fill_delivery_value(sheet, current_row)
-
-        path = QFileDialog.getSaveFileName(
+        path = ""
+        path = qf.getSaveFileName(
+        #path = QFileDialog.getSaveFileName(
                 None,
                 None,
                 f"./{pre_commercial_offer_name}",
                 '*.xlsx;;*.xls'
             )[0]
 
-        #Збереження файла
-        wb.save(path)
-        wb.close()
+        if path == "":
+            return
+        else:
+            #Збереження файла
+            wb.save(path)
+            wb.close()
 
     # Перевіряємо наявність усіх даних для прорахунку
     def check_data_for_pre_commercial(self) -> bool:
