@@ -175,7 +175,8 @@ class Invoice:
             brokerage_price: str = "",
             bank_tax: str = "",
             total_price_ua: float = 0.0,
-            total_delivery_price_ua: float = 0.0
+            total_delivery_price_ua: float = 0.0,
+            sum_item_price: float = 0.0
     ) -> None:
         self.rate = rate
         self.list_item = list_item
@@ -192,6 +193,7 @@ class Invoice:
         self.brokerage_price = brokerage_price
         self.bank_tax = bank_tax
         self.total_price_ua = total_price_ua
+        self.sum_item_price = sum_item_price
 
 #tecnostamp_discount
 
@@ -347,8 +349,83 @@ class Invoice:
 
     def get_total_delivery_price_ua(self) -> float:
         return self.total_delivery_price_ua
-    def calculate_total_price_ua(self) -> float:
-        pass
+
+    def set_sum_item_price(self, price: float) -> None:
+        self.sum_item_price = price
+
+    def get_sum_item_price(self) -> float:
+        return self.sum_item_price
+
+    def calculate_sum_item_price(self) -> None:
+        discount: float = (
+            100 - float(self.get_provider_discount().replace(",","."))
+        ) / 100
+        print("Discount provider:", discount)
+        sum_item_price = round(
+            sum(
+                [item.get_price_item() * discount
+                 for item in self.get_list_item()]
+            ),
+            2)
+
+        print("Сума вартості одиниці товару", sum_item_price)
+        self.set_sum_item_price(sum_item_price)
+
+    def calculate_total_price_ua(self) -> None:
+
+        print("i", "_!"*20)
+        discount: float = (
+            100 - float(self.get_provider_discount().replace(",","."))
+        ) / 100
+
+        #Сума ціна * кількість * знижка постачальника
+        price = round(
+            sum(
+                [item.get_price_item() * discount * item.get_amount_item()
+                 for item in self.get_list_item()]
+            ),
+            2)
+        print("SUM(Price * amount * discount)", price)
+
+
+        #Додаємо Packing
+        price += float(self.get_packing_price().replace(",", "."))
+        print("Price + packing" , price)
+
+        #Додаємо банківські відсотки
+        tax: float = round((float(self.get_bank_tax().replace(",", "."))/100 ), 4)
+        print(" Tax", tax)
+        price = round((price * (1 + tax)), 2)
+        print("Price after tax", price)
+
+        # Додаємо комісію Vectortool
+        commission: float = (
+            round(
+                (float(
+                    self.get_commission_percentage().replace(",", "."))/100 ),
+                2)
+        )
+        print("Commission", commission)
+
+        price = round(price / (1 - commission), 2)
+        print("Price after commission", price)
+
+        #Переводимо у UAH
+        print("rate", self.get_rate(), " type ", type(self.get_rate()) )
+
+        price = round(price* self.get_rate(), 2)
+        print("Price in UAH", price, " UAH.")
+
+        #Додаємо Вартість переводу валюти  Брокерські
+        price += float(self.get_transaction_price().replace(",", "."))
+        price += float(self.get_brokerage_price().replace(",", "."))
+        print("Total price UAH:",  price)
+
+        print("i", "_!"*20)
+
+        self.set_total_price_ua(price)
+
+
         #
     #Вартість доставки у UAH
     def calculate_total_delivery_price_ua(self) -> float:
@@ -357,6 +434,10 @@ class Invoice:
             float(self.get_delivery_price().replace(",","."))
         document: float =\
             float(self.get_price_document().replace(",","."))
+        print("delivery total", round(
+            self.get_rate() * (
+                    delivery + document + (delivery + document) * 0.2),
+            2))
         return round(
             self.get_rate() * (
                     delivery + document + (delivery + document) * 0.2),

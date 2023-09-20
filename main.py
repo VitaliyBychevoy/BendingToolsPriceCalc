@@ -184,8 +184,6 @@ class Ui(QtWidgets.QMainWindow):
         # Створюємо invoice, у якому будуть лежати вироби (item)
         self.my_invoice = Invoice()
 
-        # встановлюємо курс евро
-        self.my_invoice.set_rate(self.EURO_value.text())
 
         # Максимальна довжина, см
         self.max_length = 0.0
@@ -890,6 +888,8 @@ class Ui(QtWidgets.QMainWindow):
             shutil.copy("data/Зразок ТКП.xlsx", self.pco.get_path_temp())
    """
     def create_pre_commercial_offer(self) -> None:
+        # встановлюємо курс евро
+        self.my_invoice.set_rate(float(self.EURO_value.text().replace(",", ".")))
 
         #перевіряємо чи усі потрібні дані були надані користувачем
         if not self.check_data_for_pre_commercial():
@@ -985,21 +985,28 @@ class Ui(QtWidgets.QMainWindow):
         # Заповнюємо номера колонок
         fill_number_string(sheet)
 
-        # current_row = 16
-        # empty_string(sheet, current_row)
-        # current_row += 1
+        current_row = 16
+        empty_string(sheet, current_row)
+        current_row += 1
 
-        # for index in range(len(self.my_invoice.get_list_item())):
-        #     sheet.row_dimensions[current_row].height = 120
-        #     write_row(
-        #         sheet,
-        #         self.my_invoice.get_list_item()[index],
-        #         current_row,
-        #         index,
-        #         self.my_invoice.get_provider_discount(),
-        #         str(self.my_invoice.get_rate())
-        #     )
-        #     current_row += 1
+        #встановлюємо суму однинць закупки товара
+        self.my_invoice.calculate_sum_item_price()
+
+        #Ціна для розрахунку
+        self.my_invoice.calculate_total_price_ua()
+
+
+        for index in range(len(self.my_invoice.get_list_item())):
+            sheet.row_dimensions[current_row].height = 120
+            write_row(
+                sheet,
+                self.my_invoice.get_list_item()[index],
+                current_row,
+                index,
+                self.my_invoice.get_provider_discount(),
+                str(self.my_invoice.get_rate())
+            )
+            current_row += 1
 
         #Заповнюємо останню строку таблиці (загальна вага)
         # fill_last_row_table(

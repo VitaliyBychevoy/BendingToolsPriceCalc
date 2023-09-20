@@ -452,7 +452,6 @@ def fill_number_string(
         vertical='center'
     )
 
-
     sheet['L15'].font = table_head_font
     sheet['L15'].border = thin_border
     sheet['L15'].fill = PatternFill(
@@ -468,7 +467,7 @@ def fill_number_string(
     sheet['N15'].fill = PatternFill(
         fill_type='solid', start_color='ffff00', end_color='ffff00')
 
-    sheet['015'].value = 6
+    sheet['O15'].value = 6
     sheet['O15'].font = table_head_font
     sheet['O15'].border = thin_border
     sheet['O15'].alignment = Alignment(
@@ -499,6 +498,14 @@ def fill_number_string(
         horizontal="center",
         vertical='center'
     )
+
+    sheet['S15'].border = thin_border
+    sheet['S15'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
+
+    sheet['T15'].border = thin_border
+    sheet['T15'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
 
 def empty_string(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
@@ -546,13 +553,28 @@ def empty_string(
         fill_type='solid', start_color='ffff00', end_color='ffff00')
 
     sheet[f'M{str(number_string)}'].border = thin_border
+    sheet[f'M{str(number_string)}'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
 
     sheet[f'N{str(number_string)}'].border = thin_border
+    sheet[f'N{str(number_string)}'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
 
     sheet[f'O{str(number_string)}'].border = thin_border
 
     sheet[f'P{str(number_string)}'].border = thin_border
 
+    sheet[f'Q{str(number_string)}'].border = thin_border
+
+    sheet[f'R{str(number_string)}'].border = thin_border
+
+    sheet[f'S{str(number_string)}'].border = thin_border
+    sheet[f'S{str(number_string)}'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
+
+    sheet[f'T{str(number_string)}'].border = thin_border
+    sheet[f'T{str(number_string)}'].fill = PatternFill(
+        fill_type='solid', start_color='ffff00', end_color='ffff00')
 
 def write_row(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
