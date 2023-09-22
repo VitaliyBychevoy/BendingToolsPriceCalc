@@ -995,18 +995,22 @@ class Ui(QtWidgets.QMainWindow):
         #Ціна для розрахунку
         self.my_invoice.calculate_total_price_ua()
 
+        #Заповнюємо таблицю з позиціями
+        items_in_row(sheet, self.my_invoice, current_row)
 
-        for index in range(len(self.my_invoice.get_list_item())):
-            sheet.row_dimensions[current_row].height = 120
-            write_row(
-                sheet,
-                self.my_invoice.get_list_item()[index],
-                current_row,
-                index,
-                self.my_invoice.get_provider_discount(),
-                str(self.my_invoice.get_rate())
-            )
-            current_row += 1
+
+
+        # for index in range(len(self.my_invoice.get_list_item())):
+        #     sheet.row_dimensions[current_row].height = 120
+        #     write_row(
+        #         sheet,
+        #         self.my_invoice.get_list_item()[index],
+        #         current_row,
+        #         index,
+        #         self.my_invoice.get_provider_discount(),
+        #         str(self.my_invoice.get_rate())
+        #     )
+        #     current_row += 1
 
         #Заповнюємо останню строку таблиці (загальна вага)
         # fill_last_row_table(

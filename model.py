@@ -38,7 +38,8 @@ class Item:
             image_path: str = None,
             en_name_item: str = None,
             ua_name_item: str = None,
-            amount_item: int = 0
+            amount_item: int = 0,
+
     ) -> None:
         self.db = openpyxl.load_workbook(DB_FOLDER)
         self.db_path: str = db_path
@@ -155,6 +156,7 @@ class Item:
         result = a
         result += b
         return result
+
 
 class Invoice:
 
@@ -414,7 +416,7 @@ class Invoice:
         print("rate", self.get_rate(), " type ", type(self.get_rate()) )
 
         price = round(price* self.get_rate(), 2)
-        print("Price in UAH", price, " UAH.")
+        print("Price in UAH", price, "UAH.")
 
         #Додаємо Вартість переводу валюти  Брокерські
         price += float(self.get_transaction_price().replace(",", "."))
@@ -425,8 +427,6 @@ class Invoice:
 
         self.set_total_price_ua(price)
 
-
-        #
     #Вартість доставки у UAH
     def calculate_total_delivery_price_ua(self) -> float:
 
@@ -442,6 +442,8 @@ class Invoice:
             self.get_rate() * (
                     delivery + document + (delivery + document) * 0.2),
             2)
+
+
     def invoice_input_toString(self) -> None:
         print("#"*5, "INVOICE OBJECT","#"*5)
         print("Customer name is ", self.get_customer_name() + ".")

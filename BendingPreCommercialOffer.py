@@ -576,6 +576,57 @@ def empty_string(
     sheet[f'T{str(number_string)}'].fill = PatternFill(
         fill_type='solid', start_color='ffff00', end_color='ffff00')
 
+def items_in_row(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        invoice: Invoice,
+        current_row: int
+) -> None:
+
+    for index in range(len(invoice.get_list_item())):
+        sheet[f"B{str(current_row)}"].value = index + 1
+        sheet[f"B{str(current_row)}"].border = thin_border
+        sheet[f"B{str(current_row)}"].alignment = \
+            Alignment(horizontal="center", vertical='center')
+        sheet[f"B{str(current_row)}"].font = position_font
+
+        sheet[f'C{str(current_row)}'].border = thin_border
+
+        sheet[f"D{str(current_row)}"].border = thin_border
+        sheet[f"D{str(current_row)}"].value = \
+            invoice.get_list_item()[index].get_en_name_item()
+        sheet[f"D{str(current_row)}"].font = description_font
+        sheet[f"D{str(current_row)}"].alignment = Alignment(
+            horizontal="left",
+            vertical='center',
+            wrapText=True
+        )
+        sheet[f'D{str(current_row)}'].fill = PatternFill(
+            fill_type='solid',
+            start_color='ffff00',
+            end_color='ffff00'
+        )
+
+        sheet[f"E{str(current_row)}"].border = thin_border
+        sheet[f'E{str(current_row)}'].fill = PatternFill(
+            fill_type='solid',
+            start_color='ffff00',
+            end_color='ffff00'
+        )
+
+        sheet[f"F{str(current_row)}"].border = thin_border
+        sheet[f"F{str(current_row)}"].value = \
+            invoice.get_list_item()[index].get_ua_name_item()
+        sheet[f"F{str(current_row)}"].font = description_ua_font
+        sheet[f"F{str(current_row)}"].alignment = Alignment(
+            horizontal="left",
+            vertical='center',
+            wrapText=True
+        )
+
+        current_row += 1
+
+    return current_row
+
 def write_row(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
         item: Item,
