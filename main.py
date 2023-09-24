@@ -992,15 +992,55 @@ class Ui(QtWidgets.QMainWindow):
         #встановлюємо суму однинць закупки товара
         self.my_invoice.calculate_sum_item_price()
 
+
         #Ціна для розрахунку
         self.my_invoice.calculate_total_price_ua()
 
         #Заповнюємо таблицю з позиціями
-        items_in_row(sheet, self.my_invoice, current_row)
+        current_row = items_in_row(sheet, self.my_invoice, current_row)
 
+        #Порожній рядок
+        empty_string(sheet, current_row)
 
+        #Вага
+        total_weight(sheet, current_row)
+        current_row += 1
 
-        # for index in range(len(self.my_invoice.get_list_item())):
+        #Строка Разом
+        fill_total_bill(sheet, current_row)
+        current_row += 1
+
+        #ПДВ
+        tax_row_total(sheet, current_row)
+        current_row += 1
+
+        #Разом з ПДВ
+        total_bill_with_tax(sheet, current_row)
+        current_row += 1
+
+        if self.my_invoice.get_customer_discount() != "0":
+            #Знижка для клієнта
+            fill_discount_customer_value(
+                sheet,
+                current_row,
+                self.my_invoice.get_customer_name(),
+                self.my_invoice.get_customer_discount()
+            )
+            current_row += 1
+            #Вартість після знижки
+            fill_total_tax_discount(sheet, current_row)
+            current_row += 1
+
+        #Вартість доставки
+        self.my_invoice.calculate_total_delivery_price_ua()
+        fill_delivery_value(sheet, current_row, self.my_invoice)
+        current_row += 1
+
+        #Загальна вартість
+        fill_total_price(sheet, current_row)
+
+        #1C для всіх
+        fill_1C_all(sheet, self.my_invoice, current_row)
         #     sheet.row_dimensions[current_row].height = 120
         #     write_row(
         #         sheet,
