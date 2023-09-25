@@ -1041,68 +1041,9 @@ class Ui(QtWidgets.QMainWindow):
 
         #1C для всіх
         fill_1C_all(sheet, self.my_invoice, current_row)
-        #     sheet.row_dimensions[current_row].height = 120
-        #     write_row(
-        #         sheet,
-        #         self.my_invoice.get_list_item()[index],
-        #         current_row,
-        #         index,
-        #         self.my_invoice.get_provider_discount(),
-        #         str(self.my_invoice.get_rate())
-        #     )
-        #     current_row += 1
 
-        #Заповнюємо останню строку таблиці (загальна вага)
-        # fill_last_row_table(
-        #     sheet,
-        #     len(self.my_invoice.get_list_item()),
-        #     current_row
-        # )
-
-        #Заповнюємо вартість для клієнтів
-        #set_price(sheet, get_price_item_for_customer(self.my_invoice))
-        # set_price(sheet, self.my_invoice)
-
-
-        # current_row += 1
-        #
-        # #Строка "Разом" (сума колонок "N" та "P")
-        # fill_total_bill(sheet, current_row)
-        #
-        # current_row += 1
-
-        # #Строка ПДВ
-        # fill_tax(sheet, current_row)
-        # current_row += 1
-
-        # print("Curent_row: ", current_row)
-        # print("Discount provider: ", self.my_invoice.get_provider_discount())
-        # print(
-        #     "Discount customer: ",
-        #     self.my_invoice.get_customer_discount(),
-        #     " ",
-        #     type(self.my_invoice.get_customer_discount())
-        # )
-        # print("Rate: ", self.my_invoice.get_rate())
-        #
-        # fill_total_tax(sheet, current_row)
-        # current_row += 1
-        #
-        # if self.my_invoice.get_customer_discount() != "0":
-        #
-        #     #Знижка для клієнта
-        #     fill_discount_customer_value(
-        #         sheet,
-        #         current_row,
-        #         self.my_invoice.get_customer_name(),
-        #         self.my_invoice.get_customer_discount()
-        #     )
-        #     current_row += 1
-        #     #Ціна з урахуванням знижки
-        #     fill_total_tax_discount(sheet, current_row)
-        #
-        # fill_delivery_value(sheet, current_row)
-
+        #Порожни колонки
+        empty_columns(sheet, current_row, self.my_invoice)
 
         qf = QFileDialog()
 

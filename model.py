@@ -365,7 +365,7 @@ class Invoice:
         print("Discount provider:", discount)
         sum_item_price = round(
             sum(
-                [item.get_price_item() * discount
+                [item.get_price_item() * discount * item.get_amount_item()
                  for item in self.get_list_item()]
             ),
             2)

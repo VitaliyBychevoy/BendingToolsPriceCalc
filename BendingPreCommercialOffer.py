@@ -53,6 +53,25 @@ thin_border = Border(left=Side(style='thin'),
                      top=Side(style='thin'),
                      bottom=Side(style='thin'))
 
+#Центрування
+alignment_right_center = Alignment(
+        horizontal="right",
+        vertical='center',
+        wrapText=True
+    )
+
+#Кольори
+pink_color = PatternFill(
+    fill_type='solid',
+    start_color='ff1493',
+    end_color='ff1493'
+)
+
+yellow_color = PatternFill(
+    fill_type='solid',
+    start_color='ffff00',
+    end_color='ffff00'
+)
 def name_offer(customer_name: str) -> str:
     this_moment_list = str(datetime.now()).split(" ")
     today = this_moment_list[0].split("-")[::-1]
@@ -68,49 +87,32 @@ def column_style(
     sheet.column_dimensions['B'].width = 1.57 * 1.5
     sheet.column_dimensions['C'].width = 1 * 1.72
     sheet.column_dimensions['D'].width = 24.43
-    sheet.column_dimensions['D'].fill = (PatternFill(fill_type='solid',
-                                                     start_color='ffff00',
-                                                     end_color='ffff00'))
+    sheet.column_dimensions['D'].fill = yellow_color
     sheet.column_dimensions['E'].width = 1.14 * 1.72
-    sheet.column_dimensions['E'].fill = (PatternFill(fill_type='solid',
-                                                     start_color='ffff00',
-                                                     end_color='ffff00'))
+    sheet.column_dimensions['E'].fill = yellow_color
     sheet.column_dimensions['F'].width = 43.29 * 1.0169
     sheet.column_dimensions['G'].width = 1.43 * 1.5
     sheet.column_dimensions['H'].width = 25.71 * 1.0284
     sheet.column_dimensions['I'].width = 4.43 * 1.72
-    sheet.column_dimensions['I'].fill = (PatternFill(fill_type='solid',
-                                                     start_color='ffff00',
-                                                     end_color='ffff00'))
+    sheet.column_dimensions['I'].fill = yellow_color
     sheet.column_dimensions['J'].width = 2.71 * 1.72
-    sheet.column_dimensions['J'].fill = (PatternFill(fill_type='solid',
-                                                     start_color='ffff00',
-                                                     end_color='ffff00'))
+    sheet.column_dimensions['J'].fill = yellow_color
     sheet.column_dimensions['K'].width = 3.14 * 1.25
     sheet.column_dimensions['L'].width = 4.71 * 1.72
-    sheet.column_dimensions['L'].fill = (PatternFill(fill_type='solid',
-                                                     start_color='ffff00',
-                                                     end_color='ffff00'))
-    sheet.column_dimensions['M'].fill = (PatternFill(fill_type='solid',
-                                                     start_color='ffff00',
-                                                     end_color='ffff00'))
+    sheet.column_dimensions['L'].fill = yellow_color
+    sheet.column_dimensions['M'].fill = yellow_color
     sheet.column_dimensions['M'].width = 9 * 1.9
     sheet.column_dimensions['N'].width = 9 * 1.9
-    sheet.column_dimensions['N'].fill = (PatternFill(fill_type='solid',
-                                                     start_color='ffff00',
-                                                     end_color='ffff00'))
+    sheet.column_dimensions['N'].fill = yellow_color
     sheet.column_dimensions['O'].width = 9 * 1.08
     sheet.column_dimensions['P'].width = 9 * 1.08
     sheet.column_dimensions['Q'].width = 9 * 1.08
     sheet.column_dimensions['R'].width = 9 * 1.08
     sheet.column_dimensions['S'].width = 9 * 1.2
-    sheet.column_dimensions['S'].fill = (PatternFill(fill_type='solid',
-                                                     start_color='ffff00',
-                                                     end_color='ffff00'))
+    sheet.column_dimensions['S'].fill = pink_color
     sheet.column_dimensions['T'].width = 9 * 1.5
-    sheet.column_dimensions['T'].fill = (PatternFill(fill_type='solid',
-                                                     start_color='ffff00',
-                                                     end_color='ffff00'))
+    sheet.column_dimensions['T'].fill = pink_color
+
     sheet.column_dimensions['U'].width = 1 * 1.72
 
 
@@ -232,18 +234,10 @@ def fill_table_head(
         horizontal="center",
         vertical='center'
     )
-    sheet['D14'].fill = PatternFill(
-        fill_type='solid',
-        start_color='ffff00',
-        end_color='ffff00'
-    )
+    sheet['D14'].fill = yellow_color
 
     sheet['E14'].border = thin_border
-    sheet['E14'].fill = PatternFill(
-        fill_type='solid',
-        start_color='ffff00',
-        end_color='ffff00'
-    )
+    sheet['E14'].fill = yellow_color
 
     sheet['F14'].value = "Опис"
     sheet['F14'].font = table_head_font
@@ -270,8 +264,7 @@ def fill_table_head(
     )
 
     sheet['I14'].border = thin_border
-    sheet['I14'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['I14'].fill = yellow_color
 
     sheet['J14'].value = "Вага"
     sheet['J14'].font = table_head_font
@@ -280,8 +273,7 @@ def fill_table_head(
         horizontal="center",
         vertical='center'
     )
-    sheet['J14'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['J14'].fill =yellow_color
 
     sheet['K14'].value = "Кіл-ть"
     sheet['K14'].font = table_head_font
@@ -298,8 +290,7 @@ def fill_table_head(
         horizontal="center",
         vertical='center'
     )
-    sheet['L14'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['L14'].fill = yellow_color
 
     sheet['M14'].value = "Вартість позиції"
     sheet['M14'].font = table_head_font
@@ -308,8 +299,7 @@ def fill_table_head(
         horizontal="center",
         vertical='center'
     )
-    sheet['M14'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['M14'].fill = yellow_color
 
     sheet['N14'].value = "Відсоток від вартості позиції"
     sheet['N14'].font = table_head_font
@@ -318,8 +308,7 @@ def fill_table_head(
         horizontal="center",
         vertical='center'
     )
-    sheet['N14'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['N14'].fill = yellow_color
 
     sheet['O14'].value = "Ціна од. EURO"
     sheet['O14'].font = table_head_font
@@ -360,8 +349,7 @@ def fill_table_head(
         horizontal="center",
         vertical='center'
     )
-    sheet['S14'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['S14'].fill = pink_color
 
     sheet['T14'].value = "1C разом UAH"
     sheet['T14'].font = table_head_font
@@ -370,8 +358,7 @@ def fill_table_head(
         horizontal="center",
         vertical='center'
     )
-    sheet['T14'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['T14'].fill = yellow_color
 
 def fill_number_string(
         sheet: openpyxl.worksheet.worksheet.Worksheet
@@ -398,18 +385,10 @@ def fill_number_string(
         horizontal="center",
         vertical='center'
     )
-    sheet['D15'].fill = PatternFill(
-        fill_type='solid',
-        start_color='ffff00',
-        end_color='ffff00'
-    )
+    sheet['D15'].fill = yellow_color
 
     sheet['E15'].border = thin_border
-    sheet['E15'].fill = PatternFill(
-        fill_type='solid',
-        start_color='ffff00',
-        end_color='ffff00'
-    )
+    sheet['E15'].fill = yellow_color
 
     sheet['F15'].value = 3
     sheet['F15'].font = table_head_font
@@ -435,14 +414,12 @@ def fill_number_string(
     )
 
     sheet['I15'].border = thin_border
-    sheet['I15'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['I15'].fill = yellow_color
 
 
     sheet['J15'].font = table_head_font
     sheet['J15'].border = thin_border
-    sheet['J15'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['J15'].fill = yellow_color
 
     sheet['K15'].value = 5
     sheet['K15'].font = table_head_font
@@ -454,18 +431,15 @@ def fill_number_string(
 
     sheet['L15'].font = table_head_font
     sheet['L15'].border = thin_border
-    sheet['L15'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['L15'].fill = yellow_color
 
     sheet['M15'].font = table_head_font
     sheet['M15'].border = thin_border
-    sheet['M15'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['M15'].fill = yellow_color
 
     sheet['N15'].font = table_head_font
     sheet['N15'].border = thin_border
-    sheet['N15'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['N15'].fill = yellow_color
 
     sheet['O15'].value = 6
     sheet['O15'].font = table_head_font
@@ -500,12 +474,10 @@ def fill_number_string(
     )
 
     sheet['S15'].border = thin_border
-    sheet['S15'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['S15'].fill = pink_color
 
     sheet['T15'].border = thin_border
-    sheet['T15'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet['T15'].fill = yellow_color
 
 def empty_string(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
@@ -524,11 +496,7 @@ def empty_string(
     )
 
     sheet[f'E{str(number_string)}'].border = thin_border
-    sheet[f'E{str(number_string)}'].fill = PatternFill(
-        fill_type='solid',
-        start_color='ffff00',
-        end_color='ffff00'
-    )
+    sheet[f'E{str(number_string)}'].fill = yellow_color
 
     sheet[f'F{str(number_string)}'].border = thin_border
 
@@ -539,26 +507,21 @@ def empty_string(
 
 
     sheet[f'I{str(number_string)}'].border = thin_border
-    sheet[f'I{str(number_string)}'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet[f'I{str(number_string)}'].fill = yellow_color
 
     sheet[f'J{str(number_string)}'].border = thin_border
-    sheet[f'J{str(number_string)}'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet[f'J{str(number_string)}'].fill = yellow_color
 
     sheet[f'K{str(number_string)}'].border = thin_border
 
     sheet[f'L{str(number_string)}'].border = thin_border
-    sheet[f'L{str(number_string)}'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet[f'L{str(number_string)}'].fill = yellow_color
 
     sheet[f'M{str(number_string)}'].border = thin_border
-    sheet[f'M{str(number_string)}'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet[f'M{str(number_string)}'].fill = yellow_color
 
     sheet[f'N{str(number_string)}'].border = thin_border
-    sheet[f'N{str(number_string)}'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet[f'N{str(number_string)}'].fill = yellow_color
 
     sheet[f'O{str(number_string)}'].border = thin_border
 
@@ -569,13 +532,10 @@ def empty_string(
     sheet[f'R{str(number_string)}'].border = thin_border
 
     sheet[f'S{str(number_string)}'].border = thin_border
-    sheet[f'S{str(number_string)}'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
+    sheet[f'S{str(number_string)}'].fill = pink_color
 
     sheet[f'T{str(number_string)}'].border = thin_border
-    sheet[f'T{str(number_string)}'].fill = PatternFill(
-        fill_type='solid', start_color='ffff00', end_color='ffff00')
-
+    sheet[f'T{str(number_string)}'].fill = yellow_color
 def items_in_row(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
         invoice: Invoice,
@@ -603,18 +563,10 @@ def items_in_row(
             vertical='center',
             wrapText=True
         )
-        sheet[f'D{str(current_row)}'].fill = PatternFill(
-            fill_type='solid',
-            start_color='ffff00',
-            end_color='ffff00'
-        )
+        sheet[f'D{str(current_row)}'].fill = yellow_color
 
         sheet[f"E{str(current_row)}"].border = thin_border
-        sheet[f'E{str(current_row)}'].fill = PatternFill(
-            fill_type='solid',
-            start_color='ffff00',
-            end_color='ffff00'
-        )
+        sheet[f'E{str(current_row)}'].fill = yellow_color
 
         sheet[f"F{str(current_row)}"].border = thin_border
         sheet[f"F{str(current_row)}"].value = \
@@ -638,36 +590,19 @@ def items_in_row(
         sheet[f"K{str(current_row)}"].border = thin_border
         sheet[f"K{str(current_row)}"].value = invoice.get_list_item()[index].get_amount_item()
         sheet[f"K{str(current_row)}"].font = numbers_table_font
-        sheet[f"K{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
+        sheet[f"K{str(current_row)}"].alignment = alignment_right_center
 
         sheet[f"J{str(current_row)}"].border = thin_border
         sheet[f"J{str(current_row)}"].font = numbers_table_font
-        sheet[f"J{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
-        sheet[f'J{str(current_row)}'].fill = PatternFill(
-            fill_type='solid',
-            start_color='ffff00',
-            end_color='ffff00'
-        )
+        sheet[f"J{str(current_row)}"].alignment = alignment_right_center
+        sheet[f'J{str(current_row)}'].fill = yellow_color
         sheet[f"J{str(current_row)}"].value = \
             invoice.get_list_item()[index].get_weight_item()
 
         sheet[f"I{str(current_row)}"].border = thin_border
         sheet[f"I{str(current_row)}"].font = numbers_table_font
-        sheet[f"I{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
-        sheet[f'I{str(current_row)}'].fill = PatternFill(
-            fill_type='solid',
-            start_color='ffff00',
-            end_color='ffff00'
-        )
+        sheet[f"I{str(current_row)}"].alignment = alignment_right_center
+        sheet[f'I{str(current_row)}'].fill = yellow_color
         sheet[f"I{str(current_row)}"].value = \
             f"=J{str(current_row)}*K{str(current_row)}"
 
@@ -675,51 +610,20 @@ def items_in_row(
         sheet[f"L{str(current_row)}"].font = numbers_table_font
         sheet[f"L{str(current_row)}"].value = \
             f"={invoice.get_list_item()[index].get_price_item()}*((100-{float(invoice.get_provider_discount())})/100)"
-        sheet[f'L{str(current_row)}'].fill = PatternFill(
-            fill_type='solid',
-            start_color='ffff00',
-            end_color='ffff00'
-        )
-        sheet[f"L{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
+        sheet[f'L{str(current_row)}'].fill = yellow_color
+        sheet[f"L{str(current_row)}"].alignment = alignment_right_center
 
         sheet[f"M{str(current_row)}"].border = thin_border
         sheet[f"M{str(current_row)}"].font = numbers_table_font
         sheet[f"M{str(current_row)}"].value = f"=L{str(current_row)}*K{str(current_row)}"
-        sheet[f'M{str(current_row)}'].fill = PatternFill(
-            fill_type='solid',
-            start_color='ffff00',
-            end_color='ffff00'
-        )
-        sheet[f"M{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
-
+        sheet[f'M{str(current_row)}'].fill = yellow_color
+        sheet[f"M{str(current_row)}"].alignment = alignment_right_center
         sheet[f"N{str(current_row)}"].border = thin_border
         sheet[f"N{str(current_row)}"].font = numbers_table_font
         sheet[f"N{str(current_row)}"].value = f"=((L{str(current_row)}*100)/{invoice.get_sum_item_price()})/100"
         sheet[f"N{str(current_row)}"].number_format = '#,##0.00'
-        sheet[f'N{str(current_row)}'].fill = PatternFill(
-            fill_type='solid',
-            start_color='ffff00',
-            end_color='ffff00'
-        )
-        sheet[f"N{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
-
-        sheet[f"Q{str(current_row)}"].value = f"={invoice.get_total_price_ua()}*N{str(current_row)}"
-        sheet[f"Q{str(current_row)}"].number_format = '#,##0.00'
-        sheet[f"Q{str(current_row)}"].border = thin_border
-        sheet[f"Q{str(current_row)}"].font = numbers_table_font
-        sheet[f"Q{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
+        sheet[f'N{str(current_row)}'].fill = yellow_color
+        sheet[f"N{str(current_row)}"].alignment = alignment_right_center
 
         sheet[f"O{str(current_row)}"].value = f"=Q{str(current_row)}/{str(invoice.get_rate())}"
         sheet[f"O{str(current_row)}"].number_format = '#,##0.00'
@@ -734,19 +638,19 @@ def items_in_row(
         sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
         sheet[f"P{str(current_row)}"].border = thin_border
         sheet[f"P{str(current_row)}"].font = numbers_table_font
-        sheet[f"P{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
+        sheet[f"P{str(current_row)}"].alignment = alignment_right_center
 
-        sheet[f"R{str(current_row)}"].value = f"=Q{str(current_row)}*K{str(current_row)}"
+        sheet[f"R{str(current_row)}"].value = f"={invoice.get_total_price_ua()}*K{str(current_row)}*N{str(current_row)}"
         sheet[f"R{str(current_row)}"].number_format = '#,##0.00'
         sheet[f"R{str(current_row)}"].border = thin_border
         sheet[f"R{str(current_row)}"].font = numbers_table_font
-        sheet[f"R{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
+        sheet[f"R{str(current_row)}"].alignment = alignment_right_center
+
+        sheet[f"Q{str(current_row)}"].value = f"=R{str(current_row)}/K{str(current_row)}"
+        sheet[f"Q{str(current_row)}"].number_format = '#,##0.00'
+        sheet[f"Q{str(current_row)}"].border = thin_border
+        sheet[f"Q{str(current_row)}"].font = numbers_table_font
+        sheet[f"Q{str(current_row)}"].alignment = alignment_right_center
 
         current_row += 1
 
@@ -778,18 +682,10 @@ def write_row(
         vertical='center',
         wrapText=True
     )
-    sheet[f'D{str(number_string)}'].fill = PatternFill(
-        fill_type='solid',
-        start_color='ffff00',
-        end_color='ffff00'
-    )
+    sheet[f'D{str(number_string)}'].fill = yellow_color
 
     sheet[f"E{str(number_string)}"].border = thin_border
-    sheet[f'E{str(number_string)}'].fill = PatternFill(
-        fill_type='solid',
-        start_color='ffff00',
-        end_color='ffff00'
-    )
+    sheet[f'E{str(number_string)}'].fill = yellow_color
 
     sheet[f"F{str(number_string)}"].border = thin_border
     sheet[f"F{str(number_string)}"].value = \
@@ -813,36 +709,19 @@ def write_row(
     sheet[f"K{str(number_string)}"].border = thin_border
     sheet[f"K{str(number_string)}"].value = item.get_amount_item()
     sheet[f"K{str(number_string)}"].font = numbers_table_font
-    sheet[f"K{str(number_string)}"].alignment = Alignment(
-        horizontal="center",
-        vertical='center'
-    )
+    sheet[f"K{str(number_string)}"].alignment = alignment_right_center
 
     sheet[f"J{str(number_string)}"].border = thin_border
     sheet[f"J{str(number_string)}"].font = numbers_table_font
-    sheet[f"J{str(number_string)}"].alignment = Alignment(
-        horizontal="center",
-        vertical='center'
-    )
-    sheet[f'J{str(number_string)}'].fill = PatternFill(
-        fill_type='solid',
-        start_color='ffff00',
-        end_color='ffff00'
-    )
+    sheet[f"J{str(number_string)}"].alignment = alignment_right_center
+    sheet[f'J{str(number_string)}'].fill = yellow_color
     sheet[f"J{str(number_string)}"].value = \
         item.get_weight_item()
 
     sheet[f"I{str(number_string)}"].border = thin_border
     sheet[f"I{str(number_string)}"].font = numbers_table_font
-    sheet[f"I{str(number_string)}"].alignment = Alignment(
-        horizontal="center",
-        vertical='center'
-    )
-    sheet[f'I{str(number_string)}'].fill = PatternFill(
-        fill_type='solid',
-        start_color='ffff00',
-        end_color='ffff00'
-    )
+    sheet[f"I{str(number_string)}"].alignment = alignment_right_center
+    sheet[f'I{str(number_string)}'].fill = yellow_color
 
     sheet[f"I{str(number_string)}"].value = \
         f"=J{str(number_string)}*K{str(number_string)}"
@@ -851,32 +730,20 @@ def write_row(
     sheet[f"L{str(number_string)}"].font = numbers_table_font
     sheet[f"L{str(number_string)}"].value = \
         f"={item.get_price_item()}*((100-{provider_discount})/100)"
-    sheet[f'L{str(number_string)}'].fill = PatternFill(
-        fill_type='solid',
-        start_color='ffff00',
-        end_color='ffff00'
-    )
-    sheet[f"L{str(number_string)}"].alignment = Alignment(
-        horizontal="center",
-        vertical='center'
-    )
+    sheet[f'L{str(number_string)}'].fill = yellow_color
+
+    sheet[f"L{str(number_string)}"].alignment = alignment_right_center
 
     sheet[f"O{str(number_string)}"].border = thin_border
     sheet[f"O{str(number_string)}"].value = 0
     sheet[f"O{str(number_string)}"].font = numbers_table_font
-    sheet[f"O{str(number_string)}"].alignment = Alignment(
-        horizontal="right",
-        vertical='center'
-    )
+    sheet[f"O{str(number_string)}"].alignment = alignment_right_center
 
     sheet[f"M{str(number_string)}"].border = thin_border
     sheet[f"M{str(number_string)}"].value = \
         f"=O{str(number_string)}/{float(str(rate).replace(',','.'))}"
     sheet[f"M{str(number_string)}"].font = numbers_table_font
-    sheet[f"M{str(number_string)}"].alignment = Alignment(
-        horizontal="right",
-        vertical='center'
-    )
+    sheet[f"M{str(number_string)}"].alignment = alignment_right_center
 
     sheet[f"M{str(number_string)}"].number_format = '#,##0.00'
 
@@ -884,26 +751,21 @@ def write_row(
     sheet[f"N{str(number_string)}"].value = \
         f"= M{str(number_string)} * K{str(number_string)}"
     sheet[f"N{str(number_string)}"].font = numbers_table_font
-    sheet[f"N{str(number_string)}"].alignment = Alignment(
-        horizontal="right",
-        vertical='center'
-    )
+    sheet[f"N{str(number_string)}"].alignment = alignment_right_center
     sheet[f"N{str(number_string)}"].number_format = '#,##0.00'
 
     sheet[f"P{str(number_string)}"].border = thin_border
     sheet[f"P{str(number_string)}"].value = \
         f"= O{str(number_string)} * K{str(number_string)}"
     sheet[f"P{str(number_string)}"].font = numbers_table_font
-    sheet[f"P{str(number_string)}"].alignment = Alignment(
-        horizontal="right",
-        vertical='center'
-    )
+    sheet[f"P{str(number_string)}"].alignment = alignment_right_center
 
 
 def total_weight(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
         current_row: int) -> None:
         sheet[f"I{str(current_row)}"].value = f"=SUM(I17:I{str(current_row-1)})"
+        sheet[f"I{str(current_row)}"].alignment = alignment_right_center
 
 
 def fill_last_row_table(
@@ -921,16 +783,9 @@ def fill_last_row_table(
     else:
         sheet[f"I{str(current_row)}"] = \
             total_weight(current_row - 1)
-        sheet[f"I{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
+        sheet[f"I{str(current_row)}"].alignment = alignment_right_center
         sheet[f"I{str(current_row)}"].font = numbers_table_font
-        sheet[f"I{str(current_row)}"].fill = PatternFill(
-            fill_type='solid',
-            start_color='ffff00',
-            end_color='ffff00'
-        )
+        sheet[f"I{str(current_row)}"].fill =yellow_color
 
 def fill_total_bill(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
@@ -955,6 +810,7 @@ def fill_total_bill(
     sheet[f"P{str(current_row)}"].font = numbers_table_font
     sheet[f"P{str(current_row)}"].border = thin_border
     sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"P{str(current_row)}"].alignment = alignment_right_center
 
     sheet[f"Q{str(current_row)}"].font = numbers_table_font
     sheet[f"Q{str(current_row)}"].border = thin_border
@@ -964,18 +820,15 @@ def fill_total_bill(
     sheet[f"R{str(current_row)}"].font = numbers_table_font
     sheet[f"R{str(current_row)}"].border = thin_border
     sheet[f"R{str(current_row)}"].number_format = '#,##0.00'
-
-    sheet[f"S{str(current_row)}"] = \
-        f"=SUM(S17:S{str(current_row-2)})"
-    sheet[f"S{str(current_row)}"].font = numbers_table_font
-    sheet[f"S{str(current_row)}"].border = thin_border
-    sheet[f"S{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"R{str(current_row)}"].alignment = alignment_right_center
 
     sheet[f"T{str(current_row)}"] = \
         f"=SUM(T17:T{str(current_row-2)})"
     sheet[f"T{str(current_row)}"].font = numbers_table_font
     sheet[f"T{str(current_row)}"].border = thin_border
     sheet[f"T{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"T{str(current_row)}"].alignment = alignment_right_center
+    sheet[f"T{str(current_row)}"].fill = pink_color
 
 def get_price_item_for_customer(invoce: Invoice) -> list:
     #Загальна ціна покупки (ціна * кількість)
@@ -1042,6 +895,7 @@ def tax_row_total(
     sheet[f"P{str(current_row)}"].font = numbers_table_font
     sheet[f"P{str(current_row)}"].border = thin_border
     sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"P{str(current_row)}"].alignment =  alignment_right_center
 
     sheet[f"Q{str(current_row)}"].font = numbers_table_font
     sheet[f"Q{str(current_row)}"].border = thin_border
@@ -1051,6 +905,15 @@ def tax_row_total(
     sheet[f"R{str(current_row)}"].font = numbers_table_font
     sheet[f"R{str(current_row)}"].border = thin_border
     sheet[f"R{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"R{str(current_row)}"].alignment =  alignment_right_center
+
+    sheet[f"T{str(current_row)}"] = f"=T{str(current_row-1)}*0.2"
+    sheet[f"T{str(current_row)}"].border = thin_border
+    sheet[f"T{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"T{str(current_row)}"].fill = pink_color
+    sheet[f"T{str(current_row)}"].alignment = alignment_right_center
+    sheet[f"T{str(current_row)}"].font = numbers_table_font
+
 def set_price(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
         list_price: list
@@ -1158,6 +1021,7 @@ def fill_total_tax_discount(
     sheet[f"P{str(current_row)}"].font = discount_font
     sheet[f"P{str(current_row)}"].border = thin_border
     sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"P{str(current_row)}"].font = discount_font
 
     sheet[f"Q{str(current_row)}"].border = thin_border
 
@@ -1166,6 +1030,7 @@ def fill_total_tax_discount(
     sheet[f"R{str(current_row)}"].font = discount_font
     sheet[f"R{str(current_row)}"].border = thin_border
     sheet[f"R{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"R{str(current_row)}"].font = discount_font
 
 
 def fill_delivery_value(
@@ -1177,7 +1042,7 @@ def fill_delivery_value(
     sheet[f'F{str(current_row)}'] =\
          f"Вартість доставки до складу у місті Київ"
 
-    sheet[f'F{str(current_row)}'].font = total_bill_font
+    sheet[f'F{str(current_row)}'].font = discount_font
     sheet[f"F{str(current_row)}"].border = thin_border
     sheet[f"G{str(current_row)}"].border = thin_border
     sheet[f"H{str(current_row)}"].border = thin_border
@@ -1226,6 +1091,7 @@ def total_bill_with_tax(
     sheet[f"P{str(current_row)}"].font = numbers_table_font
     sheet[f"P{str(current_row)}"].border = thin_border
     sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"P{str(current_row)}"].alignment = alignment_right_center
 
     sheet[f"Q{str(current_row)}"].font = numbers_table_font
     sheet[f"Q{str(current_row)}"].border = thin_border
@@ -1235,13 +1101,23 @@ def total_bill_with_tax(
     sheet[f"R{str(current_row)}"].font = numbers_table_font
     sheet[f"R{str(current_row)}"].border = thin_border
     sheet[f"R{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"R{str(current_row)}"].alignment = alignment_right_center
+
+    sheet[f"T{str(current_row)}"] = \
+        f"=T{str(current_row-1)}+T{str(current_row-2)}"
+    sheet[f"T{str(current_row)}"].font = numbers_table_font
+    sheet[f"T{str(current_row)}"].border = thin_border
+    sheet[f"T{str(current_row)}"].number_format = '#,##0.00'
+    sheet[f"T{str(current_row)}"].fill = pink_color
+    sheet[f"T{str(current_row)}"].alignment = alignment_right_center
+    sheet[f"T{str(current_row)}"].font = numbers_table_font
 
 def fill_total_price(
         sheet: openpyxl.worksheet.worksheet.Worksheet,
         current_row: int
 ) -> None:
     sheet.merge_cells(f'F{str(current_row)}:O{str(current_row)}')
-    sheet[f"F{str(current_row)}"].font = total_bill_font
+    sheet[f"F{str(current_row)}"].font = discount_font
     sheet[f"F{str(current_row)}"].value = "Загальна вартість"
     sheet[f"F{str(current_row)}"].border = thin_border
     sheet[f"G{str(current_row)}"].border = thin_border
@@ -1256,7 +1132,7 @@ def fill_total_price(
 
     sheet[f"P{str(current_row)}"] = \
         f"=P{str(current_row-1)}+P{str(current_row-2)}"
-    sheet[f"P{str(current_row)}"].font = numbers_table_font
+    sheet[f"P{str(current_row)}"].font = discount_font
     sheet[f"P{str(current_row)}"].border = thin_border
     sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
 
@@ -1265,7 +1141,7 @@ def fill_total_price(
 
     sheet[f"R{str(current_row)}"] = \
         f"=R{str(current_row-1)}+R{str(current_row-2)}"
-    sheet[f"R{str(current_row)}"].font = numbers_table_font
+    sheet[f"R{str(current_row)}"].font = discount_font
     sheet[f"R{str(current_row)}"].border = thin_border
     sheet[f"R{str(current_row)}"].number_format = '#,##0.00'
 
@@ -1277,6 +1153,40 @@ def fill_1C_all(
 ) -> None:
     row = 17
     for index in range(len(invoice.get_list_item())):
-        sheet[f"T{str(row)}"] = f"=R{str(current_row)}/1.2*N{str(row)}"
+        sheet[f"T{str(row)}"] = f"=R{str(current_row)}*(5/6)*N{str(row)}*K{str(row)}"
+        sheet[f"T{str(row)}"].border = thin_border
+        sheet[f"T{str(row)}"].number_format = '#,##0.00'
+        sheet[f"T{str(row)}"].fill = yellow_color
+        sheet[f"T{str(row)}"].alignment = alignment_right_center
+        sheet[f"T{str(row)}"].font = numbers_table_font
+
+
+        sheet[f"S{str(row)}"] = f"=T{str(row)}/K{str(row)}"
+        sheet[f"S{str(row)}"].border = thin_border
+        sheet[f"S{str(row)}"].number_format = '#,##0.00'
+        sheet[f"S{str(row)}"].fill = pink_color
+        sheet[f"S{str(row)}"].alignment = alignment_right_center
+        sheet[f"S{str(row)}"].font = numbers_table_font
 
         row += 1
+
+
+def empty_columns(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        current_row: int,
+        invoice: Invoice
+) -> None:
+    if invoice.get_customer_discount() == "0":
+        sheet.merge_cells(f'B{str(current_row-4)}:B{str(current_row)}')
+        sheet.merge_cells(f'C{str(current_row-4)}:C{str(current_row)}')
+        for i in range(5, -1, -1):
+            sheet[f"B{str(current_row-i)}"].border = thin_border
+        for i in range(5, -1, -1):
+            sheet[f"C{str(current_row-i)}"].border = thin_border
+    else:
+        sheet.merge_cells(f'B{str(current_row-6)}:B{str(current_row)}')
+        sheet.merge_cells(f'C{str(current_row-6)}:C{str(current_row)}')
+        for i in range(7, -1, -1):
+            sheet[f"B{str(current_row-i)}"].border = thin_border
+        for i in range(7, -1, -1):
+            sheet[f"C{str(current_row-i)}"].border = thin_border
