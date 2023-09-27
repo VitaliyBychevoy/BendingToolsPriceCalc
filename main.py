@@ -843,50 +843,6 @@ class Ui(QtWidgets.QMainWindow):
         self.m_w.show()
 
     # Кнопка створення попередньої таблиці
-    """
-    def create_pre_commercial_offer(self) -> None:
-        print("Pre commercial offer")
-        #if self.company_name.text() in ["", " "] or \
-        if self.company_value.currentText() == "Оберіть компанію" or\
-                self.EURO_value.text() in ["", " ", "00,000", "00,00","0,0", "0"] or \
-                self.table.rowCount() < 1 or \
-                self.packing_value.text() in ["", " ", "00,000", "0,0", "0"] or \
-                self.delivery_value.text() in ["", " ", "00,000", "0,0", "0"]:
-            error = MessageError()
-            error_message: str = ""
-           # if self.company_name.text() in ["", " "]:
-            if self.company_value.currentText() == "Оберіть компанію":
-                error_message += "Вкажіть назву компанії клієтна.\n"
-            if self.EURO_value.text() in ["", " ", "00,000", "0,0", "0"]:
-                error_message += "Вкажіть курс EURO.\n"
-            if self.table.rowCount() < 1:
-                error_message += "Додайте хочаб один виріб.\n"
-            if self.packing_value.text() in ["", " ", "00,000", "0,0", "0"]:
-                error_message += "Зазначте вартість пакування.\n"
-            if self.delivery_value.text() in ["", " ", "00,000", "0,0", "0"]:
-                error_message += "Зазначте вартість доставки."
-            error.setText(error_message)
-            error.exec_()
-        else:
-            print("Let`s create pre commercial offer")
-            self.my_invoice.set_customer_discount(self.discount_customer_spinBox.value())
-            print("Discount for customer: ",
-                  self.my_invoice.get_customer_discount(),
-                  ". ",
-                  type(self.my_invoice.get_customer_discount()),
-                  )
-
-            self.pco = Pre_commercial_offer()
-            #self.pco.set_company_name(self.company_name.text())
-            self.pco.set_company_name(self.company_value.currentText())
-            self.pco.set_rate(new_rate=self.EURO_value.text())
-            self.pco.set_discount(self.provider_discount_spinBox.value())
-            #self.pco.set_path_temp(f"data/ТКП {self.pco.get_company_name()} I{self.time_label.text().replace(':', '_')}I {self.date_value.text().replace(':', '_')}.xlsx")
-            self.pco.set_path_temp(
-                f"data/ТКП {self.pco.get_company_name()} I{self.time_label.text().replace(':', '_')}I {self.date_value.text().replace(':', '_')}.xlsx")
-            # Копиюєм попередній порожній зразок комерційної пропозиції
-            shutil.copy("data/Зразок ТКП.xlsx", self.pco.get_path_temp())
-   """
     def create_pre_commercial_offer(self) -> None:
         # встановлюємо курс евро
         self.my_invoice.set_rate(float(self.EURO_value.text().replace(",", ".")))
@@ -952,6 +908,9 @@ class Ui(QtWidgets.QMainWindow):
 
         #Створюємо новий файл xlsx
         wb = Workbook()
+
+
+
         #Активуємо лист
         sheet = wb.active
 
@@ -1044,9 +1003,14 @@ class Ui(QtWidgets.QMainWindow):
 
         #Порожни колонки
         empty_columns(sheet, current_row, self.my_invoice)
+        current_row += 1
+
+        #Строки після таблиці
+        after_table(sheet, current_row, self.my_invoice)
+        current_row += 25
+
 
         qf = QFileDialog()
-
 
         path = ""
         path = qf.getSaveFileName(
@@ -1094,10 +1058,6 @@ class Ui(QtWidgets.QMainWindow):
         else:
             return True
 
-
-#discount_customer_spinBox
-            #Заповнюємо новий файл
-        #self.pco.fill_xlsx(self.my_invoice)
 
 
 class MessageError(QMessageBox):

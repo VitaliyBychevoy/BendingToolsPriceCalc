@@ -2,8 +2,10 @@ from datetime import datetime, date
 import openpyxl.styles.numbers
 
 from openpyxl.drawing.image import Image
+from openpyxl.worksheet.page import *
 from openpyxl.styles import Alignment
 from openpyxl.styles.borders import Border, Side
+from openpyxl.worksheet.page import PageMargins
 import openpyxl.styles.numbers
 from openpyxl.styles import Font, Fill #Стилі для текста
 from openpyxl.styles import PatternFill #Cтили для ячеєк
@@ -47,6 +49,12 @@ total_bill_font.name = "Times New Roman"
 discount_font = Font(size=8, bold=True)
 discount_font.name = "Times New Roman"
 
+after_table_font = Font(size=7)
+after_table_font.name = "Arial Narrow"
+
+italic_bold = Font(size=8, italic=True, bold=True)
+italic_bold.name = "Times New Roman"
+
 #Рамка
 thin_border = Border(left=Side(style='thin'),
                      right=Side(style='thin'),
@@ -57,6 +65,18 @@ thin_border = Border(left=Side(style='thin'),
 alignment_right_center = Alignment(
         horizontal="right",
         vertical='center',
+        wrapText=True
+    )
+
+alignment_left_center = Alignment(
+        horizontal="left",
+        vertical='center',
+        wrapText=True
+    )
+
+alignment_center_top = Alignment(
+        horizontal="center",
+        vertical='top',
         wrapText=True
     )
 
@@ -1190,3 +1210,127 @@ def empty_columns(
             sheet[f"B{str(current_row-i)}"].border = thin_border
         for i in range(7, -1, -1):
             sheet[f"C{str(current_row-i)}"].border = thin_border
+
+
+def after_table(
+        sheet: openpyxl.worksheet.worksheet.Worksheet,
+        current_row: int,
+        invoice: Invoice
+) -> None:
+    sheet.row_dimensions[current_row].height = 13 * 0.76
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 13 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:P{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value  = \
+        "1. Умови оплати згідно з договором."
+    sheet[f'B{str(current_row)}'].font = after_table_font
+    sheet[f'B{str(current_row)}'].alignment = alignment_left_center
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 13 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:P{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value  = \
+        "2. Термін доставки"
+    sheet[f'B{str(current_row)}'].font = after_table_font
+    sheet[f'B{str(current_row)}'].alignment = alignment_left_center
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 13 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:P{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value  = \
+        ("3. Відвантаження зі складу в м. Київ відбувається "
+         "після отримання повної суми оплати, протягом доби, "
+         "якщо інші умови не визначено договором.")
+    sheet[f'B{str(current_row)}'].font = after_table_font
+    sheet[f'B{str(current_row)}'].alignment = alignment_left_center
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 29 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:P{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value  = \
+        ('4. Доставка відбувається по всій території Україні '
+         'логістичною компанією "Нова пошта" за тарифами '
+         'перевізника. \n*Самовивіз зі складу в м. Київ вул. Польова 24.')
+    sheet[f'B{str(current_row)}'].font = after_table_font
+    sheet[f'B{str(current_row)}'].alignment = alignment_left_center
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 30 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:P{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value  = \
+        ('5. Термін дії техніко-комерційної пропозиції 3'
+         ' (три) календарних дні.\n*Вартість інструменту може '
+         'бути змінено відповідно до змін курсу валют на'
+         ' Міжбанку України.')
+    sheet[f'B{str(current_row)}'].font = after_table_font
+    sheet[f'B{str(current_row)}'].alignment = alignment_left_center
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 12 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 21 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 6 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 21 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 6 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 7 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 19 * 0.76
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 17 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:P{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value = \
+        (f'Ми високо цінуємо  спільну роботу з '
+         f'компанією {invoice.get_customer_name()},'
+         f'прагнемо до задоволення ваших виробничих потреб.')
+    sheet[f'B{str(current_row)}'].font = description_ua_font
+    sheet[f'B{str(current_row)}'].alignment = alignment_center_top
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 17 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:P{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value = \
+        ("Висловлюю надію на продовження "
+         "успішної співпраці на благо наших спільних "
+         "інтересів, а також на подальше збільшення "
+         "досягнутих показників спільної роботи.")
+    sheet[f'B{str(current_row)}'].font = description_ua_font
+    sheet[f'B{str(current_row)}'].alignment = alignment_center_top
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 4 * 0.76
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 17 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:P{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value = \
+        "Бажаю  Вам  і компанії успіху і процвітання!"
+    sheet[f'B{str(current_row)}'].alignment = alignment_center_top
+    sheet[f'B{str(current_row)}'].font = italic_bold
+    current_row += 1
+
+    sheet.row_dimensions[current_row].height = 2 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 21 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 21 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 21 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 21 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 21 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 21 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 21 * 0.76
+    current_row += 1
+    sheet.row_dimensions[current_row].height = 24 * 0.76
+    current_row += 1
+
+
