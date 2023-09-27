@@ -910,7 +910,6 @@ class Ui(QtWidgets.QMainWindow):
         wb = Workbook()
 
 
-
         #Активуємо лист
         sheet = wb.active
 

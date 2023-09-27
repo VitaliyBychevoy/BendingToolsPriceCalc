@@ -1269,11 +1269,18 @@ def after_table(
 
     sheet.row_dimensions[current_row].height = 12 * 0.76
     current_row += 1
-    sheet.row_dimensions[current_row].height = 21 * 0.76
+    sheet.row_dimensions[current_row].height = 13 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:F{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value = "З повагою,"
     current_row += 1
-    sheet.row_dimensions[current_row].height = 6 * 0.76
+    sheet.row_dimensions[current_row].height = 14 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:F{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value = "Бичевий Віталій"
     current_row += 1
     sheet.row_dimensions[current_row].height = 21 * 0.76
+    sheet.merge_cells(f'B{str(current_row)}:F{str(current_row)}')
+    sheet[f'B{str(current_row)}'].value = \
+        'Інженер-технолог \nТОВ "ВЕКТОРТУЛ"'
     current_row += 1
     sheet.row_dimensions[current_row].height = 6 * 0.76
     current_row += 1
