@@ -127,14 +127,16 @@ class Ui(QtWidgets.QMainWindow):
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
 
         uic.loadUi("BendingPriceCalc.ui", self)
-
         self.setWindowIcon(QtGui.QIcon('data/logo_4.png'))
         self.setGeometry(50, 50, 820, 920)
         self.setFixedSize(820, 920)
         self.m_w = None
+        self.mdi = QMdiArea()
         self.table.setColumnWidth(0, 20)
         self.table.setColumnWidth(1, 100)
         self.table.setColumnWidth(2, 500)
+
+        self.customer_window = None
 
         company_list: list = get_short_name_list()
 
@@ -151,6 +153,9 @@ class Ui(QtWidgets.QMainWindow):
         self.code_value.addItem("?")
 
         self.length_value.addItem("?")
+
+        #Кнопка обробки клієнтів
+        self.company_button.clicked.connect(self.customers_db)
 
         # Обираємо тип кріплення
         self.type_holder.activated.connect(self.get_items)
@@ -248,7 +253,13 @@ class Ui(QtWidgets.QMainWindow):
         #Вартість оформлення документів
         self.delivery_document_value.textChanged.connect(self.check_delivery_document_value)
 
-        self.show()
+      #  self.show()
+
+    def customers_db(self):
+        self.customer_window = CustomerWindow()
+        self.short_name_customer = QComboBox(self.customer_window)
+        self.short_name_customer.setGeometry(120, 15, 200, 30)
+        self.customer_window.show()
 
     def set_typical_style(self) -> None:
         #Списки та spinbox для редагування
@@ -285,8 +296,7 @@ class Ui(QtWidgets.QMainWindow):
         self.clear_table_button.setEnabled(True)
         self.pre_commercial_offer_button.setStyleSheet(style.typically_xlsx_button)
         self.pre_commercial_offer_button.setEnabled(True)
-        self.commercial_offer_button.setStyleSheet(style.typically_xlsx_button)
-        self.commercial_offer_button.setEnabled(True)
+
 
         #таблиця
         self.table.setStyleSheet(style.typically_table)
@@ -395,8 +405,7 @@ class Ui(QtWidgets.QMainWindow):
         self.clear_table_button.setEnabled(False)
         self.pre_commercial_offer_button.setStyleSheet(style.update_xlsx_button)
         self.pre_commercial_offer_button.setEnabled(False)
-        self.commercial_offer_button.setStyleSheet(style.update_xlsx_button)
-        self.commercial_offer_button.setEnabled(False)
+
 
         #таблиця
         self.table.setStyleSheet(style.update_table)
@@ -518,8 +527,6 @@ class Ui(QtWidgets.QMainWindow):
     # Додаємо виріб до таблиці
     def add_item_function(self):
 
-        # self.set_typical_style()
-        # self.new_item = Item()
 
         if self.type_holder.currentText() == "Оберіть тип кріплення" or \
             self.item_value.currentText() in ["Оберіть виріб", " ", "","Оберіть тип кріплення"] or \
@@ -842,7 +849,7 @@ class Ui(QtWidgets.QMainWindow):
         self.m_w = Search()
         self.m_w.show()
 
-    # Кнопка створення попередньої таблиці
+    # Кнопка створення КП
     def create_pre_commercial_offer(self) -> None:
         # встановлюємо курс евро
         self.my_invoice.set_rate(float(self.EURO_value.text().replace(",", ".")))
@@ -1008,12 +1015,12 @@ class Ui(QtWidgets.QMainWindow):
         after_table(sheet, current_row, self.my_invoice)
         current_row += 25
 
+        sheet.print_area = f"A1:U{current_row}"
 
         qf = QFileDialog()
 
         path = ""
         path = qf.getSaveFileName(
-        #path = QFileDialog.getSaveFileName(
                 None,
                 None,
                 f"./{pre_commercial_offer_name}",
@@ -1038,7 +1045,6 @@ class Ui(QtWidgets.QMainWindow):
                 self.delivery_value.text() in zero_spinBox:
             error = MessageError()
             error_message: str = ""
-           # if self.company_name.text() in ["", " "]:
             if self.company_value.currentText() == "Оберіть компанію":
                 error_message += "Вкажіть назву компанії клієтна.\n"
             if self.EURO_value.text() in zero_spinBox:
@@ -1058,6 +1064,17 @@ class Ui(QtWidgets.QMainWindow):
             return True
 
 
+class CustomerWindow(QMdiSubWindow):
+
+    def __init__(self):
+        super(CustomerWindow, self).__init__()
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+        self.setGeometry(870, 50, 500, 280)
+        self.setFixedSize(500, 280)
+        self.setStyleSheet("background-color: #7393ad;")
+
+
 
 class MessageError(QMessageBox):
     font_message = QtGui.QFont()
@@ -1074,16 +1091,18 @@ class MessageError(QMessageBox):
         self.button(QMessageBox.Ok).setVisible(False)
 
 
-class Search(QMdiSubWindow):
+#class Search(QMdiSubWindow):
+class Search(QWidget):
     def __init__(self):
         super(Search, self).__init__()
         self.setGeometry(870, 50, 820, 880)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        # self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
         uic.loadUi("Search.ui", self)
 
 
-app = QtWidgets.QApplication(sys.argv)
-window = Ui()
-
-app.exec_()
+if __name__ == '__main__':
+    app = QtWidgets.QApplication(sys.argv)
+    window = Ui()
+    window.show()
+    app.exec_()

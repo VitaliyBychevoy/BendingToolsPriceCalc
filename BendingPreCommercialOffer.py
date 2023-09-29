@@ -55,6 +55,24 @@ after_table_font.name = "Arial Narrow"
 italic_bold = Font(size=8, italic=True, bold=True)
 italic_bold.name = "Times New Roman"
 
+font_italic = Font(size=7, italic=True)
+font_italic.name = "Times New Roman"
+
+font_italic_bold = Font(size=7, italic=True,  bold=True)
+font_italic_bold.name = "Times New Roman"
+
+font_7_bold = Font(size=7,  bold=True)
+font_7_bold.name = "Times New Roman"
+
+font_7_bold_underline = Font(
+    size=7,
+    bold=True,
+    underline='single',
+    color='4472c4'
+)
+font_7_bold_underline.name = "Times New Roman"
+
+
 #Рамка
 thin_border = Border(left=Side(style='thin'),
                      right=Side(style='thin'),
@@ -78,6 +96,26 @@ alignment_center_top = Alignment(
         horizontal="center",
         vertical='top',
         wrapText=True
+    )
+
+alignment_left_top = Alignment(
+        horizontal="left",
+        vertical='top',
+    )
+
+alignment_right_top = Alignment(
+        horizontal="right",
+        vertical='top',
+    )
+
+alignment_right_bottom = Alignment(
+        horizontal="right",
+        vertical='bottom',
+    )
+
+alignment_left_bottom = Alignment(
+        horizontal="left",
+        vertical='bottom',
     )
 
 #Кольори
@@ -1237,13 +1275,21 @@ def after_table(
     current_row += 1
 
     sheet.row_dimensions[current_row].height = 13 * 0.76
-    sheet.merge_cells(f'B{str(current_row)}:P{str(current_row)}')
+    sheet.merge_cells(f'B{str(current_row)}:J{str(current_row)}')
     sheet[f'B{str(current_row)}'].value  = \
         ("3. Відвантаження зі складу в м. Київ відбувається "
          "після отримання повної суми оплати, протягом доби, "
          "якщо інші умови не визначено договором.")
     sheet[f'B{str(current_row)}'].font = after_table_font
     sheet[f'B{str(current_row)}'].alignment = alignment_left_center
+    img = Image("./data/img.png")
+
+    # img = openpyxl.drawing.image.Image(f"data/{invoice.get_list_item()[index].get_image_path()}")
+    img.height = int(300 / 1.8)
+    img.width = 310
+    img.anchor = f"K{str(current_row)}"
+    sheet.add_image(img)
+
     current_row += 1
 
     sheet.row_dimensions[current_row].height = 29 * 0.76
@@ -1272,21 +1318,34 @@ def after_table(
     sheet.row_dimensions[current_row].height = 13 * 0.76
     sheet.merge_cells(f'B{str(current_row)}:F{str(current_row)}')
     sheet[f'B{str(current_row)}'].value = "З повагою,"
+    sheet[f'B{str(current_row)}'].font = font_italic
     current_row += 1
+
     sheet.row_dimensions[current_row].height = 14 * 0.76
     sheet.merge_cells(f'B{str(current_row)}:F{str(current_row)}')
     sheet[f'B{str(current_row)}'].value = "Бичевий Віталій"
+    sheet[f'B{str(current_row)}'].font = font_italic_bold
     current_row += 1
+
     sheet.row_dimensions[current_row].height = 21 * 0.76
     sheet.merge_cells(f'B{str(current_row)}:F{str(current_row)}')
     sheet[f'B{str(current_row)}'].value = \
         'Інженер-технолог \nТОВ "ВЕКТОРТУЛ"'
+    sheet[f'B{str(current_row)}'].font = font_italic
+    sheet[f'B{str(current_row)}'].alignment = alignment_left_top
     current_row += 1
-    sheet.row_dimensions[current_row].height = 6 * 0.76
+
+    sheet.row_dimensions[current_row].height = 14 * 0.76
+    sheet[f'B{str(current_row)}'].value = "+38 044 587 78 38"
+    sheet[f'B{str(current_row)}'].font = font_7_bold
     current_row += 1
-    sheet.row_dimensions[current_row].height = 7 * 0.76
+
+    sheet.row_dimensions[current_row].height = 14 * 0.76
+    sheet[f'B{str(current_row)}'].value = "vd@vectortool.com.ua"
+    sheet[f'B{str(current_row)}'].font = font_7_bold_underline
     current_row += 1
-    sheet.row_dimensions[current_row].height = 19 * 0.76
+
+    sheet.row_dimensions[current_row].height = 4 * 0.76
     current_row += 1
 
     sheet.row_dimensions[current_row].height = 17 * 0.76
@@ -1323,8 +1382,25 @@ def after_table(
 
     sheet.row_dimensions[current_row].height = 2 * 0.76
     current_row += 1
+
     sheet.row_dimensions[current_row].height = 21 * 0.76
+    sheet[f'H{str(current_row)}'].value = \
+        'Директор, ТОВ "Вектортул"'
+    sheet[f'H{str(current_row)}'].font = italic_bold
+    sheet[f'H{str(current_row)}'].alignment = alignment_right_bottom
+    img = Image("./data/sign.png")
+
+    img.height = int(50 * 0.847)
+    img.width = 50
+    img.anchor = f"O{str(current_row)}"
+    sheet.add_image(img)
+    sheet.merge_cells(f'P{str(current_row)}:R{str(current_row)}')
+    sheet[f'P{str(current_row)}'].value = \
+        "Сліпченко Віктор Миколайович"
+    sheet[f'P{str(current_row)}'].font = italic_bold
+    sheet[f'P{str(current_row)}'].alignment = alignment_left_bottom
     current_row += 1
+
     sheet.row_dimensions[current_row].height = 21 * 0.76
     current_row += 1
     sheet.row_dimensions[current_row].height = 21 * 0.76

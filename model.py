@@ -257,14 +257,12 @@ class Invoice:
             self.max_length = self.list_item[0].get_length_item_mm()
             self.max_length = str(float(self.max_length) / 10)
         else:
-            for i in range(0, len(self.list_item) - 1):
-                if float(self.list_item[i].get_length_item_mm()) >= float(self.list_item[i + 1].get_length_item_mm()):
+            self.max_length = self.list_item[0].get_length_item_mm()
+            for i in range(len(self.list_item)):
+                if float(self.list_item[i].get_length_item_mm()) > float(self.max_length):
                     self.max_length = self.list_item[i].get_length_item_mm()
-                    self.max_length = str(float(self.max_length)/10)
-                else:
-                    self.max_length = self.list_item[i + 1].get_length_item_mm()
-                    self.max_length = str(float(self.max_length)/10) + " см"
 
+            self.max_length = str(float(self.max_length) / 10)
     def get_max_length(self) -> str:
         return self.max_length
 
