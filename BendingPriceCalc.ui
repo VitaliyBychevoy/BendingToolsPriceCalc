@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>820</width>
-    <height>920</height>
+    <width>1500</width>
+    <height>950</height>
    </rect>
   </property>
   <property name="font">
@@ -48,6 +48,9 @@ background-color: #7393ad;</string>
    <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="bending_price_calc_window">
+   <property name="focusPolicy">
+    <enum>Qt::WheelFocus</enum>
+   </property>
    <property name="styleSheet">
     <string notr="true"/>
    </property>
@@ -459,9 +462,9 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>370</y>
+      <y>320</y>
       <width>800</width>
-      <height>250</height>
+      <height>300</height>
      </rect>
     </property>
     <property name="font">
@@ -681,7 +684,7 @@ color:rgb(255, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>875</y>
+      <y>900</y>
       <width>230</width>
       <height>40</height>
      </rect>
@@ -711,7 +714,7 @@ QPushButton:hover {
     <property name="geometry">
      <rect>
       <x>580</x>
-      <y>875</y>
+      <y>900</y>
       <width>230</width>
       <height>40</height>
      </rect>
@@ -1124,49 +1127,6 @@ color:rgb(255, 255, 255);</string>
      <string>%</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="search_button">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>320</y>
-      <width>800</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Narrow</family>
-      <pointsize>14</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">/*QPushButton {
-background-color:#3559FC;
-color:white;
-border-radius: 10px;
-}
-
-QPushButton:hover {
-    background-color:  rgb(48, 221, 255);
-}*/
-QPushButton {
-color:white;
-/*background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(102, 158, 255, 255), stop:0.55 rgba(71, 61, 235, 255), stop:0.98 rgba(27, 2, 212, 255), stop:1 rgba(0, 0, 0, 0)); */
-/*background-color: rgb(102, 161, 255);*/
-background-color: #4A3CE5;
-border-radius: 20px;
-}
-
-QPushButton:hover {
-    background-color:  rgb(48, 221, 255);
-}</string>
-    </property>
-    <property name="text">
-     <string>Підібрати пуансон або матрицю</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="packing_label">
     <property name="geometry">
      <rect>
@@ -1504,7 +1464,7 @@ QPushButton:hover {
       <x>580</x>
       <y>670</y>
       <width>230</width>
-      <height>30</height>
+      <height>40</height>
      </rect>
     </property>
     <property name="font">
@@ -1531,43 +1491,13 @@ QPushButton:hover {
      <string>Корегувати</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="db_button">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>750</y>
-      <width>230</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Narrow</family>
-      <pointsize>14</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-color:white;
-background-color: #3559FC;
-border-radius: 5px;
-}
-
-QPushButton:hover {
-    background-color:  rgb(48, 221, 255);
-}</string>
-    </property>
-    <property name="text">
-     <string>База</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="remove_element">
     <property name="geometry">
      <rect>
       <x>580</x>
-      <y>710</y>
+      <y>720</y>
       <width>230</width>
-      <height>30</height>
+      <height>40</height>
      </rect>
     </property>
     <property name="font">
@@ -1592,44 +1522,6 @@ QPushButton:hover {
     </property>
     <property name="text">
      <string>Видалити</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="company_button">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>20</y>
-      <width>120</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial Narrow</family>
-      <pointsize>14</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-background-color: #6F61C0;
-color:white;
-border-radius: 10px;
-}
-QPushButton:hover {
-    background-color:  rgb(48, 221, 255);
-}</string>
-    </property>
-    <property name="locale">
-     <locale language="Ukrainian" country="Ukraine"/>
-    </property>
-    <property name="text">
-     <string> Наші клієнти</string>
-    </property>
-    <property name="shortcut">
-     <string/>
     </property>
    </widget>
    <widget class="QComboBox" name="company_value">
@@ -2114,6 +2006,1301 @@ color:rgb(255, 255, 255);</string>
     <property name="text">
      <string>ГРН</string>
     </property>
+   </widget>
+   <widget class="QFrame" name="customers_frame">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>20</y>
+      <width>660</width>
+      <height>220</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(35, 130, 255);
+border-radius: 10px;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLineEdit" name="custome_short_name_value">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>60</y>
+       <width>450</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+
+	background-color:#8BE8E5;
+	color: rgb(202, 8, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QLineEdit:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QLineEdit:focus {
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="short_name_label">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>171</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color:rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Коротка назва</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="custome_full_name_value">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>100</y>
+       <width>450</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+
+	background-color:#8BE8E5;
+	color: rgb(202, 8, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QLineEdit:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QLineEdit:focus {
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="get_full_name_Button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>171</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+background-color: #6F61C0;
+color:white;
+border-radius: 10px;
+}
+QPushButton:hover {
+    background-color:  rgb(48, 221, 255);
+}</string>
+     </property>
+     <property name="text">
+      <string>Назва у документі</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="add_customer_Button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>140</y>
+       <width>241</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+background-color: #6F61C0;
+color:white;
+border-radius: 10px;
+}
+QPushButton:hover {
+    background-color:  rgb(48, 221, 255);
+}</string>
+     </property>
+     <property name="text">
+      <string>Додати</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="update_customer_Button">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>140</y>
+       <width>260</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string notr="true"/>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+background-color: #6F61C0;
+color:white;
+border-radius: 10px;
+}
+QPushButton:hover {
+    background-color:  rgb(48, 221, 255);
+}</string>
+     </property>
+     <property name="text">
+      <string>Змінити</string>
+     </property>
+     <property name="default">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_2">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>180</y>
+       <width>450</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QComboBox:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QComboBox:focus {
+
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="delete_Button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>180</y>
+       <width>180</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+background: #312E63;
+color: white;
+border-radius: 10px;
+}
+QPushButton:hover {
+    background-color:  rgb(48, 221, 255);
+}</string>
+     </property>
+     <property name="text">
+      <string>Видалити</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="db_short_name_label">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>10</y>
+       <width>200</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color:rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>База клієнтів</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="punch_frame">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>250</y>
+      <width>660</width>
+      <height>340</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(157, 172, 255);
+border-radius: 10px;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QGraphicsView" name="punch_graphics_View">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>10</y>
+       <width>310</width>
+       <height>320</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: rgb(255, 255, 255);</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="type_punch_value">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>10</y>
+       <width>250</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QComboBox:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QComboBox:focus {
+
+	border: 3px solid rgb(0, 255, 162);
+}
+</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_angle_label">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>40</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>Кут</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_radius_label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>60</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>Радіус</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_height_label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>60</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>Висота</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="punch_angle_value">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QLineEdit:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QLineEdit:focus {
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_grad_label">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>50</y>
+       <width>90</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>градусів</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="punch_height_value">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>90</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QLineEdit:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QLineEdit:focus {
+	border: 3px solid rgb(0, 255, 162);
+}
+</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="punch_radius_value">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>130</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QLineEdit:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QLineEdit:focus {
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="find_punch_button">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>170</y>
+       <width>320</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+background-color: #6F61C0;
+color:white;
+border-radius: 10px;
+}
+QPushButton:hover {
+    background-color:  rgb(48, 221, 255);
+}
+</string>
+     </property>
+     <property name="locale">
+      <locale language="Ukrainian" country="Ukraine"/>
+     </property>
+     <property name="text">
+      <string>Підібрати пуансон</string>
+     </property>
+     <property name="shortcut">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_height_mm_label">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>90</y>
+       <width>40</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>мм</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_height_mm_label_2">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>130</y>
+       <width>40</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>мм</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_angle_label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>40</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>Тип</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="result_punch_value">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>220</y>
+       <width>200</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QComboBox:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QComboBox:focus {
+
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="length_info_punch_label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>260</y>
+       <width>221</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>L 100, 200, 300, 500, 550K</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="t_mt_value_punch">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>300</y>
+       <width>30</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>200</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="t_mt_info_punch_label">
+     <property name="geometry">
+      <rect>
+       <x>45</x>
+       <y>300</y>
+       <width>50</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>T/mt</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_result_label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>220</y>
+       <width>80</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;
+</string>
+     </property>
+     <property name="text">
+      <string>Пуансони</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="die_frame">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>600</y>
+      <width>660</width>
+      <height>340</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+background-color: rgb(121, 164, 255);
+border-radius: 10px;</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QGraphicsView" name="die_graphics_View">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>10</y>
+       <width>310</width>
+       <height>320</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: rgb(255, 255, 255);</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="die_angle_value">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>50</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QLineEdit:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QLineEdit:focus {
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="die_distance_value">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>90</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QLineEdit:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QLineEdit:focus {
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="die_height_value">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>130</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QLineEdit:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QLineEdit:focus {
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="result_die_value">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>220</y>
+       <width>200</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QComboBox:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QComboBox:focus {
+
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="find_die_button">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>170</y>
+       <width>320</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+background-color: #6F61C0;
+color:white;
+border-radius: 10px;
+}
+QPushButton:hover {
+    background-color:  rgb(48, 221, 255);
+}
+</string>
+     </property>
+     <property name="locale">
+      <locale language="Ukrainian" country="Ukraine"/>
+     </property>
+     <property name="text">
+      <string>Підібрати матрицю</string>
+     </property>
+     <property name="shortcut">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="type_punch_value_3">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>10</y>
+       <width>250</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QComboBox:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QComboBox:focus {
+
+	border: 3px solid rgb(0, 255, 162);
+}
+</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_angle_label_5">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>40</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>Тип</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_angle_label_6">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>40</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>Кут</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_height_label_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>75</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>Розкриття</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_grad_label_3">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>50</y>
+       <width>90</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>градусів</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_height_mm_label_5">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>90</y>
+       <width>40</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>мм</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_height_mm_label_6">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>130</y>
+       <width>40</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>мм</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_height_label_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>60</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>Висота</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_result_label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>220</y>
+       <width>80</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;
+</string>
+     </property>
+     <property name="text">
+      <string>Матриці</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="length_info_punch_label_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>260</y>
+       <width>221</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>L 100, 200, 300, 500, 550K</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="t_mt_value_punch_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>300</y>
+       <width>30</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>200</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="t_mt_info_punch_label_3">
+     <property name="geometry">
+      <rect>
+       <x>45</x>
+       <y>300</y>
+       <width>50</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
+color: white;</string>
+     </property>
+     <property name="text">
+      <string>T/mt</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

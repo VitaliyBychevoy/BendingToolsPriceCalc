@@ -34,7 +34,8 @@ type_holder_list = [
     "Оберіть тип кріплення",
     "Amada-promecam",
     "Trumpf-Wila",
-    "Bystronic"
+    "Bystronic",
+    "Universal"
 ]
 
 item_list_amada = [
@@ -46,7 +47,8 @@ item_list_amada = [
     "Матриця багаторучова",
     "Тримач пуансона",
     "Прижимні планки",
-    "Тримач матриці"
+    "Тримач матриці",
+    "Радіусна вставка"
 ]
 
 item_list_trumpf_wila = [
@@ -128,15 +130,15 @@ class Ui(QtWidgets.QMainWindow):
 
         uic.loadUi("BendingPriceCalc.ui", self)
         self.setWindowIcon(QtGui.QIcon('data/logo_4.png'))
-        self.setGeometry(50, 50, 820, 920)
-        self.setFixedSize(820, 920)
-        self.m_w = None
+        self.setGeometry(50, 50, 1500, 960)
+        self.setFixedSize(1500, 960)
+        self.m_w = None # Вікно пошуку
+        self.customers = None # Вікно для створення клієнтів
         self.mdi = QMdiArea()
         self.table.setColumnWidth(0, 20)
         self.table.setColumnWidth(1, 100)
         self.table.setColumnWidth(2, 500)
 
-        self.customer_window = None
 
         company_list: list = get_short_name_list()
 
@@ -153,9 +155,6 @@ class Ui(QtWidgets.QMainWindow):
         self.code_value.addItem("?")
 
         self.length_value.addItem("?")
-
-        #Кнопка обробки клієнтів
-        self.company_button.clicked.connect(self.customers_db)
 
         # Обираємо тип кріплення
         self.type_holder.activated.connect(self.get_items)
@@ -184,7 +183,6 @@ class Ui(QtWidgets.QMainWindow):
 
         self.holder_item: list = []
         self.refresh_rate_button.clicked.connect(self.refresh_rate)
-        self.search_button.clicked.connect(self.search_item)
 
         # Створюємо invoice, у якому будуть лежати вироби (item)
         self.my_invoice = Invoice()
@@ -256,10 +254,8 @@ class Ui(QtWidgets.QMainWindow):
       #  self.show()
 
     def customers_db(self):
-        self.customer_window = CustomerWindow()
-        self.short_name_customer = QComboBox(self.customer_window)
-        self.short_name_customer.setGeometry(120, 15, 200, 30)
-        self.customer_window.show()
+        self.customers = CustomerWindow()
+        self.customers.show()
 
     def set_typical_style(self) -> None:
         #Списки та spinbox для редагування
@@ -272,22 +268,16 @@ class Ui(QtWidgets.QMainWindow):
         self.quantity_value.setStyleSheet(style.typically_style_QSpinBox)
 
         #Кнопки
-        self.company_button.setStyleSheet(style.typically_style_company_button)
-        self.company_button.setEnabled(True)
         self.reset_button.setStyleSheet(style.typically_style_button_reset_fields)
         self.reset_button.setEnabled(True)
         self.remove_element.setStyleSheet(style.typically_remove_element_button)
         self.remove_element.setEnabled(True)
         self.update_row.setStyleSheet(style.typically_update_row_button)
         self.update_row.setEnabled(True)
-        self.db_button.setStyleSheet(style.typically_db_button)
-        self.db_button.setEnabled(True)
         self.refresh_rate_button.setStyleSheet(style.typically_refresh_rate_button)
         self.refresh_rate_button.setEnabled(True)
         self.recommended_rate_button.setStyleSheet(style.typically_recommended_rate_button)
         self.refresh_rate_button.setEnabled(True)
-        self.search_button.setStyleSheet(style.typically_search_button)
-        self.search_button.setEnabled(True)
         self.add_amount_button.setStyleSheet(style.typically_update_row_button)
         self.add_amount_button.setEnabled(True)
         self.remove_amount_button.setStyleSheet(style.typically_update_row_button)
@@ -381,22 +371,16 @@ class Ui(QtWidgets.QMainWindow):
         self.quantity_value.setStyleSheet(style.update_style_QSpinBox)
 
         #Кнопки
-        self.company_button.setStyleSheet(style.update_style_company_button)
-        self.company_button.setEnabled(False)
         self.reset_button.setStyleSheet(style.update_style_button)
         self.reset_button.setEnabled(False)
         self.remove_element.setStyleSheet(style.update_remove_element_button)
         self.remove_element.setEnabled(False)
         self.update_row.setStyleSheet(style.update_update_row_button)
         self.update_row.setEnabled(False)
-        self.db_button.setStyleSheet(style.update_db_button)
-        self.db_button.setEnabled(False)
         self.refresh_rate_button.setStyleSheet(style.update_refresh_rate_button)
         self.refresh_rate_button.setEnabled(False)
         self.recommended_rate_button.setStyleSheet(style.update_recommended_rate_button)
         self.refresh_rate_button.setEnabled(False)
-        self.search_button.setStyleSheet(style.update_search_button)
-        self.search_button.setEnabled(False)
         self.add_amount_button.setStyleSheet(style.update_update_row_button)
         self.add_amount_button.setEnabled(False)
         self.remove_amount_button.setStyleSheet(style.update_update_row_button)
@@ -1064,15 +1048,14 @@ class Ui(QtWidgets.QMainWindow):
             return True
 
 
-class CustomerWindow(QMdiSubWindow):
+class CustomerWindow(QtWidgets.QMainWindow):
 
     def __init__(self):
         super(CustomerWindow, self).__init__()
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+        uic.loadUi("customers.ui")
         self.setGeometry(870, 50, 500, 280)
         self.setFixedSize(500, 280)
-        self.setStyleSheet("background-color: #7393ad;")
+
 
 
 
@@ -1096,8 +1079,6 @@ class Search(QWidget):
     def __init__(self):
         super(Search, self).__init__()
         self.setGeometry(870, 50, 820, 880)
-        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        # self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
         uic.loadUi("Search.ui", self)
 
 
