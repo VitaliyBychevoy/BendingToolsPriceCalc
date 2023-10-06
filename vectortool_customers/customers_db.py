@@ -30,7 +30,6 @@ def get_full_name_company(short_name: str) -> str:
             break
     wb  = load_workbook(DEFAULT_PATH)
     worksheet = wb[" Companies"]
-
     full_name_company = worksheet["B" + str(full_name_index)].value
     wb.close()
     return full_name_company

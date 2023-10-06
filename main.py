@@ -251,6 +251,10 @@ class Ui(QtWidgets.QMainWindow):
         #Вартість оформлення документів
         self.delivery_document_value.textChanged.connect(self.check_delivery_document_value)
 
+        #Кнопка отримання повної назви клієнта
+        self.get_full_name_Button.clicked.connect(self.get_full_name_customer)
+
+
       #  self.show()
 
     def customers_db(self):
@@ -938,7 +942,7 @@ class Ui(QtWidgets.QMainWindow):
         empty_string(sheet, current_row)
         current_row += 1
 
-        #встановлюємо суму однинць закупки товара
+        #Вставновлюємо ціну виробника
         self.my_invoice.calculate_sum_item_price()
 
 
@@ -1047,6 +1051,22 @@ class Ui(QtWidgets.QMainWindow):
         else:
             return True
 
+    #Кнопка отримання повної назви клієгтів
+    def get_full_name_customer(self) -> str:
+        short_name: str = self.custome_short_name_value.text()
+        if short_name == "":
+            error = MessageError()
+            message = "Порожній запит\nВведіть коротку назву."
+            error.setText(message)
+            return ""
+        if short_name not in get_short_name_list():
+            error = MessageError()
+            message = f"Коротка назва компанії {short_name} відсутня у базі."
+            error.setText(message)
+            return ""
+        else:
+            full_name: str = self.custome_full_name_value(get_full_name_company(short_name))
+            return full_name
 
 class CustomerWindow(QtWidgets.QMainWindow):
 

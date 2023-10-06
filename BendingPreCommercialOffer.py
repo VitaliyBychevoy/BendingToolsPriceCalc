@@ -80,6 +80,12 @@ thin_border = Border(left=Side(style='thin'),
                      bottom=Side(style='thin'))
 
 #Центрування
+alignment_center_center = Alignment(
+        horizontal="center",
+        vertical='center',
+        wrapText=True
+    )
+
 alignment_right_center = Alignment(
         horizontal="right",
         vertical='center',
@@ -116,6 +122,7 @@ alignment_right_bottom = Alignment(
 alignment_left_bottom = Alignment(
         horizontal="left",
         vertical='bottom',
+        wrapText=True
     )
 
 #Кольори
@@ -626,15 +633,25 @@ def items_in_row(
         sheet[f"E{str(current_row)}"].border = thin_border
         sheet[f'E{str(current_row)}'].fill = yellow_color
 
-        sheet[f"F{str(current_row)}"].border = thin_border
-        sheet[f"F{str(current_row)}"].value = \
-            invoice.get_list_item()[index].get_ua_name_item()
-        sheet[f"F{str(current_row)}"].font = description_ua_font
-        sheet[f"F{str(current_row)}"].alignment = Alignment(
-            horizontal="left",
-            vertical='center',
-            wrapText=True
-        )
+        if invoice.get_list_item()[index].get_en_name_item()[-9:] == "SECTIONED":
+            sectioned: str = invoice.get_list_item()[index].get_sectioned_image_name()
+            img_sectioned = openpyxl.drawing.image.Image(f"data/{sectioned}")
+            img_sectioned.height = 100
+            img_sectioned.width = 261
+            img_sectioned.anchor = f"F{str(current_row)}"
+            sheet.add_image(img_sectioned)
+            sheet[f"F{str(current_row)}"].border = thin_border
+            sheet[f"F{str(current_row)}"].value = \
+                invoice.get_list_item()[index].get_ua_name_item()
+            sheet[f"F{str(current_row)}"].font = description_ua_font
+            sheet[f"F{str(current_row)}"].alignment = alignment_left_bottom
+
+        else:
+            sheet[f"F{str(current_row)}"].border = thin_border
+            sheet[f"F{str(current_row)}"].value = \
+                invoice.get_list_item()[index].get_ua_name_item()
+            sheet[f"F{str(current_row)}"].font = description_ua_font
+            sheet[f"F{str(current_row)}"].alignment = alignment_left_center
 
         sheet[f"G{str(current_row)}"].border = thin_border
 
@@ -648,7 +665,7 @@ def items_in_row(
         sheet[f"K{str(current_row)}"].border = thin_border
         sheet[f"K{str(current_row)}"].value = invoice.get_list_item()[index].get_amount_item()
         sheet[f"K{str(current_row)}"].font = numbers_table_font
-        sheet[f"K{str(current_row)}"].alignment = alignment_right_center
+        sheet[f"K{str(current_row)}"].alignment = alignment_center_center
 
         sheet[f"J{str(current_row)}"].border = thin_border
         sheet[f"J{str(current_row)}"].font = numbers_table_font
@@ -678,7 +695,7 @@ def items_in_row(
         sheet[f"M{str(current_row)}"].alignment = alignment_right_center
         sheet[f"N{str(current_row)}"].border = thin_border
         sheet[f"N{str(current_row)}"].font = numbers_table_font
-        sheet[f"N{str(current_row)}"].value = f"=((L{str(current_row)}*100)/{invoice.get_sum_item_price()})/100"
+        sheet[f"N{str(current_row)}"].value = f"=((M{str(current_row)}*100)/{invoice.get_sum_item_price()})/100"
         sheet[f"N{str(current_row)}"].number_format = '#,##0.00'
         sheet[f'N{str(current_row)}'].fill = yellow_color
         sheet[f"N{str(current_row)}"].alignment = alignment_right_center
@@ -687,10 +704,7 @@ def items_in_row(
         sheet[f"O{str(current_row)}"].number_format = '#,##0.00'
         sheet[f"O{str(current_row)}"].border = thin_border
         sheet[f"O{str(current_row)}"].font = numbers_table_font
-        sheet[f"O{str(current_row)}"].alignment = Alignment(
-            horizontal="center",
-            vertical='center'
-        )
+        sheet[f"O{str(current_row)}"].alignment = alignment_right_center
 
         sheet[f"P{str(current_row)}"].value = f"=O{str(current_row)}*K{str(current_row)}"
         sheet[f"P{str(current_row)}"].number_format = '#,##0.00'
@@ -698,7 +712,7 @@ def items_in_row(
         sheet[f"P{str(current_row)}"].font = numbers_table_font
         sheet[f"P{str(current_row)}"].alignment = alignment_right_center
 
-        sheet[f"R{str(current_row)}"].value = f"={invoice.get_total_price_ua()}*K{str(current_row)}*N{str(current_row)}"
+        sheet[f"R{str(current_row)}"].value = f"={invoice.get_total_price_ua()}*N{str(current_row)}"
         sheet[f"R{str(current_row)}"].number_format = '#,##0.00'
         sheet[f"R{str(current_row)}"].border = thin_border
         sheet[f"R{str(current_row)}"].font = numbers_table_font
@@ -1211,7 +1225,7 @@ def fill_1C_all(
 ) -> None:
     row = 17
     for index in range(len(invoice.get_list_item())):
-        sheet[f"T{str(row)}"] = f"=R{str(current_row)}*(5/6)*N{str(row)}*K{str(row)}"
+        sheet[f"T{str(row)}"] = f"=R{str(current_row)}*(5/6)*N{str(row)}"
         sheet[f"T{str(row)}"].border = thin_border
         sheet[f"T{str(row)}"].number_format = '#,##0.00'
         sheet[f"T{str(row)}"].fill = yellow_color

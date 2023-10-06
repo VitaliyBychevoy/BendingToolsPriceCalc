@@ -157,6 +157,36 @@ class Item:
         result += b
         return result
 
+    def get_sectioned_image_name(self) -> str:
+        if self.get_type_holder() == "Amada-promecam":
+            if self.get_type_item() == "Пуансон":
+                 return "punch_amada.png"
+            if self.get_type_item() == "Матриця":
+                return "die_amada.png"
+            if self.get_type_item() == "Пуансон плющення":
+                return "punch_amada_hemming.png"
+            if self.get_type_item() == "Матриця плющення":
+                return "die_amada_hamming.png"
+            if self.get_type_item() == "Матриця багаторучова":
+             return "die_amada.png"
+        if self.get_type_holder() == "Trumpf-Wila":
+            if self.get_type_item() == "Пуансон":
+                return "punch_trumpf.png"
+            if self.get_type_item() == "Матриця":
+                return "die_trumpf.png"
+            if self.get_type_item() == "Пуансон плющення":
+                return "punch_trumpf_hamming.png"
+            if self.get_type_item() == "Матриця плющення":
+                return "die_trumpf_hamming.png"
+        if self.get_type_holder() == "Bystronic":
+            if self.get_type_item() == "Пуансон":
+                return "punch_bystronic.png"
+            if self.get_type_item() == "Матриця":
+                return "die_trumpf.png"
+            if self.get_type_item() == "Пуансон плющення":
+                return "punch_bystronic_hemming.png"
+            if self.get_type_item() == "Матриця плющення":
+                return "die_bystronic_hemming.png"
 
 class Invoice:
 
@@ -368,7 +398,7 @@ class Invoice:
             ),
             2)
 
-        print("Сума вартості одиниці товару", sum_item_price)
+        print("Сума закупки у виробника", sum_item_price)
         self.set_sum_item_price(sum_item_price)
 
     def calculate_total_price_ua(self) -> None:

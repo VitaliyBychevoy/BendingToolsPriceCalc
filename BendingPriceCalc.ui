@@ -2031,7 +2031,7 @@ border-radius: 10px;</string>
       <rect>
        <x>200</x>
        <y>60</y>
-       <width>450</width>
+       <width>390</width>
        <height>30</height>
       </rect>
      </property>
@@ -2082,7 +2082,7 @@ color:rgb(255, 255, 255);</string>
       <rect>
        <x>200</x>
        <y>100</y>
-       <width>450</width>
+       <width>391</width>
        <height>30</height>
       </rect>
      </property>
@@ -2195,7 +2195,7 @@ QPushButton:hover {
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_2">
+    <widget class="QComboBox" name="list_customer_comboBox">
      <property name="geometry">
       <rect>
        <x>200</x>
@@ -2220,7 +2220,7 @@ QComboBox:focus {
 }</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="delete_Button">
+    <widget class="QPushButton" name="delete_customer_Button">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -2273,6 +2273,93 @@ color:rgb(255, 255, 255);</string>
      </property>
      <property name="text">
       <string>База клієнтів</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="all_customers_Button">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>140</y>
+       <width>101</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+background-color: #6F61C0;
+color:white;
+border-radius: 10px;
+}
+QPushButton:hover {
+    background-color:  rgb(48, 221, 255);
+}</string>
+     </property>
+     <property name="text">
+      <string>Усі клієнти</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="reset_short_name_Button">
+     <property name="geometry">
+      <rect>
+       <x>600</x>
+       <y>60</y>
+       <width>50</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+background: #312E63;
+color: white;
+border-radius: 10px;
+}
+QPushButton:hover {
+    background-color:  rgb(48, 221, 255);
+}</string>
+     </property>
+     <property name="text">
+      <string>X</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="reset_full_name_Button">
+     <property name="geometry">
+      <rect>
+       <x>600</x>
+       <y>100</y>
+       <width>50</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+background: #312E63;
+color: white;
+border-radius: 10px;
+}
+QPushButton:hover {
+    background-color:  rgb(48, 221, 255);
+}</string>
+     </property>
+     <property name="text">
+      <string>X</string>
      </property>
     </widget>
    </widget>
