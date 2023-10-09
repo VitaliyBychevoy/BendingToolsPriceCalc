@@ -251,9 +251,25 @@ class Ui(QtWidgets.QMainWindow):
         #Вартість оформлення документів
         self.delivery_document_value.textChanged.connect(self.check_delivery_document_value)
 
+        #РОБОТА З КЛІЄНТАМИ
+
         #Кнопка отримання повної назви клієнта
         self.get_full_name_Button.clicked.connect(self.get_full_name_customer)
 
+        #Кнопка скидання короткої назви
+        self.reset_short_name_Button.clicked.connect(self.reset_short_name)
+
+        #Кнопка скидання повної назви
+        self.reset_full_name_Button.clicked.connect(self.reset_full_name)
+
+        #Кнопка отримання усіх коротких назв клієнтів
+        self.all_customers_Button.clicked.connect(self. show_all_short_name)
+
+        #Обираємо позицію у списку коротких назв
+        self.list_customer_comboBox.activated.connect(self.get_itemBox_info)
+
+        #Змінюємо запис клієнта у базі
+        self.update_customer_Button.clicked.connect(self.update_client)
 
       #  self.show()
 
@@ -514,7 +530,6 @@ class Ui(QtWidgets.QMainWindow):
 
     # Додаємо виріб до таблиці
     def add_item_function(self):
-
 
         if self.type_holder.currentText() == "Оберіть тип кріплення" or \
             self.item_value.currentText() in ["Оберіть виріб", " ", "","Оберіть тип кріплення"] or \
@@ -1051,22 +1066,69 @@ class Ui(QtWidgets.QMainWindow):
         else:
             return True
 
-    #Кнопка отримання повної назви клієгтів
-    def get_full_name_customer(self) -> str:
-        short_name: str = self.custome_short_name_value.text()
+
+    #КЛІЄНТИ
+    #Кнопка отримання повної назви клієнтів
+    def get_full_name_customer(self) -> None:
+        short_name: str = self.customer_short_name_value.text()
         if short_name == "":
             error = MessageError()
             message = "Порожній запит\nВведіть коротку назву."
             error.setText(message)
-            return ""
+            error.exec_()
+            self.customer_full_name_value.setText("")
+            return
         if short_name not in get_short_name_list():
             error = MessageError()
             message = f"Коротка назва компанії {short_name} відсутня у базі."
             error.setText(message)
-            return ""
+            error.exec_()
+            self.customer_full_name_value.setText("")
+            return
         else:
-            full_name: str = self.custome_full_name_value(get_full_name_company(short_name))
-            return full_name
+            full_name: str = get_full_name_company(short_name)
+            self.customer_full_name_value.setText(full_name)
+
+    #Кнопка скидання короткої назви
+    def reset_short_name(self) -> None:
+        self.customer_short_name_value.setText("")
+
+    #Кнопка скидання повної назви
+    def reset_full_name(self) -> None:
+        self.customer_full_name_value.setText("")
+
+    #Кнопка отримання усіх коротких назв
+    def show_all_short_name(self) -> None:
+        for item in get_short_name_list()[1:]:
+            self.list_customer_comboBox.addItem(item)
+
+    #Отримуемо одного клієнта зі списка
+    def get_itemBox_info(self) -> None:
+        if self.list_customer_comboBox.currentText() != "":
+            self.customer_short_name_value.setText(
+                self.list_customer_comboBox.currentText()
+            )
+            self.get_full_name_customer()
+
+    #Кнопка для зміни клієнта
+    def update_client(self) -> None:
+        if self.customer_short_name_value.text() == "":
+            error = MessageError()
+            message = (f'Порожня коротка назва.\nВведіть коротку назву\n'
+                       f'та знов натисніть кнопку"Змінити"')
+            error.setText(message)
+            error.exec_()
+            return
+        if self.customer_full_name_value.text() == "":
+            error = MessageError()
+            message = (f'Порожня повна назва.\nВведіть повна назву\n'
+                       f'та знов натисніть кнопку"Змінити"')
+            error.setText(message)
+            error.exec_()
+            return
+        row_index = 0
+        #if self.customer_short_name_value.text() in  get_short_name_list()[1:] and
+
 
 class CustomerWindow(QtWidgets.QMainWindow):
 
