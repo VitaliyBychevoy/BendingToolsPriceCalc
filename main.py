@@ -142,6 +142,9 @@ class Ui(QtWidgets.QMainWindow):
 
         company_list: list = get_short_name_list()
 
+        # Приховуємо результати
+        self.hide_result()
+
         #Заповнюємо компанії
         for company in company_list:
             self.company_value.addItem(company)
@@ -239,6 +242,9 @@ class Ui(QtWidgets.QMainWindow):
         #Кнопка Створити xlsx
         self.pre_commercial_offer_button.clicked.connect(self.create_pre_commercial_offer)
 
+        #Кнопка Розрахувати вартість
+        self.result_button.clicked.connect(self.show_result)
+
         #Вартість переводу
         self.transaction_value.textChanged.connect(self.check_transaction_value)
 
@@ -250,6 +256,7 @@ class Ui(QtWidgets.QMainWindow):
 
         #Вартість оформлення документів
         self.delivery_document_value.textChanged.connect(self.check_delivery_document_value)
+
 
         #РОБОТА З КЛІЄНТАМИ
 
@@ -1065,6 +1072,22 @@ class Ui(QtWidgets.QMainWindow):
             return False
         else:
             return True
+
+    #Приховуємо результати
+    def hide_result(self):
+        # Приховуємо вартість доставки
+        self.result_delivery_label.setHidden(True)
+
+        #Приховуємо  загальну вартість
+        self.result_price_label.setHidden(True)
+
+    #Показуємо результат
+    def show_result(self) -> None:
+        # Показуємо вартість доставки
+        self.result_delivery_label.setHidden(False)
+
+        #Показуємо  загальну вартість
+        self.result_price_label.setHidden(False)
 
 
     #КЛІЄНТИ
