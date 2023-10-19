@@ -1052,6 +1052,7 @@ class Ui(QtWidgets.QMainWindow):
                 self.table.rowCount() < 1 or \
                 self.delivery_document_value.text() in zero_spinBox or \
                 self.packing_value.text() in zero_spinBox or \
+                self.delivery_document_EURO_1_value_.text() in zero_spinBox or\
                 self.delivery_value.text() in zero_spinBox:
             error = MessageError()
             error_message: str = ""
@@ -1061,6 +1062,8 @@ class Ui(QtWidgets.QMainWindow):
                 error_message += "Вкажіть курс EURO.\n"
             if self.delivery_document_value.text() in zero_spinBox:
                 error_message += "Вкажіть вартість документу\n"
+            if self.delivery_document_EURO_1_value_.text() in zero_spinBox:
+                error_message += "Вкажіть вартість накладної EURO-1\n"
             if self.table.rowCount() < 1:
                 error_message += "Додайте хочаб один виріб.\n"
             if self.packing_value.text() in zero_spinBox:
@@ -1083,11 +1086,54 @@ class Ui(QtWidgets.QMainWindow):
 
     #Показуємо результат
     def show_result(self) -> None:
+        price_delivery: float = 0.0
+        price_result: float = 0.0
+
+        #provider_discount: float = 100 - self.provider_discount_spinBox.text()
+        provider_discount = \
+            (100-float(self.provider_discount_spinBox.text().replace(",", ".")))/100
+
+
+
+        price_result = sum([item.get_price_item() * item.get_amount_item() * provider_discount for item in self.my_invoice.get_list_item()])
+        print(f"price_result {price_result }")
+        price_result += float(self.packing_value.text())
+        print(f"price_result +  packing {price_result}")
+
+        price_order = price_result
+
+        price_result = round(price_result * (1 + (float(self.bank_tax_value.text().replace(",", ".")))/100), 2)
+
+        print(f"price_result with bank tax: {price_result}")
+
+        percent = (100 - (float(self.persentage_spinBox.text().replace(",", "."))))/100
+        print(f"Percent {percent}")
+        price_result = round(price_result / percent, 2)
+        print(f"price_result with comision: {price_result}")
+
+        price_result *= 1.2
+        print(f"price_result with TAX: {price_result}")
+
         # Показуємо вартість доставки
         self.result_delivery_label.setHidden(False)
 
+        if price_order > 5999.99:
+            price_delivery = \
+                float(self.delivery_value.text().replace(",", ".")) + \
+                float(self.delivery_document_value.text().replace(",", ".")) + \
+                float(self.delivery_document_EURO_1_value_.text().replace(",", "."))
+        else:
+            a = float(self.delivery_value.text().replace(",", "."))
+            b = float(self.delivery_document_value.text().replace(",", "."))
+            #price_delivery = float(self.delivery_value.text().replace(",", ".")) + float(self.delivery_document_value.text().replace(",", "."))
+            price_delivery = a + b
+        price_delivery *= 1.2
+
         #Показуємо  загальну вартість
+        self.result_price_label.setText(f"Загальна вартість: { price_result}  грн")
         self.result_price_label.setHidden(False)
+
+        self.result_price_label.setText(f"Вартість доставки: {price_delivery } грн")
 
 
     #КЛІЄНТИ
