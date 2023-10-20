@@ -1887,7 +1887,7 @@ QLineEdit:focus {
      <locale language="Ukrainian" country="Ukraine"/>
     </property>
     <property name="text">
-     <string>1097,6</string>
+     <string>1097,9</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -3506,14 +3506,14 @@ color:rgb(255, 255, 255);</string>
      <rect>
       <x>350</x>
       <y>810</y>
-      <width>420</width>
+      <width>460</width>
       <height>35</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Arial Narrow</family>
-      <pointsize>20</pointsize>
+      <pointsize>18</pointsize>
       <weight>50</weight>
       <bold>false</bold>
       <underline>false</underline>
@@ -3533,14 +3533,14 @@ color:rgb(255, 255, 255);
      <rect>
       <x>350</x>
       <y>850</y>
-      <width>420</width>
+      <width>460</width>
       <height>35</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Arial Narrow</family>
-      <pointsize>20</pointsize>
+      <pointsize>18</pointsize>
       <weight>50</weight>
       <bold>false</bold>
       <underline>false</underline>

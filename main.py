@@ -1086,6 +1086,7 @@ class Ui(QtWidgets.QMainWindow):
 
     #Показуємо результат
     def show_result(self) -> None:
+        rate: float = round(float(self.EURO_value.text().replace(",", ".")), 2)
         price_delivery: float = 0.0
         price_result: float = 0.0
 
@@ -1096,6 +1097,7 @@ class Ui(QtWidgets.QMainWindow):
 
 
         price_result = sum([item.get_price_item() * item.get_amount_item() * provider_discount for item in self.my_invoice.get_list_item()])
+        price_reuslt = round(price_result, 2)
         print(f"price_result {price_result }")
         price_result += float(self.packing_value.text())
         print(f"price_result +  packing {price_result}")
@@ -1110,6 +1112,8 @@ class Ui(QtWidgets.QMainWindow):
         print(f"Percent {percent}")
         price_result = round(price_result / percent, 2)
         print(f"price_result with comision: {price_result}")
+        price_result += float(self.transaction_value.text().replace(",", "."))
+        price_result += float(self.brokerage_services_value.text().replace(",", "."))
 
         price_result *= 1.2
         print(f"price_result with TAX: {price_result}")
@@ -1125,15 +1129,37 @@ class Ui(QtWidgets.QMainWindow):
         else:
             a = float(self.delivery_value.text().replace(",", "."))
             b = float(self.delivery_document_value.text().replace(",", "."))
-            #price_delivery = float(self.delivery_value.text().replace(",", ".")) + float(self.delivery_document_value.text().replace(",", "."))
             price_delivery = a + b
         price_delivery *= 1.2
+        price_delivery = round(price_delivery, 2)
 
+        if self.discount_customer_spinBox.text() not in ["", " ", "0"]:
+            discount: float = round(
+                float(self.discount_customer_spinBox.text().replace(",", ".")) / 100,
+                2
+            )
+
+            discount_value: float = price_result * discount
+            print(f"Discount value: {discount_value}")
+
+            price_result = price_result - discount_value
+            print(f"Price with discount: {price_result}")
+
+        price_result = price_result + price_delivery
+        price_result = round(price_result, 2)
+
+
+
+
+        price_delivery_ua = round(price_delivery_ua, 2)
+
+        price_result_ua = price_result * rate
+
+        price_result_ua = round(price_result_ua, 2)
         #Показуємо  загальну вартість
-        self.result_price_label.setText(f"Загальна вартість: { price_result}  грн")
+        self.result_price_label.setText(f"Загальна вартість: {price_result} EURO  {price_result_ua} грн")
         self.result_price_label.setHidden(False)
-
-        self.result_price_label.setText(f"Вартість доставки: {price_delivery } грн")
+        self.result_delivery_label.setText(f"Вартість доставки: {price_delivery } EURO {price_delivery_ua} грн")
 
 
     #КЛІЄНТИ
