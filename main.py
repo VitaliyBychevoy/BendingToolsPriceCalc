@@ -19,7 +19,7 @@ from style import *
 
 # from PyQt5.QtWidgets import QApplication, QMainWindow
 
-acceptable_character = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "."]
+acceptable_character = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", ".")
 
 zero_spinBox = ("", " ", "00,000", "00,00", "0,0", "0")
 
@@ -30,15 +30,37 @@ def check_valid_symbols(number: str) -> bool:
             return False
     return True
 
-type_holder_list = [
+# type_holder_list = [
+#     "Оберіть тип кріплення",
+#     "Amada-promecam",
+#     "Trumpf-Wila",
+#     "Bystronic",
+#     "Universal"
+# ]
+
+type_holder_list = (
     "Оберіть тип кріплення",
     "Amada-promecam",
     "Trumpf-Wila",
     "Bystronic",
     "Universal"
-]
+)
 
-item_list_amada = [
+# item_list_amada = [
+#     "Оберіть виріб",
+#     "Пуансон",
+#     "Матриця одноручова",
+#     "Пуансон плющення",
+#     "Матриця плющення",
+#     "Матриця багаторучова",
+#     "Тримач пуансона",
+#     "Прижимні планки",
+#     "Тримач матриці",
+#     "Радіусна вставка",
+#     "Тримач поліуретанових вставок"
+# ]
+
+item_list_amada = (
     "Оберіть виріб",
     "Пуансон",
     "Матриця одноручова",
@@ -48,24 +70,53 @@ item_list_amada = [
     "Тримач пуансона",
     "Прижимні планки",
     "Тримач матриці",
-    "Радіусна вставка"
-]
+    "Радіусна вставка",
+    "Тримач поліуретанових вставок"
+)
 
-item_list_trumpf_wila = [
+
+# item_list_trumpf_wila = [
+#     "Оберіть виріб",
+#     "Пуансон",
+#     "Матриця",
+#     "Пуансон плющення",
+#     "Матриця плющення",
+#     "Кнопка",
+#     "Штифт",
+#     "Тримач поліуретанових вставок"
+# ]
+
+item_list_trumpf_wila = (
     "Оберіть виріб",
     "Пуансон",
     "Матриця",
     "Пуансон плющення",
     "Матриця плющення",
     "Кнопка",
-    "Штифт"
-]
+    "Штифт",
+    "Тримач поліуретанових вставок"
+)
+
+# item_list_universal = [
+#     "Оберіть виріб",
+#     "Радіусна вставка",
+#     "Уретанова вставка матриці",
+#     "Прямокутна вставка пуансона"
+# ]
+
+item_list_universal = (
+    "Оберіть виріб",
+    "Радіусна вставка",
+    "Уретанова вставка матриці",
+    "Прямокутна вставка пуансона"
+)
 
 category = {
     type_holder_list[0]: type_holder_list[0],
     type_holder_list[1]: item_list_amada,
     type_holder_list[2]: item_list_trumpf_wila,
     type_holder_list[3]: item_list_trumpf_wila[0:5],
+    type_holder_list[4]: item_list_universal
 }
 
 week_day = {
@@ -543,7 +594,6 @@ class Ui(QtWidgets.QMainWindow):
             self.code_value.currentText() in [" ", "?"] or \
             self.length_value.currentText() in [" ", "?"] or \
             self.quantity_value.value() == 0:
-
             error_message = ""
             if self.type_holder.currentText() == "Оберіть тип кріплення":
                 error_message += "Оберіть тип кріплення\n"
@@ -720,7 +770,6 @@ class Ui(QtWidgets.QMainWindow):
 
                 self.table.item(i, 1).setFlags(self.table.item(i, 1, ).flags() & ~ QtCore.Qt.ItemIsEditable)
 
-                # self.table.setItem(i, 2, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_ua_name_item()))
                 self.table.setItem(i, 2, QTableWidgetItem(self.my_invoice.get_list_item()[i].get_name_for_table()))
 
                 self.table.item(i, 2).setFlags(self.table.item(i, 2, ).flags() & ~ QtCore.Qt.ItemIsEditable)
@@ -1086,6 +1135,29 @@ class Ui(QtWidgets.QMainWindow):
 
     #Показуємо результат
     def show_result(self) -> None:
+        error_in_field: tuple = ('', '.', ',', "0")
+        if self.EURO_value.text() in error_in_field \
+               or self.packing_value.text() in error_in_field\
+                or self.delivery_value.text() in error_in_field \
+                or self.delivery_document_value.text() in error_in_field\
+                or self.delivery_document_EURO_1_value_.text() in error_in_field\
+                or self.transaction_value.text() in error_in_field\
+                or self.brokerage_services_value.text() in error_in_field\
+                or self.bank_tax_value.text() in error_in_field:
+            error = MessageError()
+            if self.EURO_value.text() in error_in_field:
+                message = "Порожній курс валюти.\nВведіть курс валют.\n"
+
+            if self.packing_value.text() in  error_in_field:
+                message = "Порожня вартість пакування.\nВведіть вартість пакування.\n"
+
+            if self.delivery_value.text() in error_in_field:
+                message = "Порожня вартість доставки.\nВведіть вартість доставки.\n"
+            error.setText(message)
+            error.exec_()
+            return
+
+
         rate: float = round(float(self.EURO_value.text().replace(",", ".")), 2)
         price_delivery: float = 0.0
         price_result: float = 0.0
@@ -1112,10 +1184,15 @@ class Ui(QtWidgets.QMainWindow):
         print(f"Percent {percent}")
         price_result = round(price_result / percent, 2)
         print(f"price_result with comision: {price_result}")
+        price_result *= rate
+        price_result = round(price_result, 2)
+        print(f"price_result ua: {price_result} грн")
         price_result += float(self.transaction_value.text().replace(",", "."))
         price_result += float(self.brokerage_services_value.text().replace(",", "."))
+        print(f"price_result ua + transaction + broker: {price_result} грн")
 
         price_result *= 1.2
+        price_result = round(price_result, 2)
         print(f"price_result with TAX: {price_result}")
 
         # Показуємо вартість доставки
@@ -1130,8 +1207,11 @@ class Ui(QtWidgets.QMainWindow):
             a = float(self.delivery_value.text().replace(",", "."))
             b = float(self.delivery_document_value.text().replace(",", "."))
             price_delivery = a + b
+
+        price_delivery *= rate
         price_delivery *= 1.2
         price_delivery = round(price_delivery, 2)
+        print(f"Delivery price: {price_delivery} грн")
 
         if self.discount_customer_spinBox.text() not in ["", " ", "0"]:
             discount: float = round(
@@ -1143,23 +1223,17 @@ class Ui(QtWidgets.QMainWindow):
             print(f"Discount value: {discount_value}")
 
             price_result = price_result - discount_value
+            price_result = round(price_result, 2)
             print(f"Price with discount: {price_result}")
 
         price_result = price_result + price_delivery
         price_result = round(price_result, 2)
 
 
-
-
-        price_delivery_ua = round(price_delivery_ua, 2)
-
-        price_result_ua = price_result * rate
-
-        price_result_ua = round(price_result_ua, 2)
         #Показуємо  загальну вартість
-        self.result_price_label.setText(f"Загальна вартість: {price_result} EURO  {price_result_ua} грн")
+        self.result_price_label.setText(f"Загальна вартість: {round(price_result  / rate, 2)} EURO {price_result} грн.")
         self.result_price_label.setHidden(False)
-        self.result_delivery_label.setText(f"Вартість доставки: {price_delivery } EURO {price_delivery_ua} грн")
+        self.result_delivery_label.setText(f"Вартість доставки: {round(price_delivery  / rate, 2)} EURO {price_delivery} грн.")
 
 
     #КЛІЄНТИ
