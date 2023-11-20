@@ -19,24 +19,22 @@ from style import *
 
 # from PyQt5.QtWidgets import QApplication, QMainWindow
 
-acceptable_character = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", ".")
+acceptable_character = \
+    ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", ".")
 
 zero_spinBox = ("", " ", "00,000", "00,00", "0,0", "0")
 
+empty_value = (" ", "?")
+
 
 def check_valid_symbols(number: str) -> bool:
+    """Функція отримує строку та первіряє кожен символ
+    чи є він валідний. Вертає False у разі якщо символ не сприйнятний.
+    Якщо усі символи сприйнятні вертає True."""
     for letter in number:
         if letter not in acceptable_character:
             return False
     return True
-
-# type_holder_list = [
-#     "Оберіть тип кріплення",
-#     "Amada-promecam",
-#     "Trumpf-Wila",
-#     "Bystronic",
-#     "Universal"
-# ]
 
 type_holder_list = (
     "Оберіть тип кріплення",
@@ -45,20 +43,6 @@ type_holder_list = (
     "Bystronic",
     "Universal"
 )
-
-# item_list_amada = [
-#     "Оберіть виріб",
-#     "Пуансон",
-#     "Матриця одноручова",
-#     "Пуансон плющення",
-#     "Матриця плющення",
-#     "Матриця багаторучова",
-#     "Тримач пуансона",
-#     "Прижимні планки",
-#     "Тримач матриці",
-#     "Радіусна вставка",
-#     "Тримач поліуретанових вставок"
-# ]
 
 item_list_amada = (
     "Оберіть виріб",
@@ -74,35 +58,16 @@ item_list_amada = (
     "Тримач поліуретанових вставок"
 )
 
-
-# item_list_trumpf_wila = [
-#     "Оберіть виріб",
-#     "Пуансон",
-#     "Матриця",
-#     "Пуансон плющення",
-#     "Матриця плющення",
-#     "Кнопка",
-#     "Штифт",
-#     "Тримач поліуретанових вставок"
-# ]
-
 item_list_trumpf_wila = (
     "Оберіть виріб",
     "Пуансон",
-    "Матриця",
+    "Матриця одноручова",
     "Пуансон плющення",
     "Матриця плющення",
     "Кнопка",
     "Штифт",
     "Тримач поліуретанових вставок"
 )
-
-# item_list_universal = [
-#     "Оберіть виріб",
-#     "Радіусна вставка",
-#     "Уретанова вставка матриці",
-#     "Прямокутна вставка пуансона"
-# ]
 
 item_list_universal = (
     "Оберіть виріб",
@@ -130,8 +95,11 @@ week_day = {
 }
 
 
-# створюємо список з датою
-def get_list_moment() -> list:
+# створюємо кортеж з датою
+def get_list_moment() -> tuple:
+    """Функція повертає кортеж у вигляді
+    (поточна дата, поточний час, день тижня)"""
+
     request_moment_1 = datetime.now()
     moment = str(request_moment_1)
     day = date.today().isoweekday()
@@ -141,11 +109,14 @@ def get_list_moment() -> list:
     time_list = moment_list[1].split(":")
     time_string = time_list[0] + ":" + time_list[1]
     list_result = [date_str, time_string, week_day[day]]
-    return list_result
+    return tuple(list_result)
 
 
 # Отримуємо курс валюти з сайта мінфіна по міжбанку
 def get_rate() -> str:
+    """Функція парсить сайт minfin отримує вартість покупки euro
+    та вертає  її як строку """
+
     rate = ""
     url = "https://minfin.com.ua/currency/mb/"
     try:
@@ -165,7 +136,10 @@ def get_rate() -> str:
     except requests.exceptions.ConnectionError:
         return "00.000"
 
+
 def get_recommended_rate_for_euro_value(new_rate: str) -> str:
+    """Функція  отримує строку яка містить вартість покупки euro
+    та вертає збільшену вартість на один відсоток у вигяді строки"""
     rate = new_rate.replace(",", ".")
     result = str(round(float(rate) * 1.01, 2))
     print("recommended rate ok")
@@ -247,19 +221,19 @@ class Ui(QtWidgets.QMainWindow):
 
         # Оформлення таблиці
         font_table = QtGui.QFont()
-        #font_table.setFamily("Comic Sans MS")
+
         font_table.setFamily("Arial Narrow")
         font_table.setPointSize(12)
         self.table.setFont(font_table)
 
         #Шрифт для опису вироба
         self.font_table_1 = QtGui.QFont()
-        #self.font_table_1.setFamily("Comic Sans MS")
+
         self.font_table_1.setFamily("Arial Narrow")
         self.font_table_1.setPointSize(12)
 
         self.font_table_2 = QtGui.QFont()
-        #self.font_table_2.setFamily("Comic Sans MS")
+
         self.font_table_2.setFamily("Arial Narrow")
         self.font_table_2.setPointSize(16)
 
@@ -591,17 +565,17 @@ class Ui(QtWidgets.QMainWindow):
 
         if self.type_holder.currentText() == "Оберіть тип кріплення" or \
             self.item_value.currentText() in ["Оберіть виріб", " ", "","Оберіть тип кріплення"] or \
-            self.code_value.currentText() in [" ", "?"] or \
-            self.length_value.currentText() in [" ", "?"] or \
+            self.code_value.currentText() in empty_value or \
+            self.length_value.currentText() in empty_value or \
             self.quantity_value.value() == 0:
             error_message = ""
             if self.type_holder.currentText() == "Оберіть тип кріплення":
                 error_message += "Оберіть тип кріплення\n"
             if self.item_value.currentText() in ["Оберіть виріб", " ", "","Оберіть тип кріплення","?"]:
                 error_message += "Оберіть виріб\n"
-            if self.code_value.currentText() in [" ", "?"]:
+            if self.code_value.currentText() in empty_value:
                 error_message += "Оберіть код виробу\n"
-            if self.length_value.currentText() in [" ", "?"]:
+            if self.length_value.currentText() in empty_value:
                 error_message += "Оберіть довжину виробу\n"
             if self.quantity_value.value() == 0:
                 error_message += "Оберіть кількість виробу"
@@ -615,22 +589,22 @@ class Ui(QtWidgets.QMainWindow):
 
             if self.type_holder.currentText() != "Оберіть тип кріплення" and \
                     self.item_value.currentText() == "Оберіть виріб" and \
-                    self.code_value.currentText() not in [" ", "?"] and \
-                    self.length_value.currentText() not in [" ", "?"]:
+                    self.code_value.currentText() not in empty_value and \
+                    self.length_value.currentText() not in empty_value:
 
                 print("Hello! I`m bug")
                 self.load_data()
 
             if self.type_holder.currentText() != "Оберіть тип кріплення" and \
                     self.item_value.currentText() not in [" ", "Оберіть тип кріплення", "Оберіть виріб"] and \
-                    self.code_value.currentText() not in [" ", "?"] and \
-                    self.length_value.currentText() not in [" ", "?"] and \
+                    self.code_value.currentText() not in empty_value and \
+                    self.length_value.currentText() not in empty_value and \
                     self.quantity_value.value() != 0:
 
                 data_list = [self.type_holder.currentText(),
-                             self.item_value.currentText(),
-                             self.code_value.currentText(),
-                             self.length_value.currentText()]
+                            self.item_value.currentText(),
+                            self.code_value.currentText(),
+                            self.length_value.currentText()]
 
                 code: str = My_db.get_full_code_item(data_list)
                 data_list.append(code)
@@ -736,6 +710,8 @@ class Ui(QtWidgets.QMainWindow):
 
     # Завантаження списка виробів для пувного типа тримача
     def get_items(self) -> None:
+        """Функція  заповнює item_value переліком типів виробу"""
+
         self.quantity_value.setValue(0)
 
         if category[self.type_holder.currentText()] == type_holder_list[0]:
@@ -789,23 +765,28 @@ class Ui(QtWidgets.QMainWindow):
 
     # Отримання повного кода виробу з урахуванням довжини
     def get_full_code(self):
-        all_parameters: list = []
-        all_parameters[0] = self.type_holder.currentText()
-        all_parameters[1] = self.item_value.currentText()
-        all_parameters[2] = self.code_value.currentText()
-        all_parameters[3] = self.length_value.currentText()
+
+        all_parameters = (
+            self.type_holder.currentText(),
+            self.item_value.currentText(),
+            self.code_value.currentText(),
+            self.length_value.currentText()
+        )
         self.full_code = My_db.get_full_code_item(all_parameters)
         del(all_parameters)
 
     # Завантаження списку кодів виробу без урахування довжини
     def get_code_items(self):
+        """Функція заповнює code_value перелік кодів виробів
+        певного типу тримача"""
         self.quantity_value.setValue(0)
 
         if self.item_value.currentText() not in ["Оберіть виріб", "Оберіть тип кріплення", "?", " "]:
             self.length_value.clear()
             self.length_value.addItem("?")
-            code_list: list = db_handler.My_db().get_code_list(
-                [self.type_holder.currentText(), self.item_value.currentText()]
+            code_list: tuple = db_handler.My_db.get_code_list(
+                (self.type_holder.currentText(),
+                 self.item_value.currentText())
             )
             self.code_value.clear()
             for code_item in code_list:
@@ -825,13 +806,16 @@ class Ui(QtWidgets.QMainWindow):
     # Завантаження списку довжин для певного кода виробу
     def get_item_length(self) -> None:
         self.quantity_value.setValue(0)
-        if self.code_value.currentText() not in [" ", "?"]:
-            length_list: list = \
-                db_handler.My_db().get_length_item([self.type_holder.currentText(),
-                                                    self.item_value.currentText(),
-                                                    self.code_value.currentText()])
-            self.length_value.clear()
-            for length_item in length_list:
+        self.length_value.clear()
+        if self.code_value.currentText() not in empty_value:
+            length_tuple: tuple = \
+                db_handler.My_db().get_length_item(
+                    (self.type_holder.currentText(),
+                     self.item_value.currentText(),
+                     self.code_value.currentText())
+                )
+
+            for length_item in length_tuple:
                 self.length_value.addItem(str(length_item))
         else:
             self.length_value.clear()
@@ -1169,7 +1153,7 @@ class Ui(QtWidgets.QMainWindow):
 
 
         price_result = sum([item.get_price_item() * item.get_amount_item() * provider_discount for item in self.my_invoice.get_list_item()])
-        price_reuslt = round(price_result, 2)
+        price_result = round(price_result, 2)
         print(f"price_result {price_result }")
         price_result += float(self.packing_value.text())
         print(f"price_result +  packing {price_result}")
@@ -1213,7 +1197,7 @@ class Ui(QtWidgets.QMainWindow):
         price_delivery = round(price_delivery, 2)
         print(f"Delivery price: {price_delivery} грн")
 
-        if self.discount_customer_spinBox.text() not in ["", " ", "0"]:
+        if self.discount_customer_spinBox.text() not in ("", " ", "0"):
             discount: float = round(
                 float(self.discount_customer_spinBox.text().replace(",", ".")) / 100,
                 2

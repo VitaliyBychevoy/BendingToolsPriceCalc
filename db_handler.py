@@ -8,7 +8,6 @@ COMMERCIAL_OFFER_EMPTY_SAMPLE_PATH = ""
 CALCULATION_EMPTY_SMPLE_PATH = ""
 
 
-
 class My_db:
 
     def __init__(self):
@@ -20,7 +19,8 @@ class My_db:
     def get_type_item_list(self) -> list:
         pass
 
-    def get_code_list(self, holder_item: list[str]) -> list:
+    @staticmethod
+    def get_code_list(holder_item: tuple) -> tuple:
         holder: str = holder_item[0]
         item: str = holder_item[1]
         wb = load_workbook("data/DB_bending.xlsx")
@@ -29,23 +29,68 @@ class My_db:
         max_row_item = work_sheet.max_row
         for i in range(1, max_row_item + 1):
             if work_sheet["B"+str(i)].value == holder:
-                code_list.append(work_sheet["C"+str(i)].value[0:6])
+                if len(work_sheet["C"+str(i)].value) == 7:
+                    code_list.append(work_sheet["C"+str(i)].value[0:6])
+                if len(work_sheet["C"+str(i)].value) == 8:
+                    code = (work_sheet["C" + str(i)].value[0:6] +
+                            work_sheet["C" + str(i)].value[-1])
+                    code_list.append(code)
         result_list = list(set(code_list))
         result_list.sort()
-        return result_list
+        del code_list
+        return tuple(result_list)
 
-    def get_length_item(self, holder_item_code: list) -> list:
+    @staticmethod
+    def get_length_item(holder_item_code: tuple) -> tuple:
         wb = load_workbook("data/DB_bending.xlsx")
+        length_list: list = [" "]
         holder: str = holder_item_code[0]
         item: str = holder_item_code[1]
         code: str = holder_item_code[2]
         work_sheet = wb[item]
-        length_list: list = [" "]
         max_row_item = work_sheet.max_row
+        if holder_item_code[2][-1] == "X":
+            for i in range(1, max_row_item + 1):
+                if (work_sheet["B" + str(i)].value == holder and
+                        work_sheet["C" + str(i)].value[0:6] == code[0:6] and
+                        work_sheet["C" + str(i)].value[-1] == "X"
+                        ):
+                    length_list.append(work_sheet["G" + str(i)].value)
+            # return length_list
+        else:
+            for i in range(1, max_row_item + 1):
+                if (work_sheet["B"+str(i)].value == holder and
+                        work_sheet["C"+str(i)].value[0:6] == code and
+                        work_sheet["C" + str(i)].value[-1] != "X"
+                ):
+                    length_list.append(work_sheet["G"+str(i)].value)
+            # return length_list
+        return tuple(length_list)
+    @staticmethod
+    def get_code_length(
+                        item: str,
+                        short_code: str,
+                        length: str) -> str:
+        """Метод повертає повний код виробу якщо остання літера назви
+         X та початок збігається з short_code """
+        wb = load_workbook("data/DB_bending.xlsx")
+        work_sheet = wb[item]
+        max_row_item = work_sheet.max_row
+        result: str = "Empty"
+        print("Hello from get_code_length")
+        print(f"{item}")
+        print(f"{short_code}")
+        print(f"{length}")
         for i in range(1, max_row_item + 1):
-            if work_sheet["B"+str(i)].value == holder and work_sheet["C"+str(i)].value[0:6] == code:
-                length_list.append(work_sheet["G"+str(i)].value)
-        return length_list
+
+            if (work_sheet["C" + str(i)].value[-1] == "X" and
+                    work_sheet["C" + str(i)].value[0:6] == short_code[0:6]  and
+                    str(work_sheet["G" + str(i)].value) == length):
+
+                result =  work_sheet["C" + str(i)].value
+                print("&" *16 + "TOTAL CODE " + f"{result}")
+                return result
+        return result
 
     @staticmethod
     def get_en_description(data_list: list) -> str:
@@ -108,11 +153,14 @@ class My_db:
         max_row_item = 0
         max_row_item = work_sheet.max_row
 
-        for i in range(1, max_row_item + 1):
-            if work_sheet["C"+str(i)].value[0:6] == code and \
-                    str(work_sheet["G" + str(i)].value) == length:
+        if code[-1] == "X":
+            full_code = My_db.get_code_length(item, code, length)
+        else:
+            for i in range(1, max_row_item + 1):
+                if work_sheet["C"+str(i)].value[0:6] == code and \
+                        str(work_sheet["G" + str(i)].value) == length:
 
-                return work_sheet["C" + str(i)].value
+                    return work_sheet["C" + str(i)].value
         return full_code
 
     @staticmethod
