@@ -156,7 +156,8 @@ class Ui(QtWidgets.QMainWindow):
         uic.loadUi("BendingPriceCalc.ui", self)
         self.setWindowIcon(QtGui.QIcon('data/logo_4.png'))
         self.setGeometry(50, 50, 1500, 960)
-        self.setFixedSize(1500, 960)
+        #self.setFixedSize(1500, 960)
+
         self.m_w = None # Вікно пошуку
         self.customers = None # Вікно для створення клієнтів
         self.mdi = QMdiArea()
@@ -1321,4 +1322,10 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = Ui()
     window.show()
+    scroll_area = QScrollArea()
+    scroll_area.setWidget(window)
+    scroll_area.setMaximumWidth(1500)
+    scroll_area.setMaximumHeight(960)
+
+    scroll_area.show()
     app.exec_()

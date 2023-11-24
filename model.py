@@ -235,10 +235,10 @@ class Invoice:
     def get_rate(self) -> float:
         return self.rate
 
-    def set_list_item(self, new_list_item: list[Item]) -> None:
+    def set_list_item(self, new_list_item) -> None:
         self.list_item = new_list_item
 
-    def get_list_item(self) -> list[Item]:
+    def get_list_item(self) -> list:
         if self.list_item is None:
             return []
         else:
