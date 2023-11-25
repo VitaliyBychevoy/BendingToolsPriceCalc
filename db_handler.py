@@ -192,5 +192,3 @@ class Pre_commercial_offer_xlsx():
     def __init__(self):
         self.path_file
 
-class Calculation:
-    pass

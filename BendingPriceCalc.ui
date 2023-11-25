@@ -3096,7 +3096,7 @@ QPushButton:hover {
       <string/>
      </property>
     </widget>
-    <widget class="QComboBox" name="type_punch_value_3">
+    <widget class="QComboBox" name="type_die_value">
      <property name="geometry">
       <rect>
        <x>80</x>

@@ -179,6 +179,19 @@ class Ui(QtWidgets.QMainWindow):
         for item_connection in type_holder_list:
             self.type_holder.addItem(item_connection)
 
+
+        # Заповнюємо тип кріплення для пошуку пуансона та матриці
+        self.type_punch_value.addItem("")
+        self.type_die_value.addItem("")
+        for holder in (
+                "Amada-promecam",
+                "Trumpf-Wila",
+                "Bystronic",
+        ):
+            self.type_punch_value.addItem(holder)
+            self.type_die_value.addItem(holder)
+
+
         self.item_value.addItem("?")
 
         self.code_value.addItem("?")
@@ -1283,6 +1296,12 @@ class Ui(QtWidgets.QMainWindow):
         row_index = 0
         #if self.customer_short_name_value.text() in  get_short_name_list()[1:] and
 
+
+        #ПОШУК ПУАНСОНА
+
+
+
+        #ПОШУК МАТРИЦІ
 
 class CustomerWindow(QtWidgets.QMainWindow):
 

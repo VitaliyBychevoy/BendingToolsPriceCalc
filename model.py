@@ -863,5 +863,13 @@ class Pre_commercial_offer:
 
 
         wb.save(self.get_path_temp())
-class Commercial_offer:
-    pass
+
+    @staticmethod
+    def punch_searching_by_holder(book, type_holder: str) -> tuple:
+        """
+        Функція звертається до бази та повертає усі пуансони
+        типу type_holder
+        """
+        work_sheet = book["Пуансон"]
+        result_tuple = ()
+        return result_tuple
