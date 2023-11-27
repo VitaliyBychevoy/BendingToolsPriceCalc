@@ -20,6 +20,19 @@ class My_db:
         pass
 
     @staticmethod
+    def open_book(path_book: str = "data/DB_bending.xlsx"):
+        """
+        Метод повертає об'єкт Workbook, який був створений при
+        відкритті файла типу Excel за розташуванням парамерта
+        path_book
+        :param path_book: str
+        :return: Workbook
+        """
+        book = load_workbook(path_book)
+        return book
+
+
+    @staticmethod
     def get_code_list(holder_item: tuple) -> tuple:
         holder: str = holder_item[0]
         item: str = holder_item[1]
@@ -186,6 +199,34 @@ class My_db:
                     info_item["parameters"][work_sheet[chr(65 + j) + "1"].value] = work_sheet[chr(65 + j) + str(i)].value
 
         return info_item
+
+    @staticmethod
+    def get_punch_by_holder(book=None, holder=None) -> tuple:
+        """
+        Функція вертає кортеж кодів усіх пуансонів певного типу
+        :param book: Workbook
+        :param holder: str
+        :return: tuple
+        """
+        work_sheet_punch = book["Пуансон"]
+        max_row_item_punch = work_sheet_punch.max_row
+        result_set = set()
+
+        for index in range(1, max_row_item_punch):
+            if work_sheet_punch["B" + str(index)].value == holder:
+                len_code = len(work_sheet_punch["C" + str(index)].value)
+                if len_code == 7:
+                    result_set.add(
+                        str(work_sheet_punch["C" + str(index)].value[0:6])
+                    )
+                elif len_code == 8:
+                    code: str = str(
+                            work_sheet_punch["C" + str(index)].value[0:6] +
+                            work_sheet_punch["C" + str(index)].value[-1])
+                    result_set.add(code)
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
 
 class Pre_commercial_offer_xlsx():
 

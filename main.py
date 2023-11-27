@@ -36,6 +36,7 @@ def check_valid_symbols(number: str) -> bool:
             return False
     return True
 
+
 type_holder_list = (
     "Оберіть тип кріплення",
     "Amada-promecam",
@@ -156,29 +157,29 @@ class Ui(QtWidgets.QMainWindow):
         uic.loadUi("BendingPriceCalc.ui", self)
         self.setWindowIcon(QtGui.QIcon('data/logo_4.png'))
         self.setGeometry(50, 50, 1500, 960)
-        #self.setFixedSize(1500, 960)
+        # self.setFixedSize(1500, 960)
 
-        self.m_w = None # Вікно пошуку
-        self.customers = None # Вікно для створення клієнтів
+        self.m_w = None  # Вікно пошуку
+        self.customers = None  # Вікно для створення клієнтів
         self.mdi = QMdiArea()
         self.table.setColumnWidth(0, 20)
         self.table.setColumnWidth(1, 100)
         self.table.setColumnWidth(2, 500)
 
+        self.book = My_db.open_book("data/DB_bending.xlsx")
 
         company_list: list = get_short_name_list()
 
         # Приховуємо результати
         self.hide_result()
 
-        #Заповнюємо компанії
+        # Заповнюємо компанії
         for company in company_list:
             self.company_value.addItem(company)
 
         # Заповнюємо тип кріплення
         for item_connection in type_holder_list:
             self.type_holder.addItem(item_connection)
-
 
         # Заповнюємо тип кріплення для пошуку пуансона та матриці
         self.type_punch_value.addItem("")
@@ -191,7 +192,6 @@ class Ui(QtWidgets.QMainWindow):
             self.type_punch_value.addItem(holder)
             self.type_die_value.addItem(holder)
 
-
         self.item_value.addItem("?")
 
         self.code_value.addItem("?")
@@ -201,17 +201,16 @@ class Ui(QtWidgets.QMainWindow):
         # Обираємо тип кріплення
         self.type_holder.activated.connect(self.get_items)
 
-
         # Обираємо виріб
         self.item_value.activated.connect(self.get_code_items)
 
         # Oбираємо розмір
         self.code_value.activated.connect(self.get_item_length)
 
-        #Кнопка. Додаємо новий виріб
+        # Кнопка. Додаємо новий виріб
         self.add_item_button.clicked.connect(self.add_item_function)
 
-        #Кнопка. Скидаємо попередні поля та кількість
+        # Кнопка. Скидаємо попередні поля та кількість
         self.reset_button.clicked.connect(self.reset_function)
 
         # Блок роботи з валютою
@@ -229,7 +228,6 @@ class Ui(QtWidgets.QMainWindow):
         # Створюємо invoice, у якому будуть лежати вироби (item)
         self.my_invoice = Invoice()
 
-
         # Максимальна довжина, см
         self.max_length = 0.0
 
@@ -240,7 +238,7 @@ class Ui(QtWidgets.QMainWindow):
         font_table.setPointSize(12)
         self.table.setFont(font_table)
 
-        #Шрифт для опису вироба
+        # Шрифт для опису вироба
         self.font_table_1 = QtGui.QFont()
 
         self.font_table_1.setFamily("Arial Narrow")
@@ -251,80 +249,85 @@ class Ui(QtWidgets.QMainWindow):
         self.font_table_2.setFamily("Arial Narrow")
         self.font_table_2.setPointSize(16)
 
-
-        #Поле для встановлення курсу
+        # Поле для встановлення курсу
         self.EURO_value.textChanged.connect(self.check_number_EURO)
 
-        #Додаємо один до кількості обраного елемента
+        # Додаємо один до кількості обраного елемента
         self.add_amount_button.clicked.connect(self.add_one_item)
 
-        #Зменьшуємо на один кількость обраного елемента
+        # Зменьшуємо на один кількость обраного елемента
         self.remove_amount_button.clicked.connect(self.remove_one_item)
 
-        #Видаляємо обраний елемент
+        # Видаляємо обраний елемент
         self.remove_element.clicked.connect(self.remove_row)
 
         self.update_row.clicked.connect(self.update_item)
 
-        #Видаляемо усе з таблиці
+        # Видаляемо усе з таблиці
         self.clear_table_button.clicked.connect(self.clear_table)
 
-        #Отримати рекомендований курс валюти
+        # Отримати рекомендований курс валюти
         self.recommended_rate_button.clicked.connect(self.recommended_rate)
 
-        #Поле для вартості
+        # Поле для вартості
         self.packing_value.textChanged.connect(self.check_packing_number)
 
-        #Поле для вартості доставки
+        # Поле для вартості доставки
         self.delivery_value.textChanged.connect(self.check_delivery_number)
 
-        #Кнопка Створити xlsx
+        # Кнопка Створити xlsx
         self.pre_commercial_offer_button.clicked.connect(self.create_pre_commercial_offer)
 
-        #Кнопка Розрахувати вартість
+        # Кнопка Розрахувати вартість
         self.result_button.clicked.connect(self.show_result)
 
-        #Вартість переводу
+        # Вартість переводу
         self.transaction_value.textChanged.connect(self.check_transaction_value)
 
-        #Податок банка
+        # Податок банка
         self.bank_tax_value.textChanged.connect(self.check_bank_tax_value)
 
-        #Брокерські послуги
+        # Брокерські послуги
         self.brokerage_services_value.textChanged.connect(self.check_brokerage_services_value)
 
-        #Вартість оформлення документів
+        # Вартість оформлення документів
         self.delivery_document_value.textChanged.connect(self.check_delivery_document_value)
 
+        # РОБОТА З КЛІЄНТАМИ
 
-        #РОБОТА З КЛІЄНТАМИ
-
-        #Кнопка отримання повної назви клієнта
+        # Кнопка отримання повної назви клієнта
         self.get_full_name_Button.clicked.connect(self.get_full_name_customer)
 
-        #Кнопка скидання короткої назви
+        # Кнопка скидання короткої назви
         self.reset_short_name_Button.clicked.connect(self.reset_short_name)
 
-        #Кнопка скидання повної назви
+        # Кнопка скидання повної назви
         self.reset_full_name_Button.clicked.connect(self.reset_full_name)
 
-        #Кнопка отримання усіх коротких назв клієнтів
-        self.all_customers_Button.clicked.connect(self. show_all_short_name)
+        # Кнопка отримання усіх коротких назв клієнтів
+        self.all_customers_Button.clicked.connect(self.show_all_short_name)
 
-        #Обираємо позицію у списку коротких назв
+        # Обираємо позицію у списку коротких назв
         self.list_customer_comboBox.activated.connect(self.get_itemBox_info)
 
-        #Змінюємо запис клієнта у базі
+        # Змінюємо запис клієнта у базі
         self.update_customer_Button.clicked.connect(self.update_client)
 
-      #  self.show()
+        # ПОШУК
+
+        #Зміна стану поля "Тип"
+        self.type_punch_value.activated.connect(self.change_type_punch)
+        #кнопка пошуку пуансона
+        self.find_punch_button.clicked.connect(self.find_punch)
+
+    #  self.show()
 
     def customers_db(self):
         self.customers = CustomerWindow()
         self.customers.show()
 
     def set_typical_style(self) -> None:
-        #Списки та spinbox для редагування
+        # Списки та spinbox для редагування
         self.company_value.setStyleSheet(style.typically_style_QComboBox)
         self.company_value.setEnabled(True)
         self.type_holder.setStyleSheet(style.typically_style_QComboBox)
@@ -333,7 +336,7 @@ class Ui(QtWidgets.QMainWindow):
         self.length_value.setStyleSheet(style.typically_style_QComboBox)
         self.quantity_value.setStyleSheet(style.typically_style_QSpinBox)
 
-        #Кнопки
+        # Кнопки
         self.reset_button.setStyleSheet(style.typically_style_button_reset_fields)
         self.reset_button.setEnabled(True)
         self.remove_element.setStyleSheet(style.typically_remove_element_button)
@@ -353,8 +356,7 @@ class Ui(QtWidgets.QMainWindow):
         self.pre_commercial_offer_button.setStyleSheet(style.typically_xlsx_button)
         self.pre_commercial_offer_button.setEnabled(True)
 
-
-        #таблиця
+        # таблиця
         self.table.setStyleSheet(style.typically_table)
 
         # загальний фон
@@ -378,7 +380,7 @@ class Ui(QtWidgets.QMainWindow):
         self.bank_tax_value.setEnabled(True)
         self.bank_tax_value.setStyleSheet(style.typically_style_editline)
 
-        #SpinBox
+        # SpinBox
         self.persentage_spinBox.setStyleSheet(style.typically_persentage_spinBox)
         self.persentage_spinBox.setButtonSymbols(QAbstractSpinBox.UpDownArrows)
         self.provider_discount_spinBox.setStyleSheet(style.typically_persentage_spinBox)
@@ -389,7 +391,7 @@ class Ui(QtWidgets.QMainWindow):
         self.provider_discount_spinBox.setReadOnly(False)
         self.discount_customer_spinBox.setReadOnly(False)
 
-        #Курс валют
+        # Курс валют
         self.date_euro_layout.setStyleSheet(style.typically_date_euro_layout)
         self.title.setStyleSheet(style.typically_title)
         self.date_value.setStyleSheet(style.typically_title)
@@ -399,7 +401,7 @@ class Ui(QtWidgets.QMainWindow):
         self.euro_label.setStyleSheet(style.typically_title)
         self.uah_label.setStyleSheet(style.typically_title)
 
-        #для xls
+        # для xls
         self.weight_label.setStyleSheet(style.typically_weight_label)
         self.weight_value.setStyleSheet(style.typically_weight_label)
         self.lenght_label.setStyleSheet(style.typically_weight_label)
@@ -427,7 +429,7 @@ class Ui(QtWidgets.QMainWindow):
         self.percent_discount_label.setStyleSheet(style.typically_weight_label)
 
     def set_update_style(self) -> None:
-        #Списки та spinbox для редагування
+        # Списки та spinbox для редагування
         self.company_value.setStyleSheet(style.typically_style_QComboBox)
         self.company_value.setEnabled(False)
         self.type_holder.setStyleSheet(style.update_style_QComboBox)
@@ -436,7 +438,7 @@ class Ui(QtWidgets.QMainWindow):
         self.length_value.setStyleSheet(style.update_style_QComboBox)
         self.quantity_value.setStyleSheet(style.update_style_QSpinBox)
 
-        #Кнопки
+        # Кнопки
         self.reset_button.setStyleSheet(style.update_style_button)
         self.reset_button.setEnabled(False)
         self.remove_element.setStyleSheet(style.update_remove_element_button)
@@ -456,14 +458,13 @@ class Ui(QtWidgets.QMainWindow):
         self.pre_commercial_offer_button.setStyleSheet(style.update_xlsx_button)
         self.pre_commercial_offer_button.setEnabled(False)
 
-
-        #таблиця
+        # таблиця
         self.table.setStyleSheet(style.update_table)
 
-        #загальний фон
+        # загальний фон
         self.setStyleSheet(style.update_style_background)
 
-        #Поля
+        # Поля
         self.EURO_value.setEnabled(False)
         self.EURO_value.setStyleSheet(style.update_style_editline)
         self.packing_value.setEnabled(False)
@@ -481,7 +482,7 @@ class Ui(QtWidgets.QMainWindow):
         self.delivery_document_value.setEnabled(False)
         self.delivery_document_value.setStyleSheet(style.update_style_editline)
 
-        #SpinBox
+        # SpinBox
         self.persentage_spinBox.setStyleSheet(style.update_persentage_spinBox)
         self.persentage_spinBox.setButtonSymbols(QAbstractSpinBox.NoButtons)
         self.provider_discount_spinBox.setStyleSheet(style.update_persentage_spinBox)
@@ -492,7 +493,7 @@ class Ui(QtWidgets.QMainWindow):
         self.provider_discount_spinBox.setReadOnly(True)
         self.discount_customer_spinBox.setReadOnly(True)
 
-        #Курс валют
+        # Курс валют
         self.date_euro_layout.setStyleSheet(style.update_date_euro_layout)
         self.title.setStyleSheet(style.update_title)
         self.date_value.setStyleSheet(style.update_title)
@@ -502,7 +503,7 @@ class Ui(QtWidgets.QMainWindow):
         self.euro_label.setStyleSheet(style.update_title)
         self.uah_label.setStyleSheet(style.update_title)
 
-        #для xls
+        # для xls
         self.weight_label.setStyleSheet(style.update_weight_label)
         self.weight_value.setStyleSheet(style.update_weight_label)
         self.lenght_label.setStyleSheet(style.update_weight_label)
@@ -515,7 +516,7 @@ class Ui(QtWidgets.QMainWindow):
         self.percent_discount_customer_label.setStyleSheet(style.update_weight_label)
         self.delivery_label.setStyleSheet(style.update_weight_label)
 
-        #self.delivery_label.setStyleSheet(style.update_weight_label)
+        # self.delivery_label.setStyleSheet(style.update_weight_label)
         self.delivery_document_label.setStyleSheet(style.update_weight_label)
 
         self.delivery_euro_label.setStyleSheet(style.update_weight_label)
@@ -529,7 +530,7 @@ class Ui(QtWidgets.QMainWindow):
         self.percent_discount_label.setStyleSheet(style.update_weight_label)
         self.percent_bank_tax_label.setStyleSheet(style.update_weight_label)
 
-    #Додаємо одиницю до кількості екземплярів виробу
+    # Додаємо одиницю до кількості екземплярів виробу
     def add_one_item(self) -> None:
         row_index = self.table.currentRow()
         if row_index > -1:
@@ -542,7 +543,7 @@ class Ui(QtWidgets.QMainWindow):
         else:
             self.load_data()
 
-    #Зменьшуємо на одиницю кількість екземплярів виробу
+    # Зменьшуємо на одиницю кількість екземплярів виробу
     def remove_one_item(self) -> None:
         row_index = self.table.currentRow()
 
@@ -559,7 +560,7 @@ class Ui(QtWidgets.QMainWindow):
         else:
             pass
 
-    #Видаляємо позицію вироба зі списка та з таблиці
+    # Видаляємо позицію вироба зі списка та з таблиці
     def remove_row(self) -> None:
         row_index = self.table.currentRow()
         if len(self.my_invoice.get_list_item()) == 1:
@@ -578,14 +579,14 @@ class Ui(QtWidgets.QMainWindow):
     def add_item_function(self):
 
         if self.type_holder.currentText() == "Оберіть тип кріплення" or \
-            self.item_value.currentText() in ["Оберіть виріб", " ", "","Оберіть тип кріплення"] or \
-            self.code_value.currentText() in empty_value or \
-            self.length_value.currentText() in empty_value or \
-            self.quantity_value.value() == 0:
+                self.item_value.currentText() in ["Оберіть виріб", " ", "", "Оберіть тип кріплення"] or \
+                self.code_value.currentText() in empty_value or \
+                self.length_value.currentText() in empty_value or \
+                self.quantity_value.value() == 0:
             error_message = ""
             if self.type_holder.currentText() == "Оберіть тип кріплення":
                 error_message += "Оберіть тип кріплення\n"
-            if self.item_value.currentText() in ["Оберіть виріб", " ", "","Оберіть тип кріплення","?"]:
+            if self.item_value.currentText() in ["Оберіть виріб", " ", "", "Оберіть тип кріплення", "?"]:
                 error_message += "Оберіть виріб\n"
             if self.code_value.currentText() in empty_value:
                 error_message += "Оберіть код виробу\n"
@@ -605,7 +606,6 @@ class Ui(QtWidgets.QMainWindow):
                     self.item_value.currentText() == "Оберіть виріб" and \
                     self.code_value.currentText() not in empty_value and \
                     self.length_value.currentText() not in empty_value:
-
                 print("Hello! I`m bug")
                 self.load_data()
 
@@ -616,9 +616,9 @@ class Ui(QtWidgets.QMainWindow):
                     self.quantity_value.value() != 0:
 
                 data_list = [self.type_holder.currentText(),
-                            self.item_value.currentText(),
-                            self.code_value.currentText(),
-                            self.length_value.currentText()]
+                             self.item_value.currentText(),
+                             self.code_value.currentText(),
+                             self.length_value.currentText()]
 
                 code: str = My_db.get_full_code_item(data_list)
                 data_list.append(code)
@@ -674,7 +674,7 @@ class Ui(QtWidgets.QMainWindow):
                 print("Помилка")
             self.load_data()
 
-    #Редагуємо обрану позицію
+    # Редагуємо обрану позицію
     def update_item(self) -> None:
         print("Update")
         row_index = self.table.currentRow()
@@ -787,7 +787,7 @@ class Ui(QtWidgets.QMainWindow):
             self.length_value.currentText()
         )
         self.full_code = My_db.get_full_code_item(all_parameters)
-        del(all_parameters)
+        del (all_parameters)
 
     # Завантаження списку кодів виробу без урахування довжини
     def get_code_items(self):
@@ -900,7 +900,6 @@ class Ui(QtWidgets.QMainWindow):
     def check_delivery_document_value(self) -> None:
         self.delivery_document_value.setText(self.new_check_number(self.delivery_document_value.text()))
 
-
     # Кнопка створення пошукового вікна
     def search_item(self) -> None:
         self.m_w = Search()
@@ -911,94 +910,91 @@ class Ui(QtWidgets.QMainWindow):
         # встановлюємо курс евро
         self.my_invoice.set_rate(float(self.EURO_value.text().replace(",", ".")))
 
-        #перевіряємо чи усі потрібні дані були надані користувачем
+        # перевіряємо чи усі потрібні дані були надані користувачем
         if not self.check_data_for_pre_commercial():
             return
 
-        #Додаємо у інвойс ім'я клієнта-компаніі
+        # Додаємо у інвойс ім'я клієнта-компаніі
         self.my_invoice.set_customer_name(
             self.company_value.currentText()
         )
 
-        #Додаємо packing
+        # Додаємо packing
         self.my_invoice.set_packing_price(self.packing_value.text())
 
-        #Додаємо калькуляцію у інвойс
+        # Додаємо калькуляцію у інвойс
         self.my_invoice.set_commission_percentage(
             self.persentage_spinBox.text()
         )
 
-        #Додаємо у інвойс розмір знижки для клієнта-компаніі
+        # Додаємо у інвойс розмір знижки для клієнта-компаніі
         self.my_invoice.set_customer_discount(
             self.discount_customer_spinBox.text()
         )
 
-        #Додаємо у інвойс розмір знижки від постачальника
+        # Додаємо у інвойс розмір знижки від постачальника
         self.my_invoice.set_provider_discount(
             self.provider_discount_spinBox.text()
         )
 
-        #Додаємо у інвойс вартість доставки
+        # Додаємо у інвойс вартість доставки
         self.my_invoice.set_delivery_price(
             self.delivery_value.text()
         )
 
-        #Додаємо у інвойс вартість  документів
+        # Додаємо у інвойс вартість  документів
         self.my_invoice.set_price_document(
             self.delivery_document_value.text()
         )
 
-        #Додаємо відсоток для банка
+        # Додаємо відсоток для банка
         self.my_invoice.set_bank_tax(
             self.bank_tax_value.text()
         )
 
-        #Додаємо у інвойс вартість переказу
+        # Додаємо у інвойс вартість переказу
         self.my_invoice.set_transaction_price(
             self.transaction_value.text()
         )
 
-        #Додаємо у інвойс брокерські послуги
+        # Додаємо у інвойс брокерські послуги
         self.my_invoice.set_brokerage_price(
             self.brokerage_services_value.text()
         )
 
-
-        #Формуємо ім'я мойбутньго файла
+        # Формуємо ім'я мойбутньго файла
         pre_commercial_offer_name = \
             (name_offer(self.my_invoice.get_customer_name()))
 
         self.my_invoice.invoice_input_toString()
 
-        #Створюємо новий файл xlsx
+        # Створюємо новий файл xlsx
         wb = Workbook()
 
-
-        #Активуємо лист
+        # Активуємо лист
         sheet = wb.active
-
 
         row_style(sheet)
 
-        #Обороблюємо  колонки
+        # Обороблюємо  колонки
         column_style(sheet)
 
-        #Поєднуємо комірки  до таблиці
+        # Поєднуємо комірки  до таблиці
         merge_cells_before_table(sheet)
 
-        #Информація про компанію
+        # Информація про компанію
         fill_company_info(sheet)
 
-        #Заповнюємо дату до таблиці
+        # Заповнюємо дату до таблиці
         fill_today_before_table(sheet)
 
-        #Заповнюємо назву компанії
+        # Заповнюємо назву компанії
         fill_customer_name(
             sheet,
             self.my_invoice.get_customer_name()
         )
 
-        #Заповнюємо назву таблиці
+        # Заповнюємо назву таблиці
         fill_title_table(sheet)
 
         # Заповнюємо назву таблиці
@@ -1011,37 +1007,36 @@ class Ui(QtWidgets.QMainWindow):
         empty_string(sheet, current_row)
         current_row += 1
 
-        #Вставновлюємо ціну виробника
+        # Вставновлюємо ціну виробника
         self.my_invoice.calculate_sum_item_price()
 
-
-        #Ціна для розрахунку
+        # Ціна для розрахунку
         self.my_invoice.calculate_total_price_ua()
 
-        #Заповнюємо таблицю з позиціями
+        # Заповнюємо таблицю з позиціями
         current_row = items_in_row(sheet, self.my_invoice, current_row)
 
-        #Порожній рядок
+        # Порожній рядок
         empty_string(sheet, current_row)
 
-        #Вага
+        # Вага
         total_weight(sheet, current_row)
         current_row += 1
 
-        #Строка Разом
+        # Строка Разом
         fill_total_bill(sheet, current_row)
         current_row += 1
 
-        #ПДВ
+        # ПДВ
         tax_row_total(sheet, current_row)
         current_row += 1
 
-        #Разом з ПДВ
+        # Разом з ПДВ
         total_bill_with_tax(sheet, current_row)
         current_row += 1
 
         if self.my_invoice.get_customer_discount() != "0":
-            #Знижка для клієнта
+            # Знижка для клієнта
             fill_discount_customer_value(
                 sheet,
                 current_row,
@@ -1049,26 +1044,26 @@ class Ui(QtWidgets.QMainWindow):
                 self.my_invoice.get_customer_discount()
             )
             current_row += 1
-            #Вартість після знижки
+            # Вартість після знижки
             fill_total_tax_discount(sheet, current_row)
             current_row += 1
 
-        #Вартість доставки
+        # Вартість доставки
         self.my_invoice.calculate_total_delivery_price_ua()
         fill_delivery_value(sheet, current_row, self.my_invoice)
         current_row += 1
 
-        #Загальна вартість
+        # Загальна вартість
         fill_total_price(sheet, current_row)
 
-        #1C для всіх
+        # 1C для всіх
         fill_1C_all(sheet, self.my_invoice, current_row)
 
-        #Порожни колонки
+        # Порожни колонки
         empty_columns(sheet, current_row, self.my_invoice)
         current_row += 1
 
-        #Строки після таблиці
+        # Строки після таблиці
         after_table(sheet, current_row, self.my_invoice)
         current_row += 25
 
@@ -1078,28 +1073,28 @@ class Ui(QtWidgets.QMainWindow):
 
         path = ""
         path = qf.getSaveFileName(
-                None,
-                None,
-                f"./{pre_commercial_offer_name}",
-                '*.xlsx;;*.xls'
-            )[0]
+            None,
+            None,
+            f"./{pre_commercial_offer_name}",
+            '*.xlsx;;*.xls'
+        )[0]
 
         if path == "":
             return
         else:
-            #Збереження файла
+            # Збереження файла
             wb.save(path)
             wb.close()
 
     # Перевіряємо наявність усіх даних для прорахунку
     def check_data_for_pre_commercial(self) -> bool:
 
-        if self.company_value.currentText() == "Оберіть компанію" or\
-               self.EURO_value.text() in zero_spinBox or \
+        if self.company_value.currentText() == "Оберіть компанію" or \
+                self.EURO_value.text() in zero_spinBox or \
                 self.table.rowCount() < 1 or \
                 self.delivery_document_value.text() in zero_spinBox or \
                 self.packing_value.text() in zero_spinBox or \
-                self.delivery_document_EURO_1_value_.text() in zero_spinBox or\
+                self.delivery_document_EURO_1_value_.text() in zero_spinBox or \
                 self.delivery_value.text() in zero_spinBox:
             error = MessageError()
             error_message: str = ""
@@ -1123,30 +1118,30 @@ class Ui(QtWidgets.QMainWindow):
         else:
             return True
 
-    #Приховуємо результати
+    # Приховуємо результати
     def hide_result(self):
         # Приховуємо вартість доставки
         self.result_delivery_label.setHidden(True)
 
-        #Приховуємо  загальну вартість
+        # Приховуємо  загальну вартість
         self.result_price_label.setHidden(True)
 
-    #Показуємо результат
+    # Показуємо результат
     def show_result(self) -> None:
         error_in_field: tuple = ('', '.', ',', "0")
         if self.EURO_value.text() in error_in_field \
-               or self.packing_value.text() in error_in_field\
+                or self.packing_value.text() in error_in_field \
                 or self.delivery_value.text() in error_in_field \
-                or self.delivery_document_value.text() in error_in_field\
-                or self.delivery_document_EURO_1_value_.text() in error_in_field\
-                or self.transaction_value.text() in error_in_field\
-                or self.brokerage_services_value.text() in error_in_field\
+                or self.delivery_document_value.text() in error_in_field \
+                or self.delivery_document_EURO_1_value_.text() in error_in_field \
+                or self.transaction_value.text() in error_in_field \
+                or self.brokerage_services_value.text() in error_in_field \
                 or self.bank_tax_value.text() in error_in_field:
             error = MessageError()
             if self.EURO_value.text() in error_in_field:
                 message = "Порожній курс валюти.\nВведіть курс валют.\n"
 
-            if self.packing_value.text() in  error_in_field:
+            if self.packing_value.text() in error_in_field:
                 message = "Порожня вартість пакування.\nВведіть вартість пакування.\n"
 
             if self.delivery_value.text() in error_in_field:
@@ -1155,30 +1150,28 @@ class Ui(QtWidgets.QMainWindow):
             error.exec_()
             return
 
-
         rate: float = round(float(self.EURO_value.text().replace(",", ".")), 2)
         price_delivery: float = 0.0
         price_result: float = 0.0
 
-        #provider_discount: float = 100 - self.provider_discount_spinBox.text()
+        # provider_discount: float = 100 - self.provider_discount_spinBox.text()
         provider_discount = \
-            (100-float(self.provider_discount_spinBox.text().replace(",", ".")))/100
+            (100 - float(self.provider_discount_spinBox.text().replace(",", "."))) / 100
 
-
-
-        price_result = sum([item.get_price_item() * item.get_amount_item() * provider_discount for item in self.my_invoice.get_list_item()])
+        price_result = sum([item.get_price_item() * item.get_amount_item() * provider_discount for item in
+                            self.my_invoice.get_list_item()])
         price_result = round(price_result, 2)
-        print(f"price_result {price_result }")
+        print(f"price_result {price_result}")
         price_result += float(self.packing_value.text())
         print(f"price_result +  packing {price_result}")
 
         price_order = price_result
 
-        price_result = round(price_result * (1 + (float(self.bank_tax_value.text().replace(",", ".")))/100), 2)
+        price_result = round(price_result * (1 + (float(self.bank_tax_value.text().replace(",", "."))) / 100), 2)
 
         print(f"price_result with bank tax: {price_result}")
 
-        percent = (100 - (float(self.persentage_spinBox.text().replace(",", "."))))/100
+        percent = (100 - (float(self.persentage_spinBox.text().replace(",", ".")))) / 100
         print(f"Percent {percent}")
         price_result = round(price_result / percent, 2)
         print(f"price_result with comision: {price_result}")
@@ -1227,15 +1220,14 @@ class Ui(QtWidgets.QMainWindow):
         price_result = price_result + price_delivery
         price_result = round(price_result, 2)
 
-
-        #Показуємо  загальну вартість
-        self.result_price_label.setText(f"Загальна вартість: {round(price_result  / rate, 2)} EURO {price_result} грн.")
+        # Показуємо  загальну вартість
+        self.result_price_label.setText(f"Загальна вартість: {round(price_result / rate, 2)} EURO {price_result} грн.")
         self.result_price_label.setHidden(False)
-        self.result_delivery_label.setText(f"Вартість доставки: {round(price_delivery  / rate, 2)} EURO {price_delivery} грн.")
+        self.result_delivery_label.setText(
+            f"Вартість доставки: {round(price_delivery / rate, 2)} EURO {price_delivery} грн.")
 
-
-    #КЛІЄНТИ
-    #Кнопка отримання повної назви клієнтів
+    # КЛІЄНТИ
+    # Кнопка отримання повної назви клієнтів
     def get_full_name_customer(self) -> None:
         short_name: str = self.customer_short_name_value.text()
         if short_name == "":
@@ -1256,20 +1248,20 @@ class Ui(QtWidgets.QMainWindow):
             full_name: str = get_full_name_company(short_name)
             self.customer_full_name_value.setText(full_name)
 
-    #Кнопка скидання короткої назви
+    # Кнопка скидання короткої назви
     def reset_short_name(self) -> None:
         self.customer_short_name_value.setText("")
 
-    #Кнопка скидання повної назви
+    # Кнопка скидання повної назви
     def reset_full_name(self) -> None:
         self.customer_full_name_value.setText("")
 
-    #Кнопка отримання усіх коротких назв
+    # Кнопка отримання усіх коротких назв
     def show_all_short_name(self) -> None:
         for item in get_short_name_list()[1:]:
             self.list_customer_comboBox.addItem(item)
 
-    #Отримуемо одного клієнта зі списка
+    # Отримуемо одного клієнта зі списка
     def get_itemBox_info(self) -> None:
         if self.list_customer_comboBox.currentText() != "":
             self.customer_short_name_value.setText(
@@ -1277,7 +1269,7 @@ class Ui(QtWidgets.QMainWindow):
             )
             self.get_full_name_customer()
 
-    #Кнопка для зміни клієнта
+    # Кнопка для зміни клієнта
     def update_client(self) -> None:
         if self.customer_short_name_value.text() == "":
             error = MessageError()
@@ -1294,14 +1286,42 @@ class Ui(QtWidgets.QMainWindow):
             error.exec_()
             return
         row_index = 0
-        #if self.customer_short_name_value.text() in  get_short_name_list()[1:] and
+        # if self.customer_short_name_value.text() in  get_short_name_list()[1:] and
 
+        # ПОШУК ПУАНСОНА
 
-        #ПОШУК ПУАНСОНА
+    def find_punch(self) -> None:
+        """
+        Метод обробляє кнопку type_punch_value,
+        та викликає повдомлення  про помилку
+        або  відповдний до заданих параметрів метод
+        :return: None
+        """
+        holder : str = self.type_punch_value.currentText()
+        if holder == "":
+            message = MessageError()
+            message.setText("Оберіть тип кріплення пуансона")
+            message.exec_()
+        else:
+            #Обран лише тримач
+            if self.punch_angle_value.text() == "" and self.punch_height_value.text() == "" and self.punch_radius_value.text() ==  "":
+                self.result_punch_value.clear()
+                for item in My_db.get_punch_by_holder(
+                        book=self.book,
+                        holder=holder
+                ):
+                    self.result_punch_value.addItem(item)
 
+            #Обрані тримач та кут
+            elif self.punch_angle_value.text() != "" and self.punch_height_value.text() == "" and self.punch_radius_value.text() ==  "":
+                pass
+    def change_type_punch(self) -> None:
+        self.punch_angle_value.setText("")
+        self.punch_height_value.setText("")
+        self.punch_radius_value.setText("")
 
+        # ПОШУК МАТРИЦІ
 
-        #ПОШУК МАТРИЦІ
 
 class CustomerWindow(QtWidgets.QMainWindow):
 
@@ -1312,12 +1332,11 @@ class CustomerWindow(QtWidgets.QMainWindow):
         self.setFixedSize(500, 280)
 
 
-
-
 class MessageError(QMessageBox):
     font_message = QtGui.QFont()
     font_message.setFamily("Arial Narrow")
     font_message.setPointSize(14)
+
     def __init__(self):
         super(MessageError, self).__init__()
         self.setWindowIcon(QtGui.QIcon('data/logo_4.png'))
@@ -1329,7 +1348,7 @@ class MessageError(QMessageBox):
         self.button(QMessageBox.Ok).setVisible(False)
 
 
-#class Search(QMdiSubWindow):
+# class Search(QMdiSubWindow):
 class Search(QWidget):
     def __init__(self):
         super(Search, self).__init__()
