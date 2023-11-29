@@ -1314,7 +1314,15 @@ class Ui(QtWidgets.QMainWindow):
 
             #Обрані тримач та кут
             elif self.punch_angle_value.text() != "" and self.punch_height_value.text() == "" and self.punch_radius_value.text() ==  "":
-                pass
+                self.result_punch_value.clear()
+                for item in My_db.get_punch_by_holder_angle(
+                        book=self.book,
+                        type_holder=holder,
+                        angle=str(self.punch_angle_value.text())
+                ):
+                    self.result_punch_value.addItem(item)
+
+
     def change_type_punch(self) -> None:
         self.punch_angle_value.setText("")
         self.punch_height_value.setText("")

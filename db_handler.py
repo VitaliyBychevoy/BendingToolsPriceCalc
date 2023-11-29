@@ -211,7 +211,7 @@ class My_db:
         work_sheet_punch = book["Пуансон"]
         max_row_item_punch = work_sheet_punch.max_row
         result_set = set()
-
+        result_set.add(" ")
         for index in range(1, max_row_item_punch):
             if work_sheet_punch["B" + str(index)].value == holder:
                 len_code = len(work_sheet_punch["C" + str(index)].value)
@@ -227,6 +227,44 @@ class My_db:
         result_set = sorted(result_set)
         return tuple(result_set)
 
+    @staticmethod
+    def get_punch_by_holder_angle(book=None, type_holder=None, angle=None) -> tuple:
+        """
+        Функція вертає кортеж кодів усіх пуансонів певного типу та
+         певного кута
+        :param book: Workbook
+        :param type_holder: str
+        :param angle: str
+        :return: tuple
+        """
+        work_sheet_punch = book["Пуансон"]
+        max_row_item_punch = work_sheet_punch.max_row
+        result_set = set()
+        result_set.add(" ")
+        for index in range(1, max_row_item_punch):
+            if work_sheet_punch["B" + str(index)].value == type_holder and str(work_sheet_punch["J" + str(index)].value) == angle:
+                len_code = len(work_sheet_punch["C" + str(index)].value)
+                if len_code == 7:
+                    result_set.add(
+                        str(work_sheet_punch["C" + str(index)].value[0:6])
+                    )
+                elif len_code == 8:
+                    code: str = str(
+                        work_sheet_punch["C" + str(index)].value[0:6] +
+                        work_sheet_punch["C" + str(index)].value[-1])
+                    result_set.add(code)
+            result_set = sorted(result_set)
+            return tuple(result_set)
+
+    @staticmethod
+    def punch_searching_by_holder(book, type_holder: str) -> tuple:
+        """
+        Функція звертається до бази та повертає усі пуансони
+        типу type_holder
+        """
+        work_sheet = book["Пуансон"]
+        result_tuple = ()
+        return result_tuple
 
 class Pre_commercial_offer_xlsx():
 
