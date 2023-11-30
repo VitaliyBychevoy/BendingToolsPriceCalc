@@ -314,6 +314,16 @@ class Ui(QtWidgets.QMainWindow):
         self.update_customer_Button.clicked.connect(self.update_client)
 
         # ПОШУК
+        #Пуансон
+
+        #Кут
+        self.punch_angle_value.textChanged.connect(self.check_packing_number)
+
+        #Висота
+        self.punch_height_value.textChanged.connect(self.check_packing_number)
+
+        #Радіус
+        self.punch_radius_value.textChanged.connect(self.check_packing_number)
 
         #Зміна стану поля "Тип"
         self.type_punch_value.activated.connect(self.change_type_punch)
@@ -1297,14 +1307,16 @@ class Ui(QtWidgets.QMainWindow):
         або  відповдний до заданих параметрів метод
         :return: None
         """
-        holder : str = self.type_punch_value.currentText()
+        holder: str = self.type_punch_value.currentText()
         if holder == "":
             message = MessageError()
             message.setText("Оберіть тип кріплення пуансона")
             message.exec_()
         else:
             #Обран лише тримач
-            if self.punch_angle_value.text() == "" and self.punch_height_value.text() == "" and self.punch_radius_value.text() ==  "":
+            if (self.punch_angle_value.text() == ""
+                    and self.punch_height_value.text() == ""
+                    and self.punch_radius_value.text() == ""):
                 self.result_punch_value.clear()
                 for item in My_db.get_punch_by_holder(
                         book=self.book,
@@ -1313,14 +1325,94 @@ class Ui(QtWidgets.QMainWindow):
                     self.result_punch_value.addItem(item)
 
             #Обрані тримач та кут
-            elif self.punch_angle_value.text() != "" and self.punch_height_value.text() == "" and self.punch_radius_value.text() ==  "":
+            elif (self.punch_angle_value.text() != ""
+                  and self.punch_height_value.text() == ""
+                  and self.punch_radius_value.text() == ""):
                 self.result_punch_value.clear()
-                for item in My_db.get_punch_by_holder_angle(
+                punch_holder_angle = My_db.get_punch_by_holder_angle(
                         book=self.book,
                         type_holder=holder,
-                        angle=str(self.punch_angle_value.text())
-                ):
+                        angle=self.punch_angle_value.text()
+                )
+                for item in punch_holder_angle:
                     self.result_punch_value.addItem(item)
+                del punch_holder_angle
+
+            #Обран тримач та виста
+            if (self.punch_angle_value.text() == ""
+                    and self.punch_height_value.text() != ""
+                    and self.punch_radius_value.text() == ""):
+                self.result_punch_value.clear()
+                punch_holder_height = My_db.get_punch_by_holder_height(
+                    book=self.book,
+                    type_holder=holder,
+                    height=self.punch_height_value.text()
+                )
+                for item in punch_holder_height:
+                    self.result_punch_value.addItem(item)
+                del punch_holder_height
+
+                #Обран тримач та радіус
+            if (self.punch_angle_value.text() == ""
+                    and self.punch_height_value.text() == ""
+                    and self.punch_radius_value.text() != ""):
+                self.result_punch_value.clear()
+                punch_holder_radius = My_db.get_punch_by_holder_radius(
+                    book=self.book,
+                    type_holder=holder,
+                    radius=self.punch_radius_value.text()
+                )
+                for item in punch_holder_radius:
+                    self.result_punch_value.addItem(item)
+                del punch_holder_radius
+
+            #Обрані тримач, кут та висота
+            elif (self.punch_angle_value.text() != ""
+                  and self.punch_height_value.text() != ""
+                  and self.punch_radius_value.text() == ""):
+                self.result_punch_value.clear()
+                punch_holder_angle_height \
+                    = My_db.get_punch_by_holder_angle_height(
+                        book=self.book,
+                        type_holder=holder,
+                        angle=self.punch_angle_value.text(),
+                        height=self.punch_height_value.text()
+                )
+                for item in punch_holder_angle_height:
+                    self.result_punch_value.addItem(item)
+                del punch_holder_angle_height
+
+            #Обрані тримач, кут та радіус
+            elif (self.punch_angle_value.text() != ""
+                  and self.punch_height_value.text() == ""
+                  and self.punch_radius_value.text() != ""):
+                self.result_punch_value.clear()
+                punch_holder_angle_radius \
+                    = My_db.get_punch_by_holder_angle_radius(
+                        book=self.book,
+                        type_holder=holder,
+                        angle=self.punch_angle_value.text(),
+                        radius=self.punch_radius_value.text()
+                )
+                for item in punch_holder_angle_radius:
+                    self.result_punch_value.addItem(item)
+                del punch_holder_angle_radius
+
+            #Обрані тримач, висота та радіус
+            elif (self.punch_angle_value.text() == ""
+                  and self.punch_height_value.text() != ""
+                  and self.punch_radius_value.text() != ""):
+                self.result_punch_value.clear()
+                punch_holder_height_radius \
+                    = My_db.get_punch_by_holder_height_radius(
+                        book=self.book,
+                        type_holder=holder,
+                        height=self.punch_height_value.text(),
+                        radius=self.punch_radius_value.text()
+                )
+                for item in punch_holder_height_radius:
+                    self.result_punch_value.addItem(item)
+                del punch_holder_height_radius
 
 
     def change_type_punch(self) -> None:

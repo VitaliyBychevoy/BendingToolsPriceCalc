@@ -228,7 +228,10 @@ class My_db:
         return tuple(result_set)
 
     @staticmethod
-    def get_punch_by_holder_angle(book=None, type_holder=None, angle=None) -> tuple:
+    def get_punch_by_holder_angle(
+            book=None,
+            type_holder=None,
+            angle=None) -> tuple:
         """
         Функція вертає кортеж кодів усіх пуансонів певного типу та
          певного кута
@@ -241,8 +244,14 @@ class My_db:
         max_row_item_punch = work_sheet_punch.max_row
         result_set = set()
         result_set.add(" ")
+
         for index in range(1, max_row_item_punch):
-            if work_sheet_punch["B" + str(index)].value == type_holder and str(work_sheet_punch["J" + str(index)].value) == angle:
+
+            if (
+                    work_sheet_punch["B" + str(index)].value ==
+                    type_holder and
+                    str(work_sheet_punch["J" + str(index)].value) == angle
+            ):
                 len_code = len(work_sheet_punch["C" + str(index)].value)
                 if len_code == 7:
                     result_set.add(
@@ -253,8 +262,205 @@ class My_db:
                         work_sheet_punch["C" + str(index)].value[0:6] +
                         work_sheet_punch["C" + str(index)].value[-1])
                     result_set.add(code)
-            result_set = sorted(result_set)
-            return tuple(result_set)
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
+    @staticmethod
+    def get_punch_by_holder_height(book=None,
+                                   type_holder=None,
+                                   height=None) -> tuple:
+        """
+        Функція вертає кортеж кодів усіх пуансонів певного типу та
+         певної висоти
+        :param book: Workbook
+        :param type_holder: str
+        :param height: str
+        :return: tuple
+        """
+        work_sheet_punch = book["Пуансон"]
+        max_row_item_punch = work_sheet_punch.max_row
+        result_set = set()
+        result_set.add(" ")
+        height = height.replace(",", ".")
+        for index in range(1, max_row_item_punch):
+            if (
+                    work_sheet_punch["B" + str(index)].value == type_holder
+                    and str(work_sheet_punch["K" + str(index)].value) == height
+            ):
+                len_code = len(work_sheet_punch["C" + str(index)].value)
+                if len_code == 7:
+                    result_set.add(
+                        str(work_sheet_punch["C" + str(index)].value[0:6])
+                    )
+                elif len_code == 8:
+                    code: str = str(
+                        work_sheet_punch["C" + str(index)].value[0:6] +
+                        work_sheet_punch["C" + str(index)].value[-1])
+                    result_set.add(code)
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
+    @staticmethod
+    def get_punch_by_holder_radius(book=None,
+                                   type_holder=None,
+                                   radius=None) -> tuple:
+        """
+        Функція вертає кортеж кодів усіх пуансонів певного типу та
+         певної висоти
+        :param book: Workbook
+        :param type_holder: str
+        :param radius: str
+        :return: tuple
+        """
+        work_sheet_punch = book["Пуансон"]
+        max_row_item_punch = work_sheet_punch.max_row
+        result_set = set()
+        result_set.add(" ")
+        radius = radius.replace(",",  ".")
+        for index in range(1, max_row_item_punch):
+            if (
+                    work_sheet_punch["B" + str(index)].value == type_holder
+                    and str(work_sheet_punch["L" + str(index)].value) == radius
+            ):
+                len_code = len(work_sheet_punch["C" + str(index)].value)
+                if len_code == 7:
+                    result_set.add(
+                        str(work_sheet_punch["C" + str(index)].value[0:6])
+                    )
+                elif len_code == 8:
+                    code: str = str(
+                        work_sheet_punch["C" + str(index)].value[0:6] +
+                        work_sheet_punch["C" + str(index)].value[-1])
+                    result_set.add(code)
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
+    @staticmethod
+    def get_punch_by_holder_angle_height(
+        book=None,
+        type_holder=None,
+        angle=None,
+        height=None
+    ) -> tuple:
+        """
+        Функція вертає кортеж кодів усіх пуансонів певного типу,
+         певного кута та певної висоти
+        :param book: Workbook
+        :param type_holder: str
+        :param angle: str
+        :param height: str
+        :return: tuple
+        """
+        work_sheet_punch = book["Пуансон"]
+        max_row_item_punch = work_sheet_punch.max_row
+        result_set = set()
+        result_set.add(" ")
+        height = height.replace(",", ".")
+        for index in range(1, max_row_item_punch):
+
+            if (
+                    work_sheet_punch["B" + str(index)].value ==
+                    type_holder and
+                    str(work_sheet_punch["J" + str(index)].value) == angle
+                    and str(work_sheet_punch["K" + str(index)].value) == height
+            ):
+                len_code = len(work_sheet_punch["C" + str(index)].value)
+                if len_code == 7:
+                    result_set.add(
+                        str(work_sheet_punch["C" + str(index)].value[0:6])
+                    )
+                elif len_code == 8:
+                    code: str = str(
+                        work_sheet_punch["C" + str(index)].value[0:6] +
+                        work_sheet_punch["C" + str(index)].value[-1])
+                    result_set.add(code)
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
+    @staticmethod
+    def get_punch_by_holder_angle_radius(
+        book=None,
+        type_holder=None,
+        angle=None,
+        radius=None
+    ) -> tuple:
+        """
+        Функція вертає кортеж кодів усіх пуансонів певного типу,
+         певного кута та певного радіуса
+        :param book: Workbook
+        :param type_holder: str
+        :param angle: str
+        :param radius: str
+        :return: tuple
+        """
+        work_sheet_punch = book["Пуансон"]
+        max_row_item_punch = work_sheet_punch.max_row
+        result_set = set()
+        result_set.add(" ")
+        radius = radius.replace(",", ".")
+        for index in range(1, max_row_item_punch):
+
+            if (
+                    work_sheet_punch["B" + str(index)].value ==
+                    type_holder and
+                    str(work_sheet_punch["J" + str(index)].value) == angle
+                    and str(work_sheet_punch["L" + str(index)].value) == radius
+            ):
+                len_code = len(work_sheet_punch["C" + str(index)].value)
+                if len_code == 7:
+                    result_set.add(
+                        str(work_sheet_punch["C" + str(index)].value[0:6])
+                    )
+                elif len_code == 8:
+                    code: str = str(
+                        work_sheet_punch["C" + str(index)].value[0:6] +
+                        work_sheet_punch["C" + str(index)].value[-1])
+                    result_set.add(code)
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
+    @staticmethod
+    def get_punch_by_holder_height_radius(
+        book=None,
+        type_holder=None,
+        height=None,
+        radius=None
+    ) -> tuple:
+        """
+        Функція вертає кортеж кодів усіх пуансонів певного типу,
+         певної висоти та певного радіуса
+        :param book: Workbook
+        :param type_holder: str
+        :param height: str
+        :param radius: str
+        :return: tuple
+        """
+        work_sheet_punch = book["Пуансон"]
+        max_row_item_punch = work_sheet_punch.max_row
+        result_set = set()
+        result_set.add(" ")
+        radius = radius.replace(",", ".")
+        height = height.replace(",", ".")
+        for index in range(1, max_row_item_punch):
+
+            if (
+                    work_sheet_punch["B" + str(index)].value ==
+                    type_holder and
+                    str(work_sheet_punch["K" + str(index)].value) == height
+                    and str(work_sheet_punch["L" + str(index)].value) == radius
+            ):
+                len_code = len(work_sheet_punch["C" + str(index)].value)
+                if len_code == 7:
+                    result_set.add(
+                        str(work_sheet_punch["C" + str(index)].value[0:6])
+                    )
+                elif len_code == 8:
+                    code: str = str(
+                        work_sheet_punch["C" + str(index)].value[0:6] +
+                        work_sheet_punch["C" + str(index)].value[-1])
+                    result_set.add(code)
+        result_set = sorted(result_set)
+        return tuple(result_set)
 
     @staticmethod
     def punch_searching_by_holder(book, type_holder: str) -> tuple:
