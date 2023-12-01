@@ -472,6 +472,58 @@ class My_db:
         result_tuple = ()
         return result_tuple
 
+    @staticmethod
+    def get_punch_code_image(book, code) -> str:
+        """
+        Фунція вертає назву зображення пуансона згідно кода
+        :param book:
+        :param code:
+        :return:
+        """
+        sheet = book["Пуансон"]
+        max_row_item_punch = sheet.max_row
+        if len(code) == 6:
+            for index in range(2, max_row_item_punch):
+                if sheet["C" + str(index)].value[0:6] == code:
+                    return str(sheet["F" + str(index)].value)
+        elif len(code) == 7:
+            for index in range(2, max_row_item_punch):
+                if (
+                        sheet["C" + str(index)].value[0:6] == code[0:6]
+                        and sheet["C" + str(index)].value[-1] == code[-1]
+                ):
+                    return str(sheet["F" + str(index)].value)
+
+
+    @staticmethod
+    def get_punch_info(sheet, code_item: str) -> tuple:
+        """
+        Функція вертає кортеж
+        (
+            (довжина 1, довжина 2, довжина 3, ...),
+            кут,
+            висота,
+            радіус,
+            Т/Mt
+        )
+        :param code_item: str
+        :return: tuple
+        """
+    pass
+
+    @staticmethod
+    def len_item_tuple(sheet, code_item: str) -> tuple:
+        """
+        Функція вертає кортеж довжин певного кода
+        пуансону
+        :param book:
+        :param code_item: str
+        :return:
+        """
+        pass
+
+
+
 class Pre_commercial_offer_xlsx():
 
     def __init__(self):

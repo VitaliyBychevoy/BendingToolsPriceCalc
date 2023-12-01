@@ -5,19 +5,18 @@ from bs4 import BeautifulSoup
 from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
-import os
-import shutil
+from PyQt5.QtGui import QPixmap
+import PIL
+
 
 import db_handler
 import style
-from vectortool_customers.customers_db import *
-from model import Invoice, Item, Pre_commercial_offer
+
 from db_handler import *
 from BendingPreCommercialOffer import *
-import mainwindow
 from style import *
 
-# from PyQt5.QtWidgets import QApplication, QMainWindow
+
 
 acceptable_character = \
     ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", ".")
@@ -217,7 +216,9 @@ class Ui(QtWidgets.QMainWindow):
         time_info = get_list_moment()
         rate = get_rate()
         self.euro_value.setText(rate)
-        self.EURO_value.setText(get_recommended_rate_for_euro_value(rate))
+        self.EURO_value.setText(
+            get_recommended_rate_for_euro_value(rate)
+        )
         self.date_value.setText(time_info[0])
         self.time_label.setText(time_info[1])
         self.day.setText(time_info[2])
@@ -317,16 +318,26 @@ class Ui(QtWidgets.QMainWindow):
         #Пуансон
 
         #Кут
-        self.punch_angle_value.textChanged.connect(self.check_packing_number)
+        self.punch_angle_value.textChanged.connect(
+            self.punch_angle_value_check
+        )
 
         #Висота
-        self.punch_height_value.textChanged.connect(self.check_packing_number)
+        self.punch_height_value.textChanged.connect(
+            self.punch_height_value_check
+        )
 
         #Радіус
-        self.punch_radius_value.textChanged.connect(self.check_packing_number)
+        self.punch_radius_value.textChanged.connect(
+            self.punch_radius_value_check
+        )
+
+        #Обробка результатів списка пошуку пуансонів
+        self.result_punch_value.activated.connect(self.get_one_punch_info)
 
         #Зміна стану поля "Тип"
         self.type_punch_value.activated.connect(self.change_type_punch)
+
         #кнопка пошуку пуансона
         self.find_punch_button.clicked.connect(self.find_punch)
 
@@ -1414,6 +1425,32 @@ class Ui(QtWidgets.QMainWindow):
                     self.result_punch_value.addItem(item)
                 del punch_holder_height_radius
 
+    def punch_angle_value_check(self) -> None:
+        """
+        Функція перевіряє  кожний символ,
+        який вводиться у поле Кут
+        """
+        self.punch_angle_value.setText(
+            self.new_check_number(self.punch_angle_value.text())
+        )
+
+    def punch_height_value_check(self) -> None:
+        """
+        Функція перевіряє  кожний символ,
+        який вводиться у поле Висота
+        """
+        self.punch_height_value.setText(
+            self.new_check_number(self.punch_height_value.text())
+        )
+
+    def punch_radius_value_check(self) -> None:
+        """
+        Функція перевіряє  кожний символ,
+        який вводиться у поле Радиус
+        """
+        self.punch_radius_value.setText(
+            self.new_check_number(self.punch_radius_value.text())
+        )
 
     def change_type_punch(self) -> None:
         self.punch_angle_value.setText("")
@@ -1422,6 +1459,41 @@ class Ui(QtWidgets.QMainWindow):
 
         # ПОШУК МАТРИЦІ
 
+    def get_one_punch_info(self) -> None:
+        """
+        Функція заповнює  punch_image зображенням та
+         додає параметри пуансона у length_info_punch_label та
+         у punch_info
+        """
+
+
+        image_code = My_db.get_punch_code_image(
+            self.book,
+            self.result_punch_value.currentText()
+        )
+        print(image_code)
+        if image_code != "":
+
+            self.pixmap = QPixmap(f"data\{image_code}")
+            im = PIL.Image.open(f"data\{image_code}").size
+            print(im)
+            origin_width = im[0]
+            origin_height = im[1]
+            div_h_w = origin_height / origin_width
+            scale = im[1] / 320
+
+            #width height
+            origin_height /= scale
+            origin_width = origin_height/div_h_w
+            p = self.pixmap.scaled(int(origin_width) , int(origin_height))
+
+            self.punch_image.setPixmap(p)
+            # self.punch_image.resize(
+            #     self.pixmap.width(),
+            #     self.pixmap.height()
+            # )
+        else:
+            self.punch_image.clear()
 
 class CustomerWindow(QtWidgets.QMainWindow):
 

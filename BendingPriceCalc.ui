@@ -2403,19 +2403,6 @@ border-radius: 10px;</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QGraphicsView" name="punch_graphics_View">
-     <property name="geometry">
-      <rect>
-       <x>340</x>
-       <y>10</y>
-       <width>310</width>
-       <height>320</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background: rgb(255, 255, 255);</string>
-     </property>
-    </widget>
     <widget class="QComboBox" name="type_punch_value">
      <property name="geometry">
       <rect>
@@ -2817,7 +2804,7 @@ color: white;</string>
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="t_mt_value_punch">
+    <widget class="QLabel" name="punch_info">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -2838,32 +2825,6 @@ color: white;</string>
      </property>
      <property name="text">
       <string>200</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="t_mt_info_punch_label">
-     <property name="geometry">
-      <rect>
-       <x>45</x>
-       <y>300</y>
-       <width>50</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial Narrow</family>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
-color: white;</string>
-     </property>
-     <property name="text">
-      <string>T/mt</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -2891,6 +2852,22 @@ color: white;
      </property>
      <property name="text">
       <string>Пуансони</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="punch_image">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>10</y>
+       <width>310</width>
+       <height>320</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
@@ -3357,7 +3334,7 @@ color: white;</string>
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="t_mt_value_punch_3">
+    <widget class="QLabel" name="die_info">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -3378,32 +3355,6 @@ color: white;</string>
      </property>
      <property name="text">
       <string>200</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="t_mt_info_punch_label_3">
-     <property name="geometry">
-      <rect>
-       <x>45</x>
-       <y>300</y>
-       <width>50</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial Narrow</family>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 0));
-color: white;</string>
-     </property>
-     <property name="text">
-      <string>T/mt</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
