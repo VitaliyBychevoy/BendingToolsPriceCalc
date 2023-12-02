@@ -332,6 +332,9 @@ class Ui(QtWidgets.QMainWindow):
             self.punch_radius_value_check
         )
 
+        #Робимо зображення порожнім
+        self.set_empty_punch_image()
+
         #Обробка результатів списка пошуку пуансонів
         self.result_punch_value.activated.connect(self.get_one_punch_info)
 
@@ -1456,8 +1459,8 @@ class Ui(QtWidgets.QMainWindow):
         self.punch_angle_value.setText("")
         self.punch_height_value.setText("")
         self.punch_radius_value.setText("")
+        self.set_empty_punch_image()
 
-        # ПОШУК МАТРИЦІ
 
     def get_one_punch_info(self) -> None:
         """
@@ -1466,34 +1469,49 @@ class Ui(QtWidgets.QMainWindow):
          у punch_info
         """
 
+        if self.result_punch_value.currentText() not in ("", " "):
+            image_code = My_db.get_punch_code_image(
+                self.book,
+                self.result_punch_value.currentText()
+            )
+            print(image_code)
 
-        image_code = My_db.get_punch_code_image(
-            self.book,
-            self.result_punch_value.currentText()
-        )
-        print(image_code)
-        if image_code != "":
 
             self.pixmap = QPixmap(f"data\{image_code}")
             im = PIL.Image.open(f"data\{image_code}").size
             print(im)
-            origin_width = im[0]
-            origin_height = im[1]
-            div_h_w = origin_height / origin_width
-            scale = im[1] / 320
+            if im[0] < im[1]:
+                origin_width = im[0]
+                origin_height = im[1]
+                div_h_w = origin_height / origin_width
+                scale = im[1] / 320
 
-            #width height
-            origin_height /= scale
-            origin_width = origin_height/div_h_w
-            p = self.pixmap.scaled(int(origin_width) , int(origin_height))
+                #width height
+                origin_height /= scale
+                origin_width = origin_height/div_h_w
+                p = self.pixmap.scaled(int(origin_width), int(origin_height))
+            elif im[0] > im[1]:
+                origin_width = im[0]
+                origin_height = im[1]
+                div_h_w = origin_height / origin_width
+                scale = im[0] / 310
+                #width heigh
+                origin_width /= scale
+                origin_height = div_h_w * origin_width
+                p = self.pixmap.scaled(int(origin_width), int(origin_height))
 
             self.punch_image.setPixmap(p)
-            # self.punch_image.resize(
-            #     self.pixmap.width(),
-            #     self.pixmap.height()
-            # )
         else:
-            self.punch_image.clear()
+            self.set_empty_punch_image()
+
+    def set_empty_punch_image(self) -> None:
+        """
+        Функція заповняє порожнім зображенням punch_image
+        """
+        self.pixmap = QPixmap("data\empty.jpg")
+        self.punch_image.setPixmap(self.pixmap)
+
+        # ПОШУК МАТРИЦІ
 
 class CustomerWindow(QtWidgets.QMainWindow):
 

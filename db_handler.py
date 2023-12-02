@@ -509,7 +509,7 @@ class My_db:
         :param code_item: str
         :return: tuple
         """
-    pass
+        pass
 
     @staticmethod
     def len_item_tuple(sheet, code_item: str) -> tuple:
