@@ -512,17 +512,43 @@ class My_db:
         pass
 
     @staticmethod
-    def len_item_tuple(sheet, code_item: str) -> tuple:
+    def get_length_tuple(sheet, code_item: str) -> tuple:
         """
         Функція вертає кортеж довжин певного кода
         пуансону
-        :param book:
+        :param sheet:
         :param code_item: str
         :return:
         """
-        pass
-
-
+        result = []
+        max_index = sheet.max_row
+        if len(code_item) == 6:
+            for index in range(2, max_index):
+                if sheet["C" + str(index)].value[0: 6] == code_item:
+                    punch_length = str(sheet["G" + str(index)].value)
+                    if "=" in punch_length:
+                        number_sectioned = punch_length.split("=")
+                        result.append(str(number_sectioned[1]).strip() + " SECTIONED")
+                    else:
+                        result.append(str(sheet["G" + str(index)].value))
+                if sheet["C" + str(index - 1)].value[0: 6] == code_item and sheet["C" + str(index)].value[0: 6] != code_item:
+                    break
+        elif len(code_item) == 7:
+            for index in range(2, max_index):
+                if sheet["C" + str(index)].value[0: 6] == code_item[0: 6] \
+                        and sheet["C" + str(index)].value[-1] == code_item[-1]:
+                    punch_length = str(sheet["G" + str(index)].value)
+                    if "=" in punch_length:
+                        number_sectioned = punch_length.split("=")
+                        result.append(str(number_sectioned[1]).strip() + " SECTIONED")
+                    else:
+                        result.append(str(sheet["G" + str(index)].value))
+                if sheet["C" + str(index - 1)].value[0: 6] == code_item and \
+                        sheet["C" + str(index-1)].value[-1] == code_item[-1] and \
+                        sheet["C" + str(index)].value[0: 6] != code_item and \
+                        sheet["C" + str(index)].value[-1] != code_item[-1]:
+                    break
+        return tuple(result)
 
 class Pre_commercial_offer_xlsx():
 

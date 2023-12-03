@@ -1470,16 +1470,14 @@ class Ui(QtWidgets.QMainWindow):
         """
 
         if self.result_punch_value.currentText() not in ("", " "):
+            code = self.result_punch_value.currentText()
             image_code = My_db.get_punch_code_image(
                 self.book,
-                self.result_punch_value.currentText()
+                #self.result_punch_value.currentText()
+                code
             )
-            print(image_code)
-
-
             self.pixmap = QPixmap(f"data\{image_code}")
             im = PIL.Image.open(f"data\{image_code}").size
-            print(im)
             if im[0] < im[1]:
                 origin_width = im[0]
                 origin_height = im[1]
@@ -1501,9 +1499,12 @@ class Ui(QtWidgets.QMainWindow):
                 p = self.pixmap.scaled(int(origin_width), int(origin_height))
 
             self.punch_image.setPixmap(p)
+            sheet_punch = self.book["Пуансон"]
+            length_tuple = My_db.get_length_tuple(sheet_punch, code)
+            self.length_info_punch_label.setText(", ".join(length_tuple))
         else:
             self.set_empty_punch_image()
-            self.set_empty_lenght_punch_info()
+            self.length_info_punch_label.setText("")
 
     def set_empty_punch_image(self) -> None:
         """
@@ -1514,11 +1515,6 @@ class Ui(QtWidgets.QMainWindow):
 
         # ПОШУК МАТРИЦІ
 
-    def set_empty_length_punch_info(self) -> None:
-        """
-        Функція встановлює порожнє значення у length_info_punch_label
-        """
-        self.length_info_punch_label.setText("")
 
 class CustomerWindow(QtWidgets.QMainWindow):
 
