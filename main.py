@@ -1503,6 +1503,7 @@ class Ui(QtWidgets.QMainWindow):
             self.punch_image.setPixmap(p)
         else:
             self.set_empty_punch_image()
+            self.set_empty_lenght_punch_info()
 
     def set_empty_punch_image(self) -> None:
         """
@@ -1512,6 +1513,12 @@ class Ui(QtWidgets.QMainWindow):
         self.punch_image.setPixmap(self.pixmap)
 
         # ПОШУК МАТРИЦІ
+
+    def set_empty_length_punch_info(self) -> None:
+        """
+        Функція встановлює порожнє значення у length_info_punch_label
+        """
+        self.length_info_punch_label.setText("")
 
 class CustomerWindow(QtWidgets.QMainWindow):
 
