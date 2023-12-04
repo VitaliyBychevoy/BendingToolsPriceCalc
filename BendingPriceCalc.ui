@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>1500</width>
-    <height>950</height>
+    <height>957</height>
    </rect>
   </property>
   <property name="font">
@@ -2809,7 +2809,7 @@ color: white;</string>
       <rect>
        <x>10</x>
        <y>300</y>
-       <width>30</width>
+       <width>320</width>
        <height>30</height>
       </rect>
      </property>
@@ -2891,57 +2891,11 @@ border-radius: 10px;</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QGraphicsView" name="die_graphics_View">
-     <property name="geometry">
-      <rect>
-       <x>340</x>
-       <y>10</y>
-       <width>310</width>
-       <height>320</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background: rgb(255, 255, 255);</string>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="die_angle_value">
      <property name="geometry">
       <rect>
-       <x>90</x>
+       <x>80</x>
        <y>50</y>
-       <width>100</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Comic Sans MS</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLineEdit{
-	background-color:#8BE8E5;
-	color: rgb(199, 55, 255);
-	border: 1px  rgb(237, 255, 152);
-border-radius: 5px;
-}
-QLineEdit:hover {
-	border: 3px solid rgb(2, 35, 255);
-}
-QLineEdit:focus {
-	border: 3px solid rgb(0, 255, 162);
-}</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="die_distance_value">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>90</y>
        <width>100</width>
        <height>30</height>
       </rect>
@@ -2973,7 +2927,40 @@ QLineEdit:focus {
     <widget class="QLineEdit" name="die_height_value">
      <property name="geometry">
       <rect>
-       <x>90</x>
+       <x>80</x>
+       <y>90</y>
+       <width>100</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Comic Sans MS</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit{
+	background-color:#8BE8E5;
+	color: rgb(199, 55, 255);
+	border: 1px  rgb(237, 255, 152);
+border-radius: 5px;
+}
+QLineEdit:hover {
+	border: 3px solid rgb(2, 35, 255);
+}
+QLineEdit:focus {
+	border: 3px solid rgb(0, 255, 162);
+}</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="die_distance_value">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
        <y>130</y>
        <width>100</width>
        <height>30</height>
@@ -3131,7 +3118,7 @@ color: white;</string>
       <string>Тип</string>
      </property>
     </widget>
-    <widget class="QLabel" name="punch_angle_label_6">
+    <widget class="QLabel" name="die_angle_label">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -3160,19 +3147,19 @@ color: white;</string>
       <string>Кут</string>
      </property>
     </widget>
-    <widget class="QLabel" name="punch_height_label_3">
+    <widget class="QLabel" name="die_height_label">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>90</y>
-       <width>75</width>
+       <width>60</width>
        <height>30</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial Narrow</family>
-       <pointsize>14</pointsize>
+       <pointsize>16</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -3180,13 +3167,13 @@ color: white;</string>
 color: white;</string>
      </property>
      <property name="text">
-      <string>Розкриття</string>
+      <string>Висота</string>
      </property>
     </widget>
-    <widget class="QLabel" name="punch_grad_label_3">
+    <widget class="QLabel" name="die_grad_label">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>190</x>
        <y>50</y>
        <width>90</width>
        <height>30</height>
@@ -3209,10 +3196,10 @@ color: white;</string>
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="punch_height_mm_label_5">
+    <widget class="QLabel" name="die_height_mm_label">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>190</x>
        <y>90</y>
        <width>40</width>
        <height>30</height>
@@ -3235,10 +3222,10 @@ color: white;</string>
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="punch_height_mm_label_6">
+    <widget class="QLabel" name="die_distance_mm_label">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>190</x>
        <y>130</y>
        <width>40</width>
        <height>30</height>
@@ -3273,7 +3260,7 @@ color: white;</string>
      <property name="font">
       <font>
        <family>Arial Narrow</family>
-       <pointsize>16</pointsize>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -3281,7 +3268,7 @@ color: white;</string>
 color: white;</string>
      </property>
      <property name="text">
-      <string>Висота</string>
+      <string>Розкриття</string>
      </property>
     </widget>
     <widget class="QLabel" name="punch_result_label_2">
@@ -3308,12 +3295,12 @@ color: white;
       <string>Матриці</string>
      </property>
     </widget>
-    <widget class="QLabel" name="length_info_punch_label_3">
+    <widget class="QLabel" name="length_info_die_label">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>260</y>
-       <width>221</width>
+       <width>320</width>
        <height>30</height>
       </rect>
      </property>
@@ -3339,7 +3326,7 @@ color: white;</string>
       <rect>
        <x>10</x>
        <y>300</y>
-       <width>30</width>
+       <width>320</width>
        <height>30</height>
       </rect>
      </property>
@@ -3358,6 +3345,22 @@ color: white;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="die_image">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>10</y>
+       <width>310</width>
+       <height>320</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>

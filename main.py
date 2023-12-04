@@ -341,8 +341,22 @@ class Ui(QtWidgets.QMainWindow):
         #Зміна стану поля "Тип"
         self.type_punch_value.activated.connect(self.change_type_punch)
 
-        #кнопка пошуку пуансона
+        #Кнопка пошуку пуансона
         self.find_punch_button.clicked.connect(self.find_punch)
+
+        #Порожня інформація пуансона
+        self.punch_info.setText("")
+
+        #Прожня інформація довжин пуансонів
+        self.length_info_punch_label.setText("")
+
+        #Пошук матриці
+
+        #Зміна стану поля "Тип"
+        self.type_die_value.activated.connect(self.change_type_die)
+
+        #Порожнє зображення матриці
+        self.set_empty_die_image()
 
     #  self.show()
 
@@ -1316,7 +1330,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def find_punch(self) -> None:
         """
-        Метод обробляє кнопку type_punch_value,
+        Метод обробляє кнопку find_die_button,
         та викликає повдомлення  про помилку
         або  відповдний до заданих параметрів метод
         :return: None
@@ -1337,7 +1351,6 @@ class Ui(QtWidgets.QMainWindow):
                         holder=holder
                 ):
                     self.result_punch_value.addItem(item)
-
             #Обрані тримач та кут
             elif (self.punch_angle_value.text() != ""
                   and self.punch_height_value.text() == ""
@@ -1456,11 +1469,13 @@ class Ui(QtWidgets.QMainWindow):
         )
 
     def change_type_punch(self) -> None:
+        self.result_punch_value.clear()
         self.punch_angle_value.setText("")
         self.punch_height_value.setText("")
         self.punch_radius_value.setText("")
         self.set_empty_punch_image()
-
+        self.punch_info.setText("")
+        self.length_info_punch_label.setText("")
 
     def get_one_punch_info(self) -> None:
         """
@@ -1473,7 +1488,6 @@ class Ui(QtWidgets.QMainWindow):
             code = self.result_punch_value.currentText()
             image_code = My_db.get_punch_code_image(
                 self.book,
-                #self.result_punch_value.currentText()
                 code
             )
             self.pixmap = QPixmap(f"data\{image_code}")
@@ -1502,9 +1516,14 @@ class Ui(QtWidgets.QMainWindow):
             sheet_punch = self.book["Пуансон"]
             length_tuple = My_db.get_length_tuple(sheet_punch, code)
             self.length_info_punch_label.setText(", ".join(length_tuple))
+
+            self.punch_info.setText(
+                My_db.get_punch_info(sheet_punch, code)
+            )
         else:
             self.set_empty_punch_image()
             self.length_info_punch_label.setText("")
+            self.punch_info.setText("")
 
     def set_empty_punch_image(self) -> None:
         """
@@ -1514,8 +1533,57 @@ class Ui(QtWidgets.QMainWindow):
         self.punch_image.setPixmap(self.pixmap)
 
         # ПОШУК МАТРИЦІ
+    def change_type_die(self) -> None:
+        """
+        Функція заповнює порожніми полями та зображенням
+        після  зміни стану type_die_value
+        :return:
+        """
+        self.result_die_value.clear()
+        self.die_angle_value.setText("")
+        self.die_height_value.setText("")
+        self.die_distance_value.setText("")
+        self.length_info_die_label.setText("")
+        self.die_info.setText("")
+        self.set_empty_die_image()
 
+    def set_empty_die_image(self) -> None:
+        """
+        Функція заповняє порожнім зображенням die_image
+        """
+        self.pixmap_die = QPixmap("data\empty.jpg")
+        self.die_image.setPixmap(self.pixmap_die)
 
+    def find_die(self) -> None:
+        """
+        Метод обробляє кнопку find_die_button
+        та викликає повдомлення  про помилку
+        або  відповдний до заданих параметрів метод
+        :return: None
+        """
+        holder_die: str = self.type_die_value.currentText()
+        if holder_die == "":
+            message = MessageError()
+            message.setText("Оберіть тип кріплення матриці")
+            message.exec_()
+        else:
+            #Обран лише тримач
+
+            if (self.die_angle_value.text() == ""
+                    and self.die_height_value.text() == ""
+                    and self.die_distance_value.text() == ""):
+                self.result_die_value.clear()
+                for item in My_db.get_die_by_holder(
+                        book=self.book,
+                        holder=holder_die
+                ):
+                    self.result_punch_value.addItem(item)
+            #Обрані тримач та кут
+            #Обрані тримач та висота
+            #Обрані тримач та розкриття
+            #Обрані тримач, кут та висота
+            #Обрані тримач, кут та розкриття
+            #Обрані тримач, висота та розкриття
 class CustomerWindow(QtWidgets.QMainWindow):
 
     def __init__(self):

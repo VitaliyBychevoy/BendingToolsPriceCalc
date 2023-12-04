@@ -442,7 +442,6 @@ class My_db:
         radius = radius.replace(",", ".")
         height = height.replace(",", ".")
         for index in range(1, max_row_item_punch):
-
             if (
                     work_sheet_punch["B" + str(index)].value ==
                     type_holder and
@@ -461,16 +460,6 @@ class My_db:
                     result_set.add(code)
         result_set = sorted(result_set)
         return tuple(result_set)
-
-    @staticmethod
-    def punch_searching_by_holder(book, type_holder: str) -> tuple:
-        """
-        Функція звертається до бази та повертає усі пуансони
-        типу type_holder
-        """
-        work_sheet = book["Пуансон"]
-        result_tuple = ()
-        return result_tuple
 
     @staticmethod
     def get_punch_code_image(book, code) -> str:
@@ -496,11 +485,10 @@ class My_db:
 
 
     @staticmethod
-    def get_punch_info(sheet, code_item: str) -> tuple:
+    def get_punch_info(sheet, code_item: str) -> str:
         """
         Функція вертає кортеж
         (
-            (довжина 1, довжина 2, довжина 3, ...),
             кут,
             висота,
             радіус,
@@ -509,7 +497,22 @@ class My_db:
         :param code_item: str
         :return: tuple
         """
-        pass
+        sheet_max_row = sheet.max_row
+
+        for index in range(2, sheet_max_row):
+            if sheet["C" + str(index)].value[0:6] == code_item:
+                result = ""
+                result += chr(int("03B1", 16))
+                result += " = "
+                result += str(sheet["J" + str(index)].value)
+                result += u"\u00b0"
+                result += f', H = {str(sheet["K" + str(index)].value)} мм'
+                result += f', R = {str(sheet["L" + str(index)].value)} мм'
+                result += f', {str(sheet["M" + str(index)].value)} T/м.'
+
+                print(result)
+                return result
+        return "0, 0, 0, 0"
 
     @staticmethod
     def get_length_tuple(sheet, code_item: str) -> tuple:
@@ -549,6 +552,26 @@ class My_db:
                         sheet["C" + str(index)].value[-1] != code_item[-1]:
                     break
         return tuple(result)
+
+    @staticmethod
+    def get_die_by_holder(book=None, holder_die=None ) -> tuple:
+        """
+        Функція повертає кортеж номрів усіх матриць які
+        належать до одного типу тримача
+        :return:
+        """
+        work_sheet_die = book["Матриця одноручова"]
+        max_row_item_punch = work_sheet_die.max_row
+        result_set = set()
+        result_set.add(" ")
+        for index in range(1, max_row_item_punch):
+            if work_sheet_die["B" + str(index)].value == holder_die:
+                result_set.add(
+                    str(work_sheet_die["C" + str(index)].value[0:6])
+                )
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
 
 class Pre_commercial_offer_xlsx():
 
