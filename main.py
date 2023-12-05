@@ -317,21 +317,6 @@ class Ui(QtWidgets.QMainWindow):
         # ПОШУК
         #Пуансон
 
-        #Кут
-        self.punch_angle_value.textChanged.connect(
-            self.punch_angle_value_check
-        )
-
-        #Висота
-        self.punch_height_value.textChanged.connect(
-            self.punch_height_value_check
-        )
-
-        #Радіус
-        self.punch_radius_value.textChanged.connect(
-            self.punch_radius_value_check
-        )
-
         #Робимо зображення порожнім
         self.set_empty_punch_image()
 
@@ -1327,7 +1312,7 @@ class Ui(QtWidgets.QMainWindow):
         # if self.customer_short_name_value.text() in  get_short_name_list()[1:] and
 
         # ПОШУК ПУАНСОНА
-
+    #ПОШУК
     def find_punch(self) -> None:
         """
         Метод обробляє кнопку find_die_button,
@@ -1335,6 +1320,7 @@ class Ui(QtWidgets.QMainWindow):
         або  відповдний до заданих параметрів метод
         :return: None
         """
+
         holder: str = self.type_punch_value.currentText()
         if holder == "":
             message = MessageError()
@@ -1342,9 +1328,10 @@ class Ui(QtWidgets.QMainWindow):
             message.exec_()
         else:
             #Обран лише тримач
-            if (self.punch_angle_value.text() == ""
-                    and self.punch_height_value.text() == ""
-                    and self.punch_radius_value.text() == ""):
+            self.result_punch_value.clear()
+            if (self.punch_angle_value.currentText() == ""
+                    and self.punch_height_value.currentText() == ""
+                    and self.punch_radius_value.currentText() == ""):
                 self.result_punch_value.clear()
                 for item in My_db.get_punch_by_holder(
                         book=self.book,
@@ -1352,130 +1339,195 @@ class Ui(QtWidgets.QMainWindow):
                 ):
                     self.result_punch_value.addItem(item)
             #Обрані тримач та кут
-            elif (self.punch_angle_value.text() != ""
-                  and self.punch_height_value.text() == ""
-                  and self.punch_radius_value.text() == ""):
+            elif (self.punch_angle_value.currentText() != ""
+                  and self.punch_height_value.currentText() == ""
+                  and self.punch_radius_value.currentText() == ""):
                 self.result_punch_value.clear()
                 punch_holder_angle = My_db.get_punch_by_holder_angle(
                         book=self.book,
                         type_holder=holder,
-                        angle=self.punch_angle_value.text()
+                        angle=self.punch_angle_value.currentText()
                 )
                 for item in punch_holder_angle:
                     self.result_punch_value.addItem(item)
                 del punch_holder_angle
 
             #Обран тримач та виста
-            if (self.punch_angle_value.text() == ""
-                    and self.punch_height_value.text() != ""
-                    and self.punch_radius_value.text() == ""):
+            if (self.punch_angle_value.currentText() == ""
+                    and self.punch_height_value.currentText() != ""
+                    and self.punch_radius_value.currentText() == ""):
                 self.result_punch_value.clear()
                 punch_holder_height = My_db.get_punch_by_holder_height(
                     book=self.book,
                     type_holder=holder,
-                    height=self.punch_height_value.text()
+                    height=self.punch_height_value.currentText()
                 )
                 for item in punch_holder_height:
                     self.result_punch_value.addItem(item)
                 del punch_holder_height
 
                 #Обран тримач та радіус
-            if (self.punch_angle_value.text() == ""
-                    and self.punch_height_value.text() == ""
-                    and self.punch_radius_value.text() != ""):
+            if (self.punch_angle_value.currentText() == ""
+                    and self.punch_height_value.currentText() == ""
+                    and self.punch_radius_value.currentText() != ""):
                 self.result_punch_value.clear()
                 punch_holder_radius = My_db.get_punch_by_holder_radius(
                     book=self.book,
                     type_holder=holder,
-                    radius=self.punch_radius_value.text()
+                    radius=self.punch_radius_value.currentText()
                 )
                 for item in punch_holder_radius:
                     self.result_punch_value.addItem(item)
                 del punch_holder_radius
 
             #Обрані тримач, кут та висота
-            elif (self.punch_angle_value.text() != ""
-                  and self.punch_height_value.text() != ""
-                  and self.punch_radius_value.text() == ""):
+            elif (self.punch_angle_value.currentText() != ""
+                  and self.punch_height_value.currentText() != ""
+                  and self.punch_radius_value.currentText() == ""):
                 self.result_punch_value.clear()
                 punch_holder_angle_height \
                     = My_db.get_punch_by_holder_angle_height(
                         book=self.book,
                         type_holder=holder,
-                        angle=self.punch_angle_value.text(),
-                        height=self.punch_height_value.text()
+                        angle=self.punch_angle_value.currentText(),
+                        height=self.punch_height_value.currentText()
                 )
                 for item in punch_holder_angle_height:
                     self.result_punch_value.addItem(item)
                 del punch_holder_angle_height
 
             #Обрані тримач, кут та радіус
-            elif (self.punch_angle_value.text() != ""
-                  and self.punch_height_value.text() == ""
-                  and self.punch_radius_value.text() != ""):
+            elif (self.punch_angle_value.currentText() != ""
+                  and self.punch_height_value.currentText() == ""
+                  and self.punch_radius_value.currentText() != ""):
                 self.result_punch_value.clear()
                 punch_holder_angle_radius \
                     = My_db.get_punch_by_holder_angle_radius(
                         book=self.book,
                         type_holder=holder,
-                        angle=self.punch_angle_value.text(),
-                        radius=self.punch_radius_value.text()
+                        angle=self.punch_angle_value.currentText(),
+                        radius=self.punch_radius_value.currentText()
                 )
                 for item in punch_holder_angle_radius:
                     self.result_punch_value.addItem(item)
                 del punch_holder_angle_radius
 
             #Обрані тримач, висота та радіус
-            elif (self.punch_angle_value.text() == ""
-                  and self.punch_height_value.text() != ""
-                  and self.punch_radius_value.text() != ""):
+            elif (self.punch_angle_value.currentText() == ""
+                  and self.punch_height_value.currentText() != ""
+                  and self.punch_radius_value.currentText() != ""):
                 self.result_punch_value.clear()
                 punch_holder_height_radius \
                     = My_db.get_punch_by_holder_height_radius(
                         book=self.book,
                         type_holder=holder,
-                        height=self.punch_height_value.text(),
-                        radius=self.punch_radius_value.text()
+                        height=self.punch_height_value.currentText(),
+                        radius=self.punch_radius_value.currentText()
                 )
                 for item in punch_holder_height_radius:
                     self.result_punch_value.addItem(item)
                 del punch_holder_height_radius
 
-    def punch_angle_value_check(self) -> None:
-        """
-        Функція перевіряє  кожний символ,
-        який вводиться у поле Кут
-        """
-        self.punch_angle_value.setText(
-            self.new_check_number(self.punch_angle_value.text())
-        )
-
-    def punch_height_value_check(self) -> None:
-        """
-        Функція перевіряє  кожний символ,
-        який вводиться у поле Висота
-        """
-        self.punch_height_value.setText(
-            self.new_check_number(self.punch_height_value.text())
-        )
-
-    def punch_radius_value_check(self) -> None:
-        """
-        Функція перевіряє  кожний символ,
-        який вводиться у поле Радиус
-        """
-        self.punch_radius_value.setText(
-            self.new_check_number(self.punch_radius_value.text())
-        )
+            # Обрані тримач,кут, висота та радіус
+            elif (
+                    self.punch_angle_value.currentText() != ""
+                    and self.punch_height_value.currentText() != ""
+                    and self.punch_radius_value.currentText() != ""
+            ):
+                self.result_punch_value.clear()
+                punch_holder_angle_height_radius \
+                    = My_db.get_punch_by_holder_angle_height_radius(
+                        book=self.book,
+                        type_holder=holder,
+                        angle=self.punch_angle_value.currentText(),
+                        height=self.punch_height_value.currentText(),
+                        radius=self.punch_radius_value.currentText()
+                )
+                for item in punch_holder_angle_height_radius:
+                    self.result_punch_value.addItem(item)
+                del punch_holder_angle_height_radius
 
     def change_type_punch(self) -> None:
+        sheet = self.book["Пуансон"]
+        rows = sheet.max_row
+        """
+                "Amada-promecam",
+                "Trumpf-Wila",
+                "Bystronic",
+        :return: 
+        """
         self.result_punch_value.clear()
-        self.punch_angle_value.setText("")
-        self.punch_height_value.setText("")
-        self.punch_radius_value.setText("")
+        self.punch_angle_value.clear()
+        self.punch_angle_value.addItem("")
+        self.punch_height_value.clear()
+        self.punch_height_value.addItem("")
+        self.punch_radius_value.clear()
+        self.punch_radius_value.addItem("")
         self.set_empty_punch_image()
         self.punch_info.setText("")
         self.length_info_punch_label.setText("")
+
+        if self.type_punch_value.currentText() != "":
+            self.result_punch_value.clear()
+            self.punch_angle_value.clear()
+            self.punch_angle_value.addItem("")
+            self.punch_height_value.clear()
+            self.punch_height_value.addItem("")
+            self.punch_radius_value.clear()
+            self.punch_radius_value.addItem("")
+            my_holder = self.type_punch_value.currentText()
+
+            set_angel = set()
+            set_height = set()
+            set_radius = set()
+            counter = 0
+            for index in range(2, rows):
+                if (sheet["B" + str(index-1)].value == my_holder and
+                        sheet["B" + str(index)].value != my_holder):
+                    break
+                if sheet["B" + str(index)].value == my_holder:
+                    counter += 1
+                    set_angel.add(sheet["J" + str(index)].value)
+                    set_height.add(sheet["K" + str(index)].value)
+                    set_radius.add(sheet["L" + str(index)].value)
+            print(f"COUNTER: {counter}")
+            tuple_angle = tuple(sorted(set_angel))
+            tuple_height = tuple(sorted(set_height))
+            tuple_radius = tuple(sorted(set_radius))
+            len_tuple = (
+                len(tuple_angle),
+                len(tuple_height),
+                len(tuple_radius)
+            )
+
+            for index in range(max(len_tuple)):
+                if len(tuple_angle) != max(len_tuple):
+                    if len(tuple_angle) >= index+1:
+                        self.punch_angle_value.addItem(
+                            str(tuple_angle[index]).replace(".",",")
+                        )
+                else:
+                    self.punch_angle_value.addItem(
+                        str(tuple_angle[index]).replace(".",",")
+                    )
+                if len(tuple_height) != max(len_tuple):
+                    if len(tuple_height) >= index+1:
+                        self.punch_height_value.addItem(
+                            str(tuple_height[index]).replace(".",",")
+                        )
+                else:
+                    self.punch_height_value.addItem(
+                        str(tuple_height[index]).replace(".",",")
+                    )
+                if len(tuple_radius) != max(len_tuple):
+                    if len(tuple_radius) >= index + 1:
+                        self.punch_radius_value.addItem(
+                            str(tuple_radius[index]).replace(".",",")
+                        )
+                else:
+                    self.punch_radius_value.addItem(
+                        str(tuple_radius[index]).replace(".",",")
+                    )
 
     def get_one_punch_info(self) -> None:
         """
@@ -1511,8 +1563,8 @@ class Ui(QtWidgets.QMainWindow):
                 origin_width /= scale
                 origin_height = div_h_w * origin_width
                 p = self.pixmap.scaled(int(origin_width), int(origin_height))
+                self.punch_image.setPixmap(p)
 
-            self.punch_image.setPixmap(p)
             sheet_punch = self.book["Пуансон"]
             length_tuple = My_db.get_length_tuple(sheet_punch, code)
             self.length_info_punch_label.setText(", ".join(length_tuple))
@@ -1537,7 +1589,7 @@ class Ui(QtWidgets.QMainWindow):
         """
         Функція заповнює порожніми полями та зображенням
         після  зміни стану type_die_value
-        :return:
+        :return:None
         """
         self.result_die_value.clear()
         self.die_angle_value.setText("")
@@ -1569,9 +1621,9 @@ class Ui(QtWidgets.QMainWindow):
         else:
             #Обран лише тримач
 
-            if (self.die_angle_value.text() == ""
-                    and self.die_height_value.text() == ""
-                    and self.die_distance_value.text() == ""):
+            if (self.die_angle_value.currentText() == ""
+                    and self.die_height_value.currentText() == ""
+                    and self.die_distance_value.currentText() == ""):
                 self.result_die_value.clear()
                 for item in My_db.get_die_by_holder(
                         book=self.book,
@@ -1584,6 +1636,8 @@ class Ui(QtWidgets.QMainWindow):
             #Обрані тримач, кут та висота
             #Обрані тримач, кут та розкриття
             #Обрані тримач, висота та розкриття
+
+
 class CustomerWindow(QtWidgets.QMainWindow):
 
     def __init__(self):

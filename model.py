@@ -455,64 +455,6 @@ class Invoice:
 
         self.set_total_price_ua(price)
 
-    # def calculate_total_price_ua_with_customer_discount(self) -> None:
-    #     print("i", "_!"*20)
-    #     discount: float = (
-    #         100 - float(self.get_provider_discount().replace(",","."))
-    #     ) / 100
-    #
-    #     #Сума ціна * кількість * знижка постачальника
-    #     price = round(
-    #         sum(
-    #             [item.get_price_item() * discount * item.get_amount_item()
-    #              for item in self.get_list_item()]
-    #         ),
-    #         2)
-    #     print("SUM(Price * amount * discount)", price)
-    #
-    #
-    #     #Додаємо Packing
-    #     price += float(self.get_packing_price().replace(",", "."))
-    #     print("Price + packing" , price)
-    #
-    #     #Додаємо банківські відсотки
-    #     tax: float = round((float(self.get_bank_tax().replace(",", "."))/100 ), 4)
-    #     print(" Tax", tax)
-    #     price = round((price * (1 + tax)), 2)
-    #     print("Price after tax", price)
-    #
-    #     # Додаємо комісію Vectortool
-    #     commission: float = (
-    #         round(
-    #             (float(
-    #                 self.get_commission_percentage().replace(",", "."))/100 ),
-    #             2)
-    #     )
-    #     print("Commission", commission)
-    #
-    #     price = round(price / (1 - commission), 2)
-    #     print("Price after commission", price)
-    #
-    #     #Знижка для клієнта
-    #     customer_discount: float = round(price * (float(self.get_customer_discount().replace(",", "."))/100), 2)
-    #     print("customer_discount:", customer_discount, " EURO")
-    #     price = round(price - customer_discount, 2)
-    #     print("Price after customer discount", price)
-    #     self.set_customer_discount(str(customer_discount))
-    #
-    #     #Переводимо у UAH
-    #     print("rate", self.get_rate(), " type ", type(self.get_rate()) )
-    #
-    #     price = round(price* self.get_rate(), 2)
-    #     print("Price in UAH", price, "UAH.")
-    #
-    #     #Додаємо Вартість переводу валюти  Брокерські
-    #     price += float(self.get_transaction_price().replace(",", "."))
-    #     price += float(self.get_brokerage_price().replace(",", "."))
-    #     print("Total price UAH:",  price)
-    #
-    #     print("i", "_!"*20)
-    #
 
     #Вартість доставки у UAH
     def calculate_total_delivery_price_ua(self) -> None:
