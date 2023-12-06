@@ -2,3 +2,4 @@ __pycache__/
 vectortool_customers/__pycache__/
 my_venv/
 .idea/
+.price_and_wight.py
