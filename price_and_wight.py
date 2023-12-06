@@ -15,10 +15,13 @@ wb_2.active
 weight = None
 price = None
 
-for index in range(2, sheet_2.max_row + 1):
-    if sheet_2["C" +str(index)] == sheet_1["B" +str(index)]:
-        sheet_2["H" +str(index)] = sheet_1["G" +str(index)]
-        sheet_2["I" +str(index)] = sheet_1["E" +str(index)]
-        continue
+for index in range(2, sheet_1.max_row + 1):
+    for i in range(2, sheet_2.max_row + 1):
+        item = sheet_2["C" +str(i)].value
+        item = item.replace("K", "F")
+        if sheet_1["B" +str(index)].value == item:
+            sheet_2["H" + str(i)] = sheet_1["G" +str(index)].value
+            sheet_2["I" + str(i)] = sheet_1["E" +str(index)].value
+
 
 wb_2.save("data/DB_bending_1.xlsx")
