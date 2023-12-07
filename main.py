@@ -343,6 +343,12 @@ class Ui(QtWidgets.QMainWindow):
         #Порожнє зображення матриці
         self.set_empty_die_image()
 
+        #Обробка кнопки Підібрати матрицю
+        self.find_die_button.clicked.connect(self.find_die)
+
+        #Обробка результата списка пошуку матриці
+        self.result_die_value.activated.connect(self.get_one_die_info)
+
     #  self.show()
 
     def customers_db(self):
@@ -1563,7 +1569,7 @@ class Ui(QtWidgets.QMainWindow):
                 origin_width /= scale
                 origin_height = div_h_w * origin_width
                 p = self.pixmap.scaled(int(origin_width), int(origin_height))
-                self.punch_image.setPixmap(p)
+            self.punch_image.setPixmap(p)
 
             sheet_punch = self.book["Пуансон"]
             length_tuple = My_db.get_length_tuple(sheet_punch, code)
@@ -1592,9 +1598,12 @@ class Ui(QtWidgets.QMainWindow):
         :return:None
         """
         self.result_die_value.clear()
-        self.die_angle_value.setText("")
-        self.die_height_value.setText("")
-        self.die_distance_value.setText("")
+        self.die_angle_value.clear()
+        self.die_angle_value.addItem("")
+        self.die_height_value.clear()
+        self.die_height_value.addItem("")
+        self.die_distance_value.clear()
+        self.die_distance_value.addItem("")
         self.length_info_die_label.setText("")
         self.die_info.setText("")
         self.set_empty_die_image()
@@ -1629,13 +1638,66 @@ class Ui(QtWidgets.QMainWindow):
                         book=self.book,
                         holder=holder_die
                 ):
-                    self.result_punch_value.addItem(item)
+                    self.result_die_value.addItem(item)
             #Обрані тримач та кут
+
             #Обрані тримач та висота
             #Обрані тримач та розкриття
             #Обрані тримач, кут та висота
             #Обрані тримач, кут та розкриття
             #Обрані тримач, висота та розкриття
+
+    def get_one_die_info(self) -> None:
+        """
+        Фунція заповнює length_info_die_label, die_info та
+        die_image  відповідно коду
+        :return: None
+        """
+
+        #Зображення
+        code_die = self.result_die_value.currentText()
+        if code_die == "":
+            self.length_info_die_label.setText("")
+            self.die_info.setText("")
+            self.set_empty_die_image()
+        else:
+            image_code = My_db.get_die_code_image(
+                self.book,
+                code_die
+            )
+            self.pixmap = QPixmap(f"data\{image_code}")
+            im = PIL.Image.open(f"data\{image_code}").size
+            if im[0] < im[1]:
+                origin_width = im[0]
+                origin_height = im[1]
+                div_h_w = origin_height / origin_width
+                scale = im[1] / 320
+
+                #width height
+                origin_height /= scale
+                origin_width = origin_height/div_h_w
+                p = self.pixmap.scaled(int(origin_width), int(origin_height))
+            elif im[0] > im[1]:
+                origin_width = im[0]
+                origin_height = im[1]
+                div_h_w = origin_height / origin_width
+                scale = im[0] / 310
+                #width heigh
+                origin_width /= scale
+                origin_height = div_h_w * origin_width
+                p = self.pixmap.scaled(int(origin_width), int(origin_height))
+            self.die_image.setPixmap(p)
+
+            # Довжини
+            length_die_tuple = My_db.get_length_die_tuple(
+                self.book,
+                code_die,
+                self.type_die_value.currentText()
+            )
+            self.length_info_die_label.setText(
+                ",".join(length_die_tuple)
+            )
+
 
 
 class CustomerWindow(QtWidgets.QMainWindow):

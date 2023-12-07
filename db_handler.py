@@ -599,7 +599,7 @@ class My_db:
         return tuple(result)
 
     @staticmethod
-    def get_die_by_holder(book=None, holder_die=None ) -> tuple:
+    def get_die_by_holder(book=None, holder=None ) -> tuple:
         """
         Функція повертає кортеж номрів усіх матриць які
         належать до одного типу тримача
@@ -609,13 +609,87 @@ class My_db:
         max_row_item_punch = work_sheet_die.max_row
         result_set = set()
         result_set.add(" ")
+
         for index in range(2, max_row_item_punch):
-            if work_sheet_die["B" + str(index)].value == holder_die:
+            if work_sheet_die["B" + str(index)].value == holder:
                 result_set.add(
                     str(work_sheet_die["C" + str(index)].value[0:6])
                 )
+
+        if holder == "Amada-promecam":
+            work_sheet_die = book["Матриця багаторучова"]
+            rows = work_sheet_die.max_row
+            for index in range(2, rows + 1):
+                if work_sheet_die["B" + str(index)].value == holder:
+                    result_set.add(
+                        str(work_sheet_die["C" + str(index)].value[0:6])
+                    )
         result_set = sorted(result_set)
         return tuple(result_set)
+
+    @staticmethod
+    def get_die_code_image(book, code) -> str:
+        """
+        Фунція вертає назву зображення матриці згідно кода
+        :param book:
+        :param code: str код матриці
+        :return:
+        """
+        sheet_die = book["Матриця одноручова"]
+        max_row_die = sheet_die.max_row
+
+        for index in range(2, max_row_die + 1):
+            if sheet_die["C" + str(index)].value[0:6] == code:
+                return str(sheet_die["F" + str(index)].value)
+
+        sheet_die = book["Матриця багаторучова"]
+        max_row_item_die = sheet_die.max_row
+        for index in range(2, max_row_item_die + 1):
+            if sheet_die["C" + str(index)].value[0:6] == code:
+                return str(sheet_die["F" + str(index)].value)
+
+    @staticmethod
+    def get_length_die_tuple(book, code_die, holder_die) -> tuple:
+        """
+        Функція повертае  перелік усіх довжин ватриці певного кода
+        :param book: Workbook
+        :param code:  str
+        :return:
+        """
+        work_sheet_die = book["Матриця одноручова"]
+        max_row_item_die = work_sheet_die.max_row
+        result_set = set()
+        result_set.add(" ")
+
+        for index in range(2, max_row_item_die):
+            if (
+                    work_sheet_die["C" + str(index - 1)].value[0:6] == code_die
+                    and work_sheet_die["C" + str(index)].value[0:6] != code_die
+            ):
+                break
+            if work_sheet_die["C" + str(index)].value[0:6] == code_die:
+                die_length = str(work_sheet_die["G" + str(index)].value)
+                if "=" in die_length:
+                    number_sectioned = die_length.split("=")
+                    result_set.add(str(number_sectioned[1]).strip() + " SECTIONED")
+                else:
+                    result_set.add(str(work_sheet_die["G" + str(index)].value))
+        if len(result_set) > 1:
+            result_set = sorted(result_set)
+            return tuple(result_set)
+        elif len(result_set) == 1 and holder_die == "Amada-promecam":
+            work_sheet_die = book["Матриця багаторучова"]
+            rows = work_sheet_die.max_row
+            for index in range(2, rows + 1):
+                if work_sheet_die["C" + str(index)].value[0:6] == code_die:
+                    die_length = str(work_sheet_die["G" + str(index)].value)
+                    if "=" in die_length:
+                        number_sectioned = die_length.split("=")
+                        result_set.append(str(number_sectioned[1]).strip() + " SECTIONED")
+                    else:
+                        result_set.append(str(work_sheet_die["G" + str(index)].value))
+            result_set = sorted(result_set)
+            return tuple(result_set)
 
 
 class Pre_commercial_offer_xlsx():

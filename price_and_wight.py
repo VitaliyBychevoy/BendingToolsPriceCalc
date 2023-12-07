@@ -24,4 +24,4 @@ for index in range(2, sheet_1.max_row + 1):
             sheet_2["I" + str(i)] = sheet_1["E" +str(index)].value
 
 
-wb_2.save("data/DB_bending_1.xlsx")
+wb_2.save("data/DB_bending.xlsx")
