@@ -576,7 +576,7 @@ class My_db:
                     punch_length = str(sheet["G" + str(index)].value)
                     if "=" in punch_length:
                         number_sectioned = punch_length.split("=")
-                        result.append(str(number_sectioned[1]).strip() + " SECTIONED")
+                        result.append(str(number_sectioned[1]).strip() + " SEC")
                     else:
                         result.append(str(sheet["G" + str(index)].value))
                 if sheet["C" + str(index - 1)].value[0: 6] == code_item and sheet["C" + str(index)].value[0: 6] != code_item:
@@ -588,7 +588,7 @@ class My_db:
                     punch_length = str(sheet["G" + str(index)].value)
                     if "=" in punch_length:
                         number_sectioned = punch_length.split("=")
-                        result.append(str(number_sectioned[1]).strip() + " SECTIONED")
+                        result.append(str(number_sectioned[1]).strip() + " SEC")
                     else:
                         result.append(str(sheet["G" + str(index)].value))
                 if sheet["C" + str(index - 1)].value[0: 6] == code_item and \
@@ -658,8 +658,8 @@ class My_db:
         """
         work_sheet_die = book["Матриця одноручова"]
         max_row_item_die = work_sheet_die.max_row
-        result_set = set()
-        result_set.add(" ")
+        result = []
+        #result_set.add(" ")
 
         for index in range(2, max_row_item_die):
             if (
@@ -671,26 +671,64 @@ class My_db:
                 die_length = str(work_sheet_die["G" + str(index)].value)
                 if "=" in die_length:
                     number_sectioned = die_length.split("=")
-                    result_set.add(str(number_sectioned[1]).strip() + " SECTIONED")
+                    result.append(str(number_sectioned[1]).strip() + " SEC")
                 else:
-                    result_set.add(str(work_sheet_die["G" + str(index)].value))
-        if len(result_set) > 1:
-            result_set = sorted(result_set)
-            return tuple(result_set)
-        elif len(result_set) == 1 and holder_die == "Amada-promecam":
+                    result.append(str(work_sheet_die["G" + str(index)].value))
+        # if len(result_set) > 1:
+            # result_set = sorted(result_set)
+            # return tuple(result_set)
+        if len(result) == 0 and holder_die == "Amada-promecam":
             work_sheet_die = book["Матриця багаторучова"]
             rows = work_sheet_die.max_row
             for index in range(2, rows + 1):
+                if (
+                        work_sheet_die["C" + str(index - 1)].value[0:6] == code_die
+                        and work_sheet_die["C" + str(index)].value[0:6] != code_die
+                ):
+                    break
                 if work_sheet_die["C" + str(index)].value[0:6] == code_die:
                     die_length = str(work_sheet_die["G" + str(index)].value)
                     if "=" in die_length:
                         number_sectioned = die_length.split("=")
-                        result_set.append(str(number_sectioned[1]).strip() + " SECTIONED")
+                        result.append(str(number_sectioned[1]).strip() + " SEC")
                     else:
-                        result_set.append(str(work_sheet_die["G" + str(index)].value))
-            result_set = sorted(result_set)
-            return tuple(result_set)
+                        result.append(str(work_sheet_die["G" + str(index)].value))
+        #result_set = sorted(result_set)
+        return tuple(result)
 
+    def get_die_info(book, code_die) -> tuple:
+        """
+        Функція вертає кортеж
+        (
+            кут,
+            висота,
+            радіус,
+            Т/Mt
+        )
+        :param code_item: str
+        :return: tuple
+        """
+        sheet_die = book["Матриця одноручова"]
+        die_max_row = sheet_die.max_row
+        #result: str = ""
+        for index in range(2, die_max_row):
+            if sheet_die["C" + str(index)].value[0:6] == code_die:
+                result = (
+                    "Кут",
+                    sheet_die["J" + str(index)].value,
+                    "Висота",
+                    sheet_die["K" + str(index)].value,
+                    "Радіус",
+                    sheet_die["M" + str(index)].value
+                )
+                return result
+
+
+        sheet_die = book["Матриця одноручова"]
+        die_max_row = sheet_die.max_row
+        for index in range(2, die_max_row):
+            if sheet_die["C" + str(index)].value[0:6] == code_die:
+                pass
 
 class Pre_commercial_offer_xlsx():
 

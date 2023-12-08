@@ -1698,6 +1698,8 @@ class Ui(QtWidgets.QMainWindow):
                 ",".join(length_die_tuple)
             )
 
+            #Інформація матриці
+            self.die_info.setText(My_db.get_die_info(book, code))
 
 
 class CustomerWindow(QtWidgets.QMainWindow):
