@@ -659,7 +659,7 @@ class My_db:
         work_sheet_die = book["Матриця одноручова"]
         max_row_item_die = work_sheet_die.max_row
         result = []
-        #result_set.add(" ")
+
 
         for index in range(2, max_row_item_die):
             if (
