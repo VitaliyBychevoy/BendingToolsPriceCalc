@@ -1699,9 +1699,7 @@ class Ui(QtWidgets.QMainWindow):
             )
 
             #Інформація матриці
-            self.die_info.setText(
-                ",".join(My_db.get_die_info(self.book, code_die))
-            )
+            self.die_info.setText(My_db.get_die_info(self.book, code_die))
 
 
 class CustomerWindow(QtWidgets.QMainWindow):

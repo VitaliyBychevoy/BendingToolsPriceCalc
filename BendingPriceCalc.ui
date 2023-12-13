@@ -2891,9 +2891,9 @@ border-radius: 10px;</string>
      <property name="geometry">
       <rect>
        <x>130</x>
-       <y>220</y>
+       <y>160</y>
        <width>200</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -2925,9 +2925,9 @@ QComboBox:focus {
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>170</y>
+       <y>130</y>
        <width>320</width>
-       <height>40</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -2963,7 +2963,7 @@ QPushButton:hover {
        <x>80</x>
        <y>10</y>
        <width>250</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -2995,7 +2995,7 @@ QComboBox:focus {
        <x>10</x>
        <y>10</y>
        <width>40</width>
-       <height>30</height>
+       <height>20</height>
       </rect>
      </property>
      <property name="font">
@@ -3022,9 +3022,9 @@ color: white;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
+       <y>40</y>
        <width>40</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -3048,9 +3048,9 @@ color: white;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>90</y>
+       <y>70</y>
        <width>60</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -3071,9 +3071,9 @@ color: white;</string>
      <property name="geometry">
       <rect>
        <x>190</x>
-       <y>50</y>
+       <y>40</y>
        <width>90</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -3097,9 +3097,9 @@ color: white;</string>
      <property name="geometry">
       <rect>
        <x>190</x>
-       <y>90</y>
+       <y>70</y>
        <width>40</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -3123,9 +3123,9 @@ color: white;</string>
      <property name="geometry">
       <rect>
        <x>190</x>
-       <y>130</y>
+       <y>100</y>
        <width>40</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -3149,9 +3149,9 @@ color: white;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>130</y>
+       <y>100</y>
        <width>60</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -3172,9 +3172,9 @@ color: white;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>220</y>
+       <y>160</y>
        <width>80</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -3196,9 +3196,9 @@ color: white;
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>260</y>
+       <y>190</y>
        <width>320</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -3212,7 +3212,7 @@ color: white;
 color: white;</string>
      </property>
      <property name="text">
-      <string>L 100, 200, 300, 500, 550K</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -3222,15 +3222,15 @@ color: white;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>300</y>
+       <y>220</y>
        <width>320</width>
-       <height>30</height>
+       <height>115</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial Narrow</family>
-       <pointsize>16</pointsize>
+       <pointsize>14</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -3238,10 +3238,13 @@ color: white;</string>
 color: white;</string>
      </property>
      <property name="text">
-      <string>200</string>
+      <string/>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
     </widget>
     <widget class="QLabel" name="die_image">
@@ -3264,9 +3267,9 @@ color: white;</string>
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>50</y>
+       <y>40</y>
        <width>100</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -3296,9 +3299,9 @@ QComboBox:focus {
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>90</y>
+       <y>70</y>
        <width>100</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">
@@ -3328,9 +3331,9 @@ QComboBox:focus {
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>130</y>
+       <y>100</y>
        <width>100</width>
-       <height>30</height>
+       <height>25</height>
       </rect>
      </property>
      <property name="font">

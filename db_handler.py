@@ -696,9 +696,9 @@ class My_db:
         #result_set = sorted(result_set)
         return tuple(result)
 
-    def get_die_info(book, code_die) -> tuple:
+    def get_die_info(book, code_die) -> str:
         """
-        Функція вертає кортеж
+        Функція вертає строку по коду code_ide
         (
             кут,
             висота,
@@ -710,18 +710,134 @@ class My_db:
         """
         sheet_die = book["Матриця одноручова"]
         die_max_row = sheet_die.max_row
-        #result: str = ""
+        result: str = ""
         for index in range(2, die_max_row):
             if sheet_die["C" + str(index)].value[0:6] == code_die:
-                result = (
-                    "Кут",
-                    sheet_die["J" + str(index)].value,
-                    "Висота",
-                    sheet_die["K" + str(index)].value,
-                    "Радіус",
-                    sheet_die["M" + str(index)].value
-                )
+                result += chr(int("03B1", 16))
+                result += " = "
+                result += str(sheet_die["J" + str(index)].value)
+                result += u"\u00b0"
+                result += f', V = {str(sheet_die["K" + str(index)].value)} мм'
+                result += f', R = {str(sheet_die["M" + str(index)].value)} мм,\n'
+                result += f'H = {str(sheet_die["L" + str(index)].value)} мм'
+                result += f', {str(sheet_die["N" + str(index)].value)} T/м.'
                 return result
+
+        if result != "":
+            return result
+
+        sheet_die = book["Матриця багаторучова"]
+        die_max_row = sheet_die.max_row
+        result: str = ""
+
+        for index in range(2, die_max_row):
+            if sheet_die["C" + str(index)].value[0:6] == code_die:
+                if (str(sheet_die["T" + str(index)].value) != "0"
+                        and str(sheet_die["S" + str(index)].value) != "0"):
+                    result += chr(int("03B1", 16))
+                    result += "1"
+                    result += " = "
+                    result += f'{str(sheet_die["J" + str(index)].value)}'
+                    result += u"\u00b0"
+                    result += f', V1 = {str(sheet_die["K" + str(index)].value)} мм,'
+                    result += f' R1 = {str(sheet_die["L" + str(index)].value)} мм,\n'
+                    result += chr(int("03B1", 16))
+                    result += "2"
+                    result += " = "
+                    result += f'{str(sheet_die["M" + str(index)].value)}'
+                    result += u"\u00b0"
+                    result += f', V2 = {str(sheet_die["N" + str(index)].value)} мм,'
+                    result += f' R2 = {str(sheet_die["O" + str(index)].value)} мм,'
+                    result += "\n"
+                    result += chr(int("03B1", 16))
+                    result += "3"
+                    result += " = "
+                    result += f'{str(sheet_die["P" + str(index)].value)}'
+                    result += u"\u00b0"
+                    result += f' V3 = {str(sheet_die["Q" + str(index)].value)} мм,'
+                    result += f' R3 = {str(sheet_die["R" + str(index)].value)} мм,\n'
+                    result += chr(int("03B1", 16))
+                    result += "4"
+                    result += " = "
+                    result += f'{str(sheet_die["S" + str(index)].value)}'
+                    result += u"\u00b0"
+                    result += f' V4 = {str(sheet_die["T" + str(index)].value)} мм,'
+                    result += f' R4 = {str(sheet_die["U" + str(index)].value)} мм,\n'
+                    result += f' H =  {str(sheet_die["V" + str(index)].value)} мм,'
+                    result += f' {str(sheet_die["W" + str(index)].value)} T/м.'
+                    return result
+
+                if (str(sheet_die["J" + str(index)].value) != "0"
+                        and str(sheet_die["M" + str(index)].value) != "0"
+                        and str(sheet_die["P" + str(index)].value) != "0"
+                        and str(sheet_die["T" + str(index)].value) == "0"
+                        and str(sheet_die["S" + str(index)].value) == "0"):
+                    result += chr(int("03B1", 16))
+                    result += "1"
+                    result += " = "
+                    result += f'{str(sheet_die["J" + str(index)].value)}'
+                    result += u"\u00b0"
+                    result += f', V1 = {str(sheet_die["K" + str(index)].value)} мм,'
+                    result += f' R1 = {str(sheet_die["L" + str(index)].value)} мм,\n'
+                    result += chr(int("03B1", 16))
+                    result += "2"
+                    result += " = "
+                    result += f'{str(sheet_die["M" + str(index)].value)}'
+                    result += u"\u00b0"
+                    result += f', V2 = {str(sheet_die["N" + str(index)].value)} мм,'
+                    result += f' R2 = {str(sheet_die["O" + str(index)].value)} мм,\n'
+                    result += chr(int("03B1", 16))
+                    result += "3"
+                    result += " = "
+                    result += f'{str(sheet_die["P" + str(index)].value)}'
+                    result += u"\u00b0"
+                    result += f' V3 = {str(sheet_die["Q" + str(index)].value)} мм,'
+                    result += f' R3 = {str(sheet_die["R" + str(index)].value)} мм,\n'
+                    result += f' H =  {str(sheet_die["V" + str(index)].value)} мм,'
+                    result += f' {str(sheet_die["W" + str(index)].value)} T/м.'
+                    return result
+
+                if (str(sheet_die["J" + str(index)].value) == "0"
+                        and str(sheet_die["M" + str(index)].value) == "0"
+                        and str(sheet_die["P" + str(index)].value) == "0"
+                        and str(sheet_die["S" + str(index)].value) == "0"
+                        and str(sheet_die["T" + str(index)].value) == "0"
+                ):
+                    result += f'V1 = {str(sheet_die["K" + str(index)].value)} мм,'
+                    result += f' R1 = {str(sheet_die["L" + str(index)].value)} мм,'
+                    result += f' V2 = {str(sheet_die["N" + str(index)].value)} мм,\n'
+                    result += f' R2 = {str(sheet_die["O" + str(index)].value)} мм,'
+                    result += f' V3 = {str(sheet_die["Q" + str(index)].value)} мм,'
+                    result += f' R3 = {str(sheet_die["R" + str(index)].value)} мм,\n'
+                    result += f' H =  {str(sheet_die["V" + str(index)].value)} мм,'
+                    result += f' {str(sheet_die["W" + str(index)].value)} T/м.'
+                    return result
+
+                if (str(sheet_die["J" + str(index)].value) != "0"
+                        and str(sheet_die["M" + str(index)].value) != "0"
+                        and str(sheet_die["P" + str(index)].value) == "0"
+                        and str(sheet_die["Q" + str(index)].value) == "0"
+                        and str(sheet_die["T" + str(index)].value) == "0"
+                        and str(sheet_die["S" + str(index)].value) == "0"):
+                    result += chr(int("03B1", 16))
+                    result += "1"
+                    result += " = "
+                    result += str(sheet_die["J" + str(index)].value)
+                    result += u"\u00b0"
+                    result += f', V1 = {str(sheet_die["K" + str(index)].value)} мм'
+                    result += f', R1 = {str(sheet_die["L" + str(index)].value)} мм,\n'
+                    result += chr(int("03B1", 16))
+                    result += "2"
+                    result += " = "
+                    result += str(sheet_die["M" + str(index)].value)
+                    result += u"\u00b0"
+                    result += f', V2 = {str(sheet_die["N" + str(index)].value)} мм'
+                    result += f', R2 = {str(sheet_die["O" + str(index)].value)} мм,\n'
+                    result += f'H =  {str(sheet_die["V" + str(index)].value)} мм,'
+                    result += f' {str(sheet_die["W" + str(index)].value)} T/м.'
+                    return result
+
+        return "Помилка у  db_handler.get_die_info"
 
 
         sheet_die = book["Матриця одноручова"]
