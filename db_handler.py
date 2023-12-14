@@ -660,7 +660,6 @@ class My_db:
         max_row_item_die = work_sheet_die.max_row
         result = []
 
-
         for index in range(2, max_row_item_die):
             if (
                     work_sheet_die["C" + str(index - 1)].value[0:6] == code_die
@@ -674,9 +673,6 @@ class My_db:
                     result.append(str(number_sectioned[1]).strip() + " SEC")
                 else:
                     result.append(str(work_sheet_die["G" + str(index)].value))
-        # if len(result_set) > 1:
-            # result_set = sorted(result_set)
-            # return tuple(result_set)
         if len(result) == 0 and holder_die == "Amada-promecam":
             work_sheet_die = book["Матриця багаторучова"]
             rows = work_sheet_die.max_row
@@ -839,12 +835,106 @@ class My_db:
 
         return "Помилка у  db_handler.get_die_info"
 
-
+    @staticmethod
+    def get_die_by_holder_angle(book, type_holder, angle) -> tuple:
+        """
+        Функція повертає кортеж матрць з певним тримачем
+        та певним кутом
+        :param book:
+        :param type_holder:
+        :param angle:
+        :return:
+        """
         sheet_die = book["Матриця одноручова"]
         die_max_row = sheet_die.max_row
+        result_set: set = set()
+
         for index in range(2, die_max_row):
-            if sheet_die["C" + str(index)].value[0:6] == code_die:
-                pass
+            if (sheet_die["B"+str(index)].value == type_holder
+                    and str(sheet_die["J"+str(index)].value) == angle):
+                result_set.add(str(sheet_die["С"+str(index)].value[0:6]))
+
+        sheet_die = book["Матриця багаторучова"]
+        die_max_row = sheet_die.max_row
+
+        if type_holder != "Amada-promecam":
+            result_set = sorted(result_set)
+            return tuple(result_set)
+
+        for index in range(2, die_max_row):
+            if (
+                    sheet_die["B"+str(index)].value == type_holder
+                    and (
+                    str(sheet_die["J"+str(index)].value) == angle
+                    or str(sheet_die["M"+str(index)].value) == angle
+                    or str(sheet_die["P"+str(index)].value) == angle
+                    or str(sheet_die["S"+str(index)].value) == angle
+                )
+            ):
+                result_set.add(sheet_die["C"+str(index)].value[0:6])
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
+
+    def get_all_die_parameters(book, type_holder) -> tuple:
+        """
+        Функція повертає усі можливі кути, висоти та розкриття
+        для певного тримача
+        :param type_holder:
+        :return: tuple(angles(), heights(), distance())
+        """
+        """
+        set_angel = set()
+        set_height = set()
+        set_radius = set()
+        counter = 0
+        for index in range(2, rows):
+            if (sheet["B" + str(index - 1)].value == my_holder and
+                    sheet["B" + str(index)].value != my_holder):
+                break
+            if sheet["B" + str(index)].value == my_holder:
+                counter += 1
+                set_angel.add(sheet["J" + str(index)].value)
+                set_height.add(sheet["K" + str(index)].value)
+                set_radius.add(sheet["L" + str(index)].value)
+        print(f"COUNTER: {counter}")
+        tuple_angle = tuple(sorted(set_angel))
+        tuple_height = tuple(sorted(set_height))
+        tuple_radius = tuple(sorted(set_radius))
+        """
+        sheet_die = book["Матриця  одноручова"]
+        rows = sheet_die.max_row
+        set_angle = set()
+        set_height = set()
+        set_distance = set()
+        counter = 0
+        for index in range(2, rows):
+            if sheet_die["B" + str(index)].value == type_holder:
+                set_angle.add(str(sheet_die["J" + str(index)].value))
+                set_height.add(str(sheet_die["L" + str(index)].value))
+                set_distance.add(str(sheet_die["K" + str(index)].value))
+
+        sheet_die = book["Матриця  багаторучова"]
+        rows = sheet_die.max_row
+        for index in range(2, rows):
+            if sheet_die["B" + str(index)].value == type_holder:
+                set_angle.add(str(sheet_die["J" + str(index)].value))
+                set_angle.add(str(sheet_die["M" + str(index)].value))
+                set_angle.add(str(sheet_die["P" + str(index)].value))
+                set_angle.add(str(sheet_die["S" + str(index)].value))
+
+                set_height.add(str(sheet_die["V" + str(index)].value))
+
+                set_distance.add(str(sheet_die["K" + str(index)].value))
+                set_distance.add(str(sheet_die["N" + str(index)].value))
+                set_distance.add(str(sheet_die["Q" + str(index)].value))
+                set_distance.add(str(sheet_die["T" + str(index)].value))
+
+        return (
+            tuple(sorted(set_angle)),
+            tuple(sorted(set_height)),
+            tuple(sorted(set_distance))
+        )
 
 class Pre_commercial_offer_xlsx():
 
