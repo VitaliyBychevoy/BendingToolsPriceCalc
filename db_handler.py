@@ -848,18 +848,19 @@ class My_db:
         sheet_die = book["Матриця одноручова"]
         die_max_row = sheet_die.max_row
         result_set: set = set()
+        result_set.add("")
 
         for index in range(2, die_max_row):
             if (sheet_die["B"+str(index)].value == type_holder
                     and str(sheet_die["J"+str(index)].value) == angle):
-                result_set.add(str(sheet_die["С"+str(index)].value[0:6]))
-
-        sheet_die = book["Матриця багаторучова"]
-        die_max_row = sheet_die.max_row
+                result_set.add(sheet_die["C"+str(index)].value[0:6])
 
         if type_holder != "Amada-promecam":
             result_set = sorted(result_set)
             return tuple(result_set)
+
+        sheet_die = book["Матриця багаторучова"]
+        die_max_row = sheet_die.max_row
 
         for index in range(2, die_max_row):
             if (
@@ -875,6 +876,45 @@ class My_db:
         result_set = sorted(result_set)
         return tuple(result_set)
 
+    def get_die_by_holder_height(
+                    book,
+                    type_holder,
+                    height
+                ) -> tuple:
+        """
+        Функція повертає кортеж матрць з певним тримачем
+        та певною висотою
+        :param book:
+        :param type_holder:
+        :param height:
+        :return:
+        """
+
+        sheet_die = book["Матриця одноручова"]
+        die_max_row = sheet_die.max_row
+        result_set: set = set()
+        result_set.add("")
+
+        for index in range(2, die_max_row):
+            if (sheet_die["B"+str(index)].value == type_holder
+                    and str(sheet_die["L"+str(index)].value) == height):
+                result_set.add(sheet_die["C"+str(index)].value[0:6])
+
+        if type_holder != "Amada-promecam":
+            result_set = sorted(result_set)
+            return tuple(result_set)
+
+        sheet_die = book["Матриця багаторучова"]
+        die_max_row = sheet_die.max_row
+
+        for index in range(2, die_max_row):
+            if (
+                    sheet_die["B"+str(index)].value == type_holder
+                    and str(sheet_die["L"+str(index)].value) == height
+            ):
+                result_set.add(sheet_die["C"+str(index)].value[0:6])
+        result_set = sorted(result_set)
+        return tuple(result_set)
 
     def get_all_die_parameters(book, type_holder) -> tuple:
         """
@@ -883,26 +923,7 @@ class My_db:
         :param type_holder:
         :return: tuple(angles(), heights(), distance())
         """
-        """
-        set_angel = set()
-        set_height = set()
-        set_radius = set()
-        counter = 0
-        for index in range(2, rows):
-            if (sheet["B" + str(index - 1)].value == my_holder and
-                    sheet["B" + str(index)].value != my_holder):
-                break
-            if sheet["B" + str(index)].value == my_holder:
-                counter += 1
-                set_angel.add(sheet["J" + str(index)].value)
-                set_height.add(sheet["K" + str(index)].value)
-                set_radius.add(sheet["L" + str(index)].value)
-        print(f"COUNTER: {counter}")
-        tuple_angle = tuple(sorted(set_angel))
-        tuple_height = tuple(sorted(set_height))
-        tuple_radius = tuple(sorted(set_radius))
-        """
-        sheet_die = book["Матриця  одноручова"]
+        sheet_die = book["Матриця одноручова"]
         rows = sheet_die.max_row
         set_angle = set()
         set_height = set()
@@ -910,30 +931,34 @@ class My_db:
         counter = 0
         for index in range(2, rows):
             if sheet_die["B" + str(index)].value == type_holder:
-                set_angle.add(str(sheet_die["J" + str(index)].value))
-                set_height.add(str(sheet_die["L" + str(index)].value))
-                set_distance.add(str(sheet_die["K" + str(index)].value))
+                set_angle.add(sheet_die["J" + str(index)].value)
+                set_height.add(sheet_die["L" + str(index)].value)
+                set_distance.add(sheet_die["K" + str(index)].value)
 
-        sheet_die = book["Матриця  багаторучова"]
-        rows = sheet_die.max_row
-        for index in range(2, rows):
-            if sheet_die["B" + str(index)].value == type_holder:
-                set_angle.add(str(sheet_die["J" + str(index)].value))
-                set_angle.add(str(sheet_die["M" + str(index)].value))
-                set_angle.add(str(sheet_die["P" + str(index)].value))
-                set_angle.add(str(sheet_die["S" + str(index)].value))
+        if type_holder == "Матриця багаторучова":
+            sheet_die = book["Матриця багаторучова"]
+            rows = sheet_die.max_row
+            for index in range(2, rows):
+                if sheet_die["B" + str(index)].value == type_holder:
+                    set_angle.add(sheet_die["J" + str(index)].value)
+                    set_angle.add(sheet_die["M" + str(index)].value)
+                    set_angle.add(sheet_die["P" + str(index)].value)
+                    set_angle.add(sheet_die["S" + str(index)].value)
 
-                set_height.add(str(sheet_die["V" + str(index)].value))
+                    set_height.add(sheet_die["V" + str(index)].value)
 
-                set_distance.add(str(sheet_die["K" + str(index)].value))
-                set_distance.add(str(sheet_die["N" + str(index)].value))
-                set_distance.add(str(sheet_die["Q" + str(index)].value))
-                set_distance.add(str(sheet_die["T" + str(index)].value))
+                    set_distance.add(sheet_die["K" + str(index)].value)
+                    set_distance.add(sheet_die["N" + str(index)].value)
+                    set_distance.add(sheet_die["Q" + str(index)].value)
+                    set_distance.add(sheet_die["T" + str(index)].value)
 
+        tuple_angle = tuple(sorted(set_angle))
+        tuple_height = tuple(sorted(set_height))
+        tuple_distance = tuple(sorted(set_distance))
         return (
-            tuple(sorted(set_angle)),
-            tuple(sorted(set_height)),
-            tuple(sorted(set_distance))
+            tuple_angle,
+            tuple_height,
+            tuple_distance
         )
 
 class Pre_commercial_offer_xlsx():

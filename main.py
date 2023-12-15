@@ -1621,73 +1621,58 @@ class Ui(QtWidgets.QMainWindow):
                 self.book,
                 self.type_die_value.currentText()
             )
-"""
-        if self.type_punch_value.currentText() != "":
-            self.result_punch_value.clear()
-            self.punch_angle_value.clear()
-            self.punch_angle_value.addItem("")
-            self.punch_height_value.clear()
-            self.punch_height_value.addItem("")
-            self.punch_radius_value.clear()
-            self.punch_radius_value.addItem("")
-            my_holder = self.type_punch_value.currentText()
 
-            set_angel = set()
-            set_height = set()
-            set_radius = set()
-            counter = 0
-            for index in range(2, rows):
-                if (sheet["B" + str(index-1)].value == my_holder and
-                        sheet["B" + str(index)].value != my_holder):
-                    break
-                if sheet["B" + str(index)].value == my_holder:
-                    counter += 1
-                    set_angel.add(sheet["J" + str(index)].value)
-                    set_height.add(sheet["K" + str(index)].value)
-                    set_radius.add(sheet["L" + str(index)].value)
-            print(f"COUNTER: {counter}")
-            tuple_angle = tuple(sorted(set_angel))
-            tuple_height = tuple(sorted(set_height))
-            tuple_radius = tuple(sorted(set_radius))
-            len_tuple = (
-                len(tuple_angle),
-                len(tuple_height),
-                len(tuple_radius)
-            )
-
-            for index in range(max(len_tuple)):
-                if len(tuple_angle) != max(len_tuple):
-                    if len(tuple_angle) >= index+1:
-                        self.punch_angle_value.addItem(
-                            str(tuple_angle[index]).replace(".",",")
+            print("Corner", len(die_parameters[0]))
+            print(die_parameters[0])
+            print("%"*30)
+            print("Height", len(die_parameters[1]))
+            print(die_parameters[1])
+            print("@"*30)
+            print("Distance", len(die_parameters[2]))
+            print(die_parameters[2])
+            print("&"*30)
+            max_len = max(len(die_parameters[0]), len(die_parameters[1]), len(die_parameters[2]))
+            print("Max_len", max_len)
+            for index in range(max_len):
+                if len(die_parameters[0]) != max_len:
+                    if len(die_parameters[0]) >= index +1:
+                        self.die_angle_value.addItem(
+                            str(die_parameters[0][index]).replace(".",",")
                         )
                 else:
-                    self.punch_angle_value.addItem(
-                        str(tuple_angle[index]).replace(".",",")
+                    self.die_angle_value.addItem(
+                        str(die_parameters[0][index]).replace(
+                            ".",","
+                        )
                     )
-                if len(tuple_height) != max(len_tuple):
-                    if len(tuple_height) >= index+1:
-                        self.punch_height_value.addItem(
-                            str(tuple_height[index]).replace(".",",")
+                if len(die_parameters[1]) != max_len:
+                    if len(die_parameters[1]) >= index +1:
+                        self.die_height_value.addItem(
+                            str(die_parameters[1][index]).replace(
+                                ".", ","
+                            )
                         )
                 else:
-                    self.punch_height_value.addItem(
-                        str(tuple_height[index]).replace(".",",")
+                    self.die_height_value.addItem(
+                        str(die_parameters[1][index]).replace(
+                            ".", ","
+                        )
                     )
-                if len(tuple_radius) != max(len_tuple):
-                    if len(tuple_radius) >= index + 1:
-                        self.punch_radius_value.addItem(
-                            str(tuple_radius[index]).replace(".",",")
+                if len(die_parameters[2]) != max_len:
+                    if len(die_parameters[2]) >= index +1:
+                        self.die_distance_value.addItem(
+                            str(die_parameters[2][index]).replace(
+                                ".", ","
+                            )
                         )
                 else:
-                    self.punch_radius_value.addItem(
-                        str(tuple_radius[index]).replace(".",",")
+                    self.die_distance_value.addItem(
+                        str(die_parameters[2][index]).replace(
+                            ".", ","
+                        )
                     )
-
-"""
-
-
-
+        elif self.type_die_value.currentText() == "":
+            return
 
     def set_empty_die_image(self) -> None:
         """
@@ -1703,6 +1688,9 @@ class Ui(QtWidgets.QMainWindow):
         або  відповдний до заданих параметрів метод
         :return: None
         """
+        self.length_info_die_label.setText("")
+        self.die_info.setText("")
+        self.set_empty_die_image()
         holder_die: str = self.type_die_value.currentText()
         if holder_die == "":
             message = MessageError()
@@ -1721,34 +1709,32 @@ class Ui(QtWidgets.QMainWindow):
                 ):
                     self.result_die_value.addItem(item)
             #Обрані тримач та кут
-            if self.die_angle_value.currentText() != "" and self.die_height_value.currentText() == "" and self.die_distance_value.currentText() == "":
+            if (self.die_angle_value.currentText() != ""
+                    and self.die_height_value.currentText() == ""
+                    and self.die_distance_value.currentText() == ""):
                 die_holder_angle = My_db.get_die_by_holder_angle(
-                    book = self.book,
-                    type_holder = holder_die,
-                    angle = self.die_angle_value.currentText()
+                    book=self.book,
+                    type_holder=holder_die,
+                    angle=self.die_angle_value.currentText()
                 )
                 for item in die_holder_angle:
                     self.result_die_value.addItem(item)
-"""
-            elif (self.punch_angle_value.currentText() != ""
-                  and self.punch_height_value.currentText() == ""
-                  and self.punch_radius_value.currentText() == ""):
-                self.result_punch_value.clear()
-                punch_holder_angle = My_db.get_punch_by_holder_angle(
-                        book=self.book,
-                        type_holder=holder,
-                        angle=self.punch_angle_value.currentText()
-                )
-                for item in punch_holder_angle:
-                    self.result_punch_value.addItem(item)
-                del punch_holder_angle
-"""
+
             #Обрані тримач та висота
+            if (self.die_angle_value.currentText() == ""
+                    and self.die_height_value.currentText() != ""
+                    and self.die_distance_value.currentText() == ""):
+                die_holder_height = My_db.get_die_by_holder_height(
+                    book=self.book,
+                    type_holder=holder_die,
+                    height=self.die_height_value.currentText()
+                )
+                for item in die_holder_height:
+                    self.result_die_value.addItem(item)
             #Обрані тримач та розкриття
             #Обрані тримач, кут та висота
             #Обрані тримач, кут та розкриття
             #Обрані тримач, висота та розкриття
-
 
     def get_one_die_info(self) -> None:
         """
@@ -1759,7 +1745,7 @@ class Ui(QtWidgets.QMainWindow):
 
         #Зображення
         code_die = self.result_die_value.currentText()
-        if code_die == "":
+        if code_die in ("", " "):
             self.length_info_die_label.setText("")
             self.die_info.setText("")
             self.set_empty_die_image()
