@@ -916,6 +916,189 @@ class My_db:
         result_set = sorted(result_set)
         return tuple(result_set)
 
+    @staticmethod
+    def get_die_by_holder_distance(
+            book,
+            type_holder,
+            distance
+    ) -> tuple:
+        """
+        Фнкція вертає кортеж з кодів матриць які обрані
+        за тримачем та розкриттям
+        :param book:
+        :param type_holder:
+        :param distance:
+        :return:
+        """
+        sheet_die = book["Матриця одноручова"]
+        die_max_row = sheet_die.max_row
+        result_set: set = set()
+        result_set.add("")
+
+        for index in range(2, die_max_row):
+            if (sheet_die["B"+str(index)].value == type_holder and str(sheet_die["K"+str(index)].value) == distance):
+                result_set.add(sheet_die["C"+str(index)].value[0:6])
+
+        if type_holder != "Amada-promecam":
+            result_set = sorted(result_set)
+            return tuple(result_set)
+
+        sheet_die = book["Матриця багаторучова"]
+        die_max_row = sheet_die.max_row
+
+        for index in range(2, die_max_row):
+            if (
+                    sheet_die["B"+str(index)].value == type_holder
+                    and (
+                    str(sheet_die["K"+str(index)].value) == distance
+                    or str(sheet_die["N"+str(index)].value) == distance
+                    or str(sheet_die["Q"+str(index)].value) == distance
+                    or str(sheet_die["T"+str(index)].value) == distance
+                )
+            ):
+                result_set.add(sheet_die["C"+str(index)].value[0:6])
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
+    @staticmethod
+    def get_die_by_holder_angle_height(book, type_holder, angle, height) -> tuple:
+       # """
+       # Функція вертає кортеж матриць певного тимача, кута та висоти
+       #
+       # :return: tuple
+       # """
+        angle = int(angle)
+        height = int(height)
+        sheet_die = book["Матриця одноручова"]
+        die_max_row = sheet_die.max_row
+        result_set: set = set()
+        result_set.add("")
+
+        for index in range(2, die_max_row):
+            if (sheet_die["B"+str(index)].value == type_holder
+                    and sheet_die["J"+str(index)].value == angle
+                    and sheet_die["L"+str(index)].value == height):
+                result_set.add(sheet_die["B"+str(index)].value[0:6])
+
+        if type_holder != "Amada-promecam":
+            result_set = sorted(result_set)
+            return tuple(result_set)
+
+        sheet_die = book["Матриця багаторучова"]
+        die_max_row = sheet_die.max_row
+
+        for index in range(2, die_max_row):
+            if (sheet_die["V"+str(index)].value == height
+                    and (sheet_die["J"+str(index)].value == angle
+                         or sheet_die["M"+str(index)].value == angle
+                         or sheet_die["P"+str(index)].value == angle
+                         or sheet_die["T"+str(index)].value == angle)):
+                result_set.add(sheet_die["B"+str(index)].value[0:6])
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
+    @staticmethod
+    def get_die_by_holder_angle_distance(
+            book,
+            type_holder,
+            angle,
+            distance
+    ) -> tuple:
+        """
+        Функція вертає кортеж матриць певного тимача, кута та розкриття
+        """
+
+        angle = int(angle)
+        distance = int(distance)
+
+        sheet_die = book["Матриця одноручова"]
+        die_max_row = sheet_die.max_row
+        result_set: set = set()
+        result_set.add("")
+
+        for index in range(2, die_max_row):
+            if (sheet_die["B"+str(index)].value == type_holder
+                    and sheet_die["J"+str(index)].value == angle
+                    and sheet_die["K"+str(index)].value == distance):
+                result_set.add(sheet_die["C"+str(index)].value[0:6])
+
+        if type_holder != "Amada-promecam":
+            result_set = sorted(result_set)
+            return tuple(result_set)
+
+        sheet_die = book["Матриця багаторучова"]
+        die_max_row = sheet_die.max_row
+
+        for index in range(2, die_max_row):
+            print(
+                sheet_die["C" + str(index)].value,
+                'sheet_die["K"+str(index)].value',
+                sheet_die["K" + str(index)].value,
+                type(sheet_die["K"+str(index)].value),
+                " ",
+                "distance",
+                distance,
+                type(distance)
+            )
+            if distance ==  sheet_die["K" + str(index)].value:
+                print("OK")
+            if (
+                    (sheet_die["K"+str(index)].value == distance
+                     and sheet_die["J"+str(index)].value == angle)
+                    or (sheet_die["N"+str(index)].value == distance
+                        and sheet_die["M"+str(index)].value == angle)
+                    or (sheet_die["Q"+str(index)].value == distance
+                        and sheet_die["P"+str(index)].value == angle)
+                    or (sheet_die["T"+str(index)].value ==  distance
+                        and sheet_die["S"+str(index)].value == angle)):
+                result_set.add(sheet_die["C"+str(index)].value[0:6])
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
+    @staticmethod
+    def get_die_by_holder_height_distance(
+            book,
+            type_holder,
+            height,
+            distance) -> tuple:
+        """
+        Функція вертає кортеж матриць певного тимача, висота та розкриття
+        """
+        distance = int(distance)
+        height = int(height)
+        sheet_die = book["Матриця одноручова"]
+        die_max_row = sheet_die.max_row
+        result_set: set = set()
+        result_set.add("")
+
+        for index in range(2, die_max_row):
+            if (
+                    sheet_die["B"+str(index)].value == type_holder
+                    and sheet_die["L"+str(index)].value == height
+                    and sheet_die["K"+str(index)].value == distance
+            ):
+                result_set.add(sheet_die["C" + str(index)].value[0:6])
+
+        if type_holder != "Amada-promecam":
+            result_set = sorted(result_set)
+            return tuple(result_set)
+
+        sheet_die = book["Матриця багаторучова"]
+        die_max_row = sheet_die.max_row
+
+        for index in range(2, die_max_row):
+            if (
+                    sheet_die["V"+str(index)].value == height and
+                    (sheet_die["K"+str(index)].value == distance
+                     or sheet_die["N"+str(index)].value == distance
+                     or sheet_die["Q"+str(index)].value == distance
+                     or sheet_die["T"+str(index)].value == distance)
+            ):
+                result_set.add(sheet_die["C" + str(index)].value[0:6])
+        result_set = sorted(result_set)
+        return tuple(result_set)
+
+    @staticmethod
     def get_all_die_parameters(book, type_holder) -> tuple:
         """
         Функція повертає усі можливі кути, висоти та розкриття
@@ -935,7 +1118,7 @@ class My_db:
                 set_height.add(sheet_die["L" + str(index)].value)
                 set_distance.add(sheet_die["K" + str(index)].value)
 
-        if type_holder == "Матриця багаторучова":
+        if type_holder == "Amada-promecam":
             sheet_die = book["Матриця багаторучова"]
             rows = sheet_die.max_row
             for index in range(2, rows):
@@ -951,6 +1134,7 @@ class My_db:
                     set_distance.add(sheet_die["N" + str(index)].value)
                     set_distance.add(sheet_die["Q" + str(index)].value)
                     set_distance.add(sheet_die["T" + str(index)].value)
+                    print(sheet_die["T" + str(index)].value)
 
         tuple_angle = tuple(sorted(set_angle))
         tuple_height = tuple(sorted(set_height))

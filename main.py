@@ -1712,6 +1712,7 @@ class Ui(QtWidgets.QMainWindow):
             if (self.die_angle_value.currentText() != ""
                     and self.die_height_value.currentText() == ""
                     and self.die_distance_value.currentText() == ""):
+                self.result_die_value.clear()
                 die_holder_angle = My_db.get_die_by_holder_angle(
                     book=self.book,
                     type_holder=holder_die,
@@ -1724,6 +1725,7 @@ class Ui(QtWidgets.QMainWindow):
             if (self.die_angle_value.currentText() == ""
                     and self.die_height_value.currentText() != ""
                     and self.die_distance_value.currentText() == ""):
+                self.result_die_value.clear()
                 die_holder_height = My_db.get_die_by_holder_height(
                     book=self.book,
                     type_holder=holder_die,
@@ -1732,10 +1734,58 @@ class Ui(QtWidgets.QMainWindow):
                 for item in die_holder_height:
                     self.result_die_value.addItem(item)
             #Обрані тримач та розкриття
+            if (self.die_angle_value.currentText() == ""
+                    and self.die_height_value.currentText() == ""
+                    and self.die_distance_value.currentText() != ""):
+                self.result_die_value.clear()
+                die_holder_distance = My_db.get_die_by_holder_distance(
+                    book=self.book,
+                    type_holder=holder_die,
+                    distance=self.die_distance_value.currentText()
+                )
+                for item in die_holder_distance:
+                    self.result_die_value.addItem(item)
             #Обрані тримач, кут та висота
+            if (self.die_angle_value.currentText() != ""
+                    and self.die_height_value.currentText() != ""
+                    and self.die_distance_value.currentText() == ""):
+                self.result_die_value.clear()
+                die_holder_angle_height = My_db.get_die_by_holder_angle_height(
+                    book=self.book,
+                    type_holder=holder_die,
+                    angle=self.die_angle_value.currentText(),
+                    height=self.die_height_value.currentText()
+                )
+                print(die_holder_angle_height)
+                for item in die_holder_angle_height:
+                    self.result_die_value.addItem(item)
             #Обрані тримач, кут та розкриття
+            if (self.die_angle_value.currentText() != ""
+                    and self.die_height_value.currentText() == ""
+                    and self.die_distance_value.currentText() != ""):
+                self.result_die_value.clear()
+                die_holder_angle_distance = My_db.get_die_by_holder_angle_distance(
+                    book=self.book,
+                    type_holder=holder_die,
+                    angle=self.die_angle_value.currentText(),
+                    distance=self.die_distance_value.currentText()
+                )
+                print(die_holder_angle_distance)
+                for item in die_holder_angle_distance:
+                    self.result_die_value.addItem(item)
             #Обрані тримач, висота та розкриття
-
+            if (self.die_angle_value.currentText() == ""
+                    and self.die_height_value.currentText() != ""
+                    and self.die_distance_value.currentText() != ""):
+                self.result_die_value.clear()
+                die_holder_height_distance = My_db.get_die_by_holder_height_distance(
+                    book=self.book,
+                    type_holder=holder_die,
+                    height=self.die_height_value.currentText(),
+                    distance=self.die_distance_value.currentText()
+                )
+                for item in die_holder_height_distance:
+                    self.result_die_value.addItem(item)
     def get_one_die_info(self) -> None:
         """
         Фунція заповнює length_info_die_label, die_info та
