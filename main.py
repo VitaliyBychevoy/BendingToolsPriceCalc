@@ -1,7 +1,7 @@
 import sys
 import requests
 from datetime import datetime, date
-from bs4 import BeautifulSoup
+from bs4  import BeautifulSoup
 from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
@@ -9,12 +9,13 @@ from PyQt5.QtGui import QPixmap
 import PIL
 
 
-import db_handler
+#import db_handler
 import style
 
 from db_handler import *
 from BendingPreCommercialOffer import *
 from style import *
+from db_handler import *
 
 
 
@@ -35,7 +36,6 @@ def check_valid_symbols(number: str) -> bool:
             return False
     return True
 
-
 type_holder_list = (
     "Оберіть тип кріплення",
     "Amada-promecam",
@@ -51,11 +51,12 @@ item_list_amada = (
     "Пуансон плющення",
     "Матриця плющення",
     "Матриця багаторучова",
-    "Тримач пуансона",
-    "Прижимні планки",
-    "Тримач матриці",
-    "Радіусна вставка",
-    "Тримач поліуретанових вставок"
+    "Тримач радіусних вставок",
+    "Тримач поліуретанової вставки",
+    #"Тримач пуансона",
+    #"Прижимні планки",
+    #"Тримач матриці",
+    #"Радіусна вставка",
 )
 
 item_list_trumpf_wila = (
@@ -65,15 +66,21 @@ item_list_trumpf_wila = (
     "Пуансон плющення",
     "Матриця плющення",
     "Кнопка",
-    "Штифт",
-    "Тримач поліуретанових вставок"
+    "Штіфт",
+    "Тримач поліуретанової вставки"
+)
+
+
+item_list_bystronic = (
+    "Пуансон",
+    "Матриця одноручова",
 )
 
 item_list_universal = (
     "Оберіть виріб",
     "Радіусна вставка",
     "Уретанова вставка матриці",
-    "Прямокутна вставка пуансона"
+    "Прямокутна вставка пуансона",
 )
 
 category = {
@@ -122,14 +129,12 @@ def get_rate() -> str:
     try:
         request = requests.get(url)
         if request.status_code == 200:
-            print(request.status_code)
             soup = BeautifulSoup(request.text, "html.parser")
             td_list = soup.find_all("td", "sc-1x32wa2-8 tWvco")
             rate_full_string = None
             for item in td_list:
                 rate_full_string = item.find("div", {"class": "sc-1x32wa2-9 bKmKjX"}).text
             rate = rate_full_string[0:5]
-            print("rate ok")
             return rate
         else:
             return "00.00"
@@ -142,7 +147,6 @@ def get_recommended_rate_for_euro_value(new_rate: str) -> str:
     та вертає збільшену вартість на один відсоток у вигяді строки"""
     rate = new_rate.replace(",", ".")
     result = str(round(float(rate) * 1.01, 2))
-    print("recommended rate ok")
     rate_with_comma = result.replace(".", ",")
     return rate_with_comma
 
@@ -153,26 +157,29 @@ class Ui(QtWidgets.QMainWindow):
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
 
+        #uic.loadUi("data/BendingPriceCalc.ui", self)
         uic.loadUi("BendingPriceCalc.ui", self)
         self.setWindowIcon(QtGui.QIcon('data/logo_4.png'))
         self.setGeometry(50, 50, 1500, 960)
-        # self.setFixedSize(1500, 960)
+        self.setFixedSize(1500, 960)
 
-        self.m_w = None  # Вікно пошуку
-        self.customers = None  # Вікно для створення клієнтів
-        self.mdi = QMdiArea()
+        #self.m_w = None  # Вікно пошуку
+        # self.customers = None  # Вікно для створення клієнтів
+        # self.mdi = QMdiArea()
         self.table.setColumnWidth(0, 20)
         self.table.setColumnWidth(1, 100)
         self.table.setColumnWidth(2, 500)
 
-        self.book = My_db.open_book("data/DB_bending.xlsx")
+        self.book = MyDb.open_book("data/DB_bending.xlsx")
 
-        company_list: list = get_short_name_list()
+
 
         # Приховуємо результати
         self.hide_result()
 
         # Заповнюємо компанії
+        company_list: list = get_short_name_list()
+
         for company in company_list:
             self.company_value.addItem(company)
 
@@ -262,6 +269,7 @@ class Ui(QtWidgets.QMainWindow):
         # Видаляємо обраний елемент
         self.remove_element.clicked.connect(self.remove_row)
 
+        #Кнопка корегування позиції
         self.update_row.clicked.connect(self.update_item)
 
         # Видаляемо усе з таблиці
@@ -270,7 +278,7 @@ class Ui(QtWidgets.QMainWindow):
         # Отримати рекомендований курс валюти
         self.recommended_rate_button.clicked.connect(self.recommended_rate)
 
-        # Поле для вартості
+        # Поле для вартості пакування
         self.packing_value.textChanged.connect(self.check_packing_number)
 
         # Поле для вартості доставки
@@ -294,6 +302,11 @@ class Ui(QtWidgets.QMainWindow):
         # Вартість оформлення документів
         self.delivery_document_value.textChanged.connect(self.check_delivery_document_value)
 
+        # Вартість оформлення документів EURO-1
+        self.delivery_document_EURO_1_value_.textChanged.connect(
+            self.check_delivery_document_EURO_1_value_
+        )
+
         # РОБОТА З КЛІЄНТАМИ
 
         # Кнопка отримання повної назви клієнта
@@ -313,6 +326,12 @@ class Ui(QtWidgets.QMainWindow):
 
         # Змінюємо запис клієнта у базі
         self.update_customer_Button.clicked.connect(self.update_client)
+
+        #Додаємо нову компанію
+        self.add_customer_Button.clicked.connect(self.add_client)
+
+        #Видалення з бази
+        self.delete_customer_Button.clicked.connect(self.delete_client)
 
         # ПОШУК
         #Пуансон
@@ -351,9 +370,9 @@ class Ui(QtWidgets.QMainWindow):
 
     #  self.show()
 
-    def customers_db(self):
-        self.customers = CustomerWindow()
-        self.customers.show()
+    #def customers_db(self):
+    #    self.customers = CustomerWindow()
+    #    self.customers.show()
 
     def set_typical_style(self) -> None:
         # Списки та spinbox для редагування
@@ -402,8 +421,13 @@ class Ui(QtWidgets.QMainWindow):
         self.brokerage_services_value.setStyleSheet(style.typically_style_editline)
         self.brokerage_services_value.setEnabled(True)
         self.brokerage_services_value.setStyleSheet(style.typically_style_editline)
+
         self.delivery_document_value.setEnabled(True)
         self.delivery_document_value.setStyleSheet(style.typically_style_editline)
+
+        self.delivery_document_EURO_1_value_.setEnabled(True)
+        self.delivery_document_EURO_1_value_.setStyleSheet(style.typically_style_editline)
+
         self.transaction_value.setEnabled(True)
         self.transaction_value.setStyleSheet(style.typically_style_editline)
         self.bank_tax_value.setEnabled(True)
@@ -444,8 +468,10 @@ class Ui(QtWidgets.QMainWindow):
         self.delivery_label.setStyleSheet(style.typically_weight_label)
 
         self.delivery_document_label.setStyleSheet(style.typically_weight_label)
+        self.delivery_document_label_2.setStyleSheet(style.typically_weight_label)
 
         self.delivery_euro_label.setStyleSheet(style.typically_weight_label)
+        self.delivery_document_euro_1_label.setStyleSheet(style.typically_weight_label)
         self.discount_label.setStyleSheet(style.typically_weight_label)
         self.bank_tax_label.setStyleSheet(style.typically_weight_label)
         self.delivery_document_euro_label.setStyleSheet(style.typically_weight_label)
@@ -457,6 +483,7 @@ class Ui(QtWidgets.QMainWindow):
         self.percent_bank_tax_label.setStyleSheet(style.typically_weight_label)
         self.percent_discount_label.setStyleSheet(style.typically_weight_label)
 
+    #Функція оформлення під час корегування
     def set_update_style(self) -> None:
         # Списки та spinbox для редагування
         self.company_value.setStyleSheet(style.typically_style_QComboBox)
@@ -510,6 +537,8 @@ class Ui(QtWidgets.QMainWindow):
         self.transaction_value.setStyleSheet(style.update_style_editline)
         self.delivery_document_value.setEnabled(False)
         self.delivery_document_value.setStyleSheet(style.update_style_editline)
+        self.delivery_document_EURO_1_value_.setEnabled(False)
+        self.delivery_document_EURO_1_value_.setStyleSheet(style.update_style_editline)
 
         # SpinBox
         self.persentage_spinBox.setStyleSheet(style.update_persentage_spinBox)
@@ -547,8 +576,10 @@ class Ui(QtWidgets.QMainWindow):
 
         # self.delivery_label.setStyleSheet(style.update_weight_label)
         self.delivery_document_label.setStyleSheet(style.update_weight_label)
+        self.delivery_document_label_2.setStyleSheet(style.update_weight_label)
 
         self.delivery_euro_label.setStyleSheet(style.update_weight_label)
+        self.delivery_document_euro_1_label.setStyleSheet(style.update_weight_label)
         self.transaction_uah_label.setStyleSheet(style.update_weight_label)
         self.delivery_document_euro_label.setStyleSheet(style.update_weight_label)
         self.brokerage_services_uah_label.setStyleSheet(style.update_weight_label)
@@ -635,7 +666,7 @@ class Ui(QtWidgets.QMainWindow):
                     self.item_value.currentText() == "Оберіть виріб" and \
                     self.code_value.currentText() not in empty_value and \
                     self.length_value.currentText() not in empty_value:
-                print("Hello! I`m bug")
+
                 self.load_data()
 
             if self.type_holder.currentText() != "Оберіть тип кріплення" and \
@@ -649,11 +680,11 @@ class Ui(QtWidgets.QMainWindow):
                              self.code_value.currentText(),
                              self.length_value.currentText()]
 
-                code: str = My_db.get_full_code_item(data_list)
+                code: str = MyDb.get_full_code_item(data_list)
                 data_list.append(code)
-                dict_item = My_db.get_info_item(data_list)
+                dict_item = MyDb.get_info_item(data_list)
 
-                print("############")
+
                 self.new_item.set_type_holder(dict_item["type_holder"])
                 self.new_item.set_type_item(dict_item["item"])
                 self.new_item.set_code_item(dict_item["code_item"])
@@ -661,28 +692,20 @@ class Ui(QtWidgets.QMainWindow):
                 self.new_item.set_ua_name_item(dict_item["ua_name_item"])
                 self.new_item.set_length_item(dict_item["length_item"])
                 self.new_item.set_image_path(dict_item["image_path"])
-                length_str = My_db.get_length(dict_item["length_item"])
+                length_str = MyDb.get_length(dict_item["length_item"])
 
                 self.new_item.set_length_item_mm(length_str)
                 self.new_item.set_weight_item(dict_item["weight"])
                 self.new_item.set_price_item(dict_item["price_item"])
                 self.new_item.set_discount_item(self.provider_discount_spinBox.value())
                 self.new_item.set_amount_item(self.quantity_value.value())
-                print(self.new_item.get_type_holder())
-                print(self.new_item.get_type_item())
-                print(self.new_item.get_code_item())
-                print(f"Довжина {self.new_item.get_length_item_mm()} мм")
-                print(f"Кількість: {self.new_item.get_amount_item()} шт")
-                print("%%%%%%%%%%%%%%%")
 
                 if not self.my_invoice.get_list_item():
-                    print("Список порожній")
                     self.my_invoice.add_item_to_list(self.new_item)
 
                 else:
 
                     if self.new_item.get_code_item() in self.my_invoice.get_list_code():
-                        print("Вже існує")
                         for i in range(0, len(self.my_invoice.get_list_item())):
                             if self.my_invoice.get_list_item()[i].get_code_item() == self.new_item.get_code_item():
                                 amount: int = int(self.new_item.get_amount_item()) + \
@@ -691,27 +714,24 @@ class Ui(QtWidgets.QMainWindow):
                                 self.my_invoice.set_total_weight()
                                 break
                     else:
-                        print("Додаємо новий виріб")
+
                         self.my_invoice.add_item_to_list(self.new_item)
-                self.my_invoice.show_list()
+
                 self.my_invoice.set_total_weight()
                 self.my_invoice.set_max_length()
                 self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
                 self.lenght_value.setText(str(self.my_invoice.get_max_length()) + " см")
-
-            else:
-                print("Помилка")
             self.load_data()
 
     # Редагуємо обрану позицію
     def update_item(self) -> None:
-        print("Update")
+        #print("Update")
         row_index = self.table.currentRow()
         if row_index > -1:
-            print(f"row index: {row_index}")
-            print(f"Items: {len(self.my_invoice.get_list_item())}")
+            #print(f"row index: {row_index}")
+            #print(f"Items: {len(self.my_invoice.get_list_item())}")
             selected_code = self.table.model().index(row_index, 1).data()
-            print(selected_code)
+            #print(selected_code)
             if len(self.my_invoice.get_list_item()) == 1:
                 self.type_holder.setCurrentText(self.my_invoice.get_list_item()[0].get_type_holder())
                 self.item_value.setCurrentText(self.my_invoice.get_list_item()[0].get_type_item())
@@ -772,7 +792,7 @@ class Ui(QtWidgets.QMainWindow):
     # Завантажуємо данні з об'єкта до у таблицю
     def load_data(self) -> None:
         if self.my_invoice is not None:
-            print(len(self.my_invoice.get_list_item()))
+            #print(len(self.my_invoice.get_list_item()))
             self.table.setRowCount(len(self.my_invoice.get_list_item()))
             for i in range(0, len(self.my_invoice.get_list_item())):
                 self.table.setRowHeight(i, 50)
@@ -815,7 +835,7 @@ class Ui(QtWidgets.QMainWindow):
             self.code_value.currentText(),
             self.length_value.currentText()
         )
-        self.full_code = My_db.get_full_code_item(all_parameters)
+        self.full_code = MyDb.get_full_code_item(all_parameters)
         del (all_parameters)
 
     # Завантаження списку кодів виробу без урахування довжини
@@ -827,7 +847,7 @@ class Ui(QtWidgets.QMainWindow):
         if self.item_value.currentText() not in ["Оберіть виріб", "Оберіть тип кріплення", "?", " "]:
             self.length_value.clear()
             self.length_value.addItem("?")
-            code_list: tuple = db_handler.My_db.get_code_list(
+            code_list: tuple = MyDb.get_code_list(
                 (self.type_holder.currentText(),
                  self.item_value.currentText())
             )
@@ -852,7 +872,7 @@ class Ui(QtWidgets.QMainWindow):
         self.length_value.clear()
         if self.code_value.currentText() not in empty_value:
             length_tuple: tuple = \
-                db_handler.My_db().get_length_item(
+                MyDb.get_length_item(
                     (self.type_holder.currentText(),
                      self.item_value.currentText(),
                      self.code_value.currentText())
@@ -909,7 +929,9 @@ class Ui(QtWidgets.QMainWindow):
             return result
 
     def check_number_EURO(self) -> None:
-        self.EURO_value.setText(self.new_check_number(self.EURO_value.text()))
+        self.EURO_value.setText(
+            self.new_check_number(self.EURO_value.text())
+        )
 
     def check_packing_number(self) -> None:
         self.packing_value.setText(self.new_check_number(self.packing_value.text()))
@@ -929,10 +951,17 @@ class Ui(QtWidgets.QMainWindow):
     def check_delivery_document_value(self) -> None:
         self.delivery_document_value.setText(self.new_check_number(self.delivery_document_value.text()))
 
+    def check_delivery_document_EURO_1_value_(self) -> None:
+        self.delivery_document_EURO_1_value_.setText(
+            self.new_check_number(
+                self.delivery_document_EURO_1_value_.text()
+            )
+        )
+
     # Кнопка створення пошукового вікна
-    def search_item(self) -> None:
-        self.m_w = Search()
-        self.m_w.show()
+    # def search_item(self) -> None:
+    #     self.m_w = Search()
+    #     self.m_w.show()
 
     # Кнопка створення КП
     def create_pre_commercial_offer(self) -> None:
@@ -995,7 +1024,7 @@ class Ui(QtWidgets.QMainWindow):
         pre_commercial_offer_name = \
             (name_offer(self.my_invoice.get_customer_name()))
 
-        self.my_invoice.invoice_input_toString()
+        #self.my_invoice.invoice_input_toString()
 
         # Створюємо новий файл xlsx
         wb = Workbook()
@@ -1010,6 +1039,14 @@ class Ui(QtWidgets.QMainWindow):
 
         # Поєднуємо комірки  до таблиці
         merge_cells_before_table(sheet)
+
+        #Додаємо картинку  у комірку А1
+        img_top = openpyxl.drawing.image.Image(f"data/top.png")
+        img_top.height = 150
+        img_top.width = 920
+        img_top.anchor ="A1"
+        sheet.add_image(img_top)
+
 
         # Информація про компанію
         fill_company_info(sheet)
@@ -1095,6 +1132,17 @@ class Ui(QtWidgets.QMainWindow):
         # Строки після таблиці
         after_table(sheet, current_row, self.my_invoice)
         current_row += 25
+
+        #Приховуємо стовчики
+        sheet.column_dimensions['D'].hidden = True
+        sheet.column_dimensions['E'].hidden = True
+        sheet.column_dimensions['I'].hidden = True
+        sheet.column_dimensions['J'].hidden = True
+        sheet.column_dimensions['L'].hidden = True
+        sheet.column_dimensions['M'].hidden = True
+        sheet.column_dimensions['N'].hidden = True
+        sheet.column_dimensions['S'].hidden = True
+        sheet.column_dimensions['T'].hidden = True
 
         sheet.print_area = f"A1:U{current_row}"
 
@@ -1183,37 +1231,37 @@ class Ui(QtWidgets.QMainWindow):
         price_delivery: float = 0.0
         price_result: float = 0.0
 
-        # provider_discount: float = 100 - self.provider_discount_spinBox.text()
+
         provider_discount = \
             (100 - float(self.provider_discount_spinBox.text().replace(",", "."))) / 100
 
         price_result = sum([item.get_price_item() * item.get_amount_item() * provider_discount for item in
                             self.my_invoice.get_list_item()])
         price_result = round(price_result, 2)
-        print(f"price_result {price_result}")
+
         price_result += float(self.packing_value.text())
-        print(f"price_result +  packing {price_result}")
+
 
         price_order = price_result
 
         price_result = round(price_result * (1 + (float(self.bank_tax_value.text().replace(",", "."))) / 100), 2)
 
-        print(f"price_result with bank tax: {price_result}")
+
 
         percent = (100 - (float(self.persentage_spinBox.text().replace(",", ".")))) / 100
-        print(f"Percent {percent}")
+
         price_result = round(price_result / percent, 2)
-        print(f"price_result with comision: {price_result}")
+
         price_result *= rate
         price_result = round(price_result, 2)
-        print(f"price_result ua: {price_result} грн")
+
         price_result += float(self.transaction_value.text().replace(",", "."))
         price_result += float(self.brokerage_services_value.text().replace(",", "."))
-        print(f"price_result ua + transaction + broker: {price_result} грн")
+
 
         price_result *= 1.2
         price_result = round(price_result, 2)
-        print(f"price_result with TAX: {price_result}")
+
 
         # Показуємо вартість доставки
         self.result_delivery_label.setHidden(False)
@@ -1231,7 +1279,7 @@ class Ui(QtWidgets.QMainWindow):
         price_delivery *= rate
         price_delivery *= 1.2
         price_delivery = round(price_delivery, 2)
-        print(f"Delivery price: {price_delivery} грн")
+
 
         if self.discount_customer_spinBox.text() not in ("", " ", "0"):
             discount: float = round(
@@ -1240,20 +1288,25 @@ class Ui(QtWidgets.QMainWindow):
             )
 
             discount_value: float = price_result * discount
-            print(f"Discount value: {discount_value}")
+
 
             price_result = price_result - discount_value
             price_result = round(price_result, 2)
-            print(f"Price with discount: {price_result}")
+
 
         price_result = price_result + price_delivery
         price_result = round(price_result, 2)
 
         # Показуємо  загальну вартість
-        self.result_price_label.setText(f"Загальна вартість: {round(price_result / rate, 2)} EURO {price_result} грн.")
+        self.result_price_label.setText(
+            f"Загальна вартість: {round(price_result / rate, 2)} "
+            f"EURO {price_result} грн."
+        )
         self.result_price_label.setHidden(False)
         self.result_delivery_label.setText(
-            f"Вартість доставки: {round(price_delivery / rate, 2)} EURO {price_delivery} грн.")
+            f"Вартість доставки: {round(price_delivery / rate, 2)} "
+            f"EURO {price_delivery} грн."
+        )
 
     # КЛІЄНТИ
     # Кнопка отримання повної назви клієнтів
@@ -1287,7 +1340,7 @@ class Ui(QtWidgets.QMainWindow):
 
     # Кнопка отримання усіх коротких назв
     def show_all_short_name(self) -> None:
-        for item in get_short_name_list()[1:]:
+        for item in get_short_name_list():
             self.list_customer_comboBox.addItem(item)
 
     # Отримуемо одного клієнта зі списка
@@ -1314,8 +1367,112 @@ class Ui(QtWidgets.QMainWindow):
             error.setText(message)
             error.exec_()
             return
-        row_index = 0
-        # if self.customer_short_name_value.text() in  get_short_name_list()[1:] and
+
+        if (
+                (self.customer_short_name_value.text() in get_short_name_list())
+                and (self.customer_full_name_value.text() not in get_full_name_list())
+        ):
+            up_date_full_name_company(
+                self.customer_short_name_value.text(),
+                self.customer_full_name_value.text()
+            )
+        elif (
+                (self.customer_full_name_value.text() in
+                get_full_name_list())
+                and (self.customer_short_name_value.text() not in
+                get_short_name_list())
+        ):
+            up_date_short_name(
+                self.customer_full_name_value.text(),
+                self.customer_short_name_value.text()
+            )
+        self.company_value.clear()
+        self.customer_full_name_value.setText("")
+        self.customer_short_name_value.setText("")
+        self.list_customer_comboBox.clear()
+        company_list: list = get_short_name_list()
+        # Заповнюємо компанії
+        for company in company_list:
+            self.company_value.addItem(company)
+            self.list_customer_comboBox.addItem(company)
+
+    def add_client(self) -> None:
+        """
+        Додаємо нового клієєнта
+        :return:
+        """
+        if self.customer_short_name_value.text() == "":
+            error = MessageError()
+            message = (f'Порожня коротка назва.\nВведіть коротку назву\n'
+                       f'та знов натисніть кнопку"Змінити"')
+            error.setText(message)
+            error.exec_()
+            return
+        if self.customer_full_name_value.text() == "":
+            error = MessageError()
+            message = (f'Порожня повна назва.\nВведіть повна назву\n'
+                       f'та знов натисніть кнопку"Змінити"')
+            error.setText(message)
+            error.exec_()
+            return
+
+        if self.customer_short_name_value.text() in get_short_name_list():
+            full_name = get_full_name_company(self.customer_short_name_value.text())
+            if full_name == self.customer_full_name_value.text():
+                error = MessageError()
+                message = (f'Компанія вже існує в базі.')
+                error.setText(message)
+                error.exec_()
+                return
+
+        add_new_company(
+            self.customer_short_name_value.text(),
+            self.customer_full_name_value.text()
+        )
+
+        self.company_value.clear()
+        self.customer_full_name_value.setText("")
+        self.customer_short_name_value.setText("")
+        self.list_customer_comboBox.clear()
+        company_list: list = get_short_name_list()
+        # Заповнюємо компанії
+        for company in company_list:
+            self.company_value.addItem(company)
+            self.list_customer_comboBox.addItem(company)
+
+    #Видалення кліента з бази
+    def delete_client(self) -> None:
+        """
+        Функція видаляє кліента з бази
+        :return:
+        """
+        customers_list = get_short_name_list()
+        if self.customer_short_name_value.text() in ("", " "):
+            error = MessageError()
+            message = (f'Введить коротку назву клієнта')
+            error.setText(message)
+            error.exec_()
+            return
+
+        if self.customer_short_name_value.text() not in customers_list:
+            error = MessageError()
+            message = (f'Клієнт {self.customer_short_name_value.text() }'
+                       f'в базі відсутній')
+            error.setText(message)
+            error.exec_()
+            return
+
+        delete_customer(self.customer_short_name_value.text())
+        self.customer_full_name_value.setText("")
+        self.customer_short_name_value.setText("")
+        self.company_value.clear()
+        self.list_customer_comboBox.clear()
+        company_list: list = get_short_name_list()
+        # Заповнюємо компанії
+        for company in company_list:
+            self.company_value.addItem(company)
+            self.list_customer_comboBox.addItem(company)
+
 
         # ПОШУК ПУАНСОНА
     #ПОШУК
@@ -1326,7 +1483,9 @@ class Ui(QtWidgets.QMainWindow):
         або  відповдний до заданих параметрів метод
         :return: None
         """
-
+        self.length_info_punch_label.setText("")
+        self.punch_info.setText("")
+        self.set_empty_punch_image()
         holder: str = self.type_punch_value.currentText()
         if holder == "":
             message = MessageError()
@@ -1339,7 +1498,7 @@ class Ui(QtWidgets.QMainWindow):
                     and self.punch_height_value.currentText() == ""
                     and self.punch_radius_value.currentText() == ""):
                 self.result_punch_value.clear()
-                for item in My_db.get_punch_by_holder(
+                for item in MyDb.get_punch_by_holder(
                         book=self.book,
                         holder=holder
                 ):
@@ -1349,7 +1508,7 @@ class Ui(QtWidgets.QMainWindow):
                   and self.punch_height_value.currentText() == ""
                   and self.punch_radius_value.currentText() == ""):
                 self.result_punch_value.clear()
-                punch_holder_angle = My_db.get_punch_by_holder_angle(
+                punch_holder_angle = MyDb.get_punch_by_holder_angle(
                         book=self.book,
                         type_holder=holder,
                         angle=self.punch_angle_value.currentText()
@@ -1363,7 +1522,7 @@ class Ui(QtWidgets.QMainWindow):
                     and self.punch_height_value.currentText() != ""
                     and self.punch_radius_value.currentText() == ""):
                 self.result_punch_value.clear()
-                punch_holder_height = My_db.get_punch_by_holder_height(
+                punch_holder_height = MyDb.get_punch_by_holder_height(
                     book=self.book,
                     type_holder=holder,
                     height=self.punch_height_value.currentText()
@@ -1377,7 +1536,7 @@ class Ui(QtWidgets.QMainWindow):
                     and self.punch_height_value.currentText() == ""
                     and self.punch_radius_value.currentText() != ""):
                 self.result_punch_value.clear()
-                punch_holder_radius = My_db.get_punch_by_holder_radius(
+                punch_holder_radius = MyDb.get_punch_by_holder_radius(
                     book=self.book,
                     type_holder=holder,
                     radius=self.punch_radius_value.currentText()
@@ -1392,7 +1551,7 @@ class Ui(QtWidgets.QMainWindow):
                   and self.punch_radius_value.currentText() == ""):
                 self.result_punch_value.clear()
                 punch_holder_angle_height \
-                    = My_db.get_punch_by_holder_angle_height(
+                    = MyDb.get_punch_by_holder_angle_height(
                         book=self.book,
                         type_holder=holder,
                         angle=self.punch_angle_value.currentText(),
@@ -1408,7 +1567,7 @@ class Ui(QtWidgets.QMainWindow):
                   and self.punch_radius_value.currentText() != ""):
                 self.result_punch_value.clear()
                 punch_holder_angle_radius \
-                    = My_db.get_punch_by_holder_angle_radius(
+                    = MyDb.get_punch_by_holder_angle_radius(
                         book=self.book,
                         type_holder=holder,
                         angle=self.punch_angle_value.currentText(),
@@ -1424,7 +1583,7 @@ class Ui(QtWidgets.QMainWindow):
                   and self.punch_radius_value.currentText() != ""):
                 self.result_punch_value.clear()
                 punch_holder_height_radius \
-                    = My_db.get_punch_by_holder_height_radius(
+                    = MyDb.get_punch_by_holder_height_radius(
                         book=self.book,
                         type_holder=holder,
                         height=self.punch_height_value.currentText(),
@@ -1442,7 +1601,7 @@ class Ui(QtWidgets.QMainWindow):
             ):
                 self.result_punch_value.clear()
                 punch_holder_angle_height_radius \
-                    = My_db.get_punch_by_holder_angle_height_radius(
+                    = MyDb.get_punch_by_holder_angle_height_radius(
                         book=self.book,
                         type_holder=holder,
                         angle=self.punch_angle_value.currentText(),
@@ -1496,7 +1655,7 @@ class Ui(QtWidgets.QMainWindow):
                     set_angel.add(sheet["J" + str(index)].value)
                     set_height.add(sheet["K" + str(index)].value)
                     set_radius.add(sheet["L" + str(index)].value)
-            print(f"COUNTER: {counter}")
+            #print(f"COUNTER: {counter}")
             tuple_angle = tuple(sorted(set_angel))
             tuple_height = tuple(sorted(set_height))
             tuple_radius = tuple(sorted(set_radius))
@@ -1544,7 +1703,7 @@ class Ui(QtWidgets.QMainWindow):
 
         if self.result_punch_value.currentText() not in ("", " "):
             code = self.result_punch_value.currentText()
-            image_code = My_db.get_punch_code_image(
+            image_code = MyDb.get_punch_code_image(
                 self.book,
                 code
             )
@@ -1572,11 +1731,11 @@ class Ui(QtWidgets.QMainWindow):
             self.punch_image.setPixmap(p)
 
             sheet_punch = self.book["Пуансон"]
-            length_tuple = My_db.get_length_tuple(sheet_punch, code)
+            length_tuple = MyDb.get_length_tuple(sheet_punch, code)
             self.length_info_punch_label.setText(", ".join(length_tuple))
 
             self.punch_info.setText(
-                My_db.get_punch_info(sheet_punch, code)
+                MyDb.get_punch_info(sheet_punch, code)
             )
         else:
             self.set_empty_punch_image()
@@ -1617,22 +1776,14 @@ class Ui(QtWidgets.QMainWindow):
             self.die_distance_value.clear()
             self.die_distance_value.addItem("")
 
-            die_parameters = My_db.get_all_die_parameters(
+            die_parameters = MyDb.get_all_die_parameters(
                 self.book,
                 self.type_die_value.currentText()
             )
 
-            print("Corner", len(die_parameters[0]))
-            print(die_parameters[0])
-            print("%"*30)
-            print("Height", len(die_parameters[1]))
-            print(die_parameters[1])
-            print("@"*30)
-            print("Distance", len(die_parameters[2]))
-            print(die_parameters[2])
-            print("&"*30)
+
             max_len = max(len(die_parameters[0]), len(die_parameters[1]), len(die_parameters[2]))
-            print("Max_len", max_len)
+
             for index in range(max_len):
                 if len(die_parameters[0]) != max_len:
                     if len(die_parameters[0]) >= index +1:
@@ -1703,7 +1854,7 @@ class Ui(QtWidgets.QMainWindow):
                     and self.die_height_value.currentText() == ""
                     and self.die_distance_value.currentText() == ""):
                 self.result_die_value.clear()
-                for item in My_db.get_die_by_holder(
+                for item in MyDb.get_die_by_holder(
                         book=self.book,
                         holder=holder_die
                 ):
@@ -1713,7 +1864,7 @@ class Ui(QtWidgets.QMainWindow):
                     and self.die_height_value.currentText() == ""
                     and self.die_distance_value.currentText() == ""):
                 self.result_die_value.clear()
-                die_holder_angle = My_db.get_die_by_holder_angle(
+                die_holder_angle = MyDb.get_die_by_holder_angle(
                     book=self.book,
                     type_holder=holder_die,
                     angle=self.die_angle_value.currentText()
@@ -1726,7 +1877,7 @@ class Ui(QtWidgets.QMainWindow):
                     and self.die_height_value.currentText() != ""
                     and self.die_distance_value.currentText() == ""):
                 self.result_die_value.clear()
-                die_holder_height = My_db.get_die_by_holder_height(
+                die_holder_height = MyDb.get_die_by_holder_height(
                     book=self.book,
                     type_holder=holder_die,
                     height=self.die_height_value.currentText()
@@ -1738,7 +1889,7 @@ class Ui(QtWidgets.QMainWindow):
                     and self.die_height_value.currentText() == ""
                     and self.die_distance_value.currentText() != ""):
                 self.result_die_value.clear()
-                die_holder_distance = My_db.get_die_by_holder_distance(
+                die_holder_distance = MyDb.get_die_by_holder_distance(
                     book=self.book,
                     type_holder=holder_die,
                     distance=self.die_distance_value.currentText()
@@ -1750,13 +1901,13 @@ class Ui(QtWidgets.QMainWindow):
                     and self.die_height_value.currentText() != ""
                     and self.die_distance_value.currentText() == ""):
                 self.result_die_value.clear()
-                die_holder_angle_height = My_db.get_die_by_holder_angle_height(
+                die_holder_angle_height = MyDb.get_die_by_holder_angle_height(
                     book=self.book,
                     type_holder=holder_die,
                     angle=self.die_angle_value.currentText(),
                     height=self.die_height_value.currentText()
                 )
-                print(die_holder_angle_height)
+                #print(die_holder_angle_height)
                 for item in die_holder_angle_height:
                     self.result_die_value.addItem(item)
             #Обрані тримач, кут та розкриття
@@ -1764,13 +1915,13 @@ class Ui(QtWidgets.QMainWindow):
                     and self.die_height_value.currentText() == ""
                     and self.die_distance_value.currentText() != ""):
                 self.result_die_value.clear()
-                die_holder_angle_distance = My_db.get_die_by_holder_angle_distance(
+                die_holder_angle_distance = MyDb.get_die_by_holder_angle_distance(
                     book=self.book,
                     type_holder=holder_die,
                     angle=self.die_angle_value.currentText(),
                     distance=self.die_distance_value.currentText()
                 )
-                print(die_holder_angle_distance)
+                #print(die_holder_angle_distance)
                 for item in die_holder_angle_distance:
                     self.result_die_value.addItem(item)
             #Обрані тримач, висота та розкриття
@@ -1778,7 +1929,7 @@ class Ui(QtWidgets.QMainWindow):
                     and self.die_height_value.currentText() != ""
                     and self.die_distance_value.currentText() != ""):
                 self.result_die_value.clear()
-                die_holder_height_distance = My_db.get_die_by_holder_height_distance(
+                die_holder_height_distance = MyDb.get_die_by_holder_height_distance(
                     book=self.book,
                     type_holder=holder_die,
                     height=self.die_height_value.currentText(),
@@ -1786,6 +1937,23 @@ class Ui(QtWidgets.QMainWindow):
                 )
                 for item in die_holder_height_distance:
                     self.result_die_value.addItem(item)
+
+            #Обрані тримач, кут висота та розкриття
+            if (self.die_angle_value.currentText() != ""
+                    and self.die_height_value.currentText() != ""
+                    and self.die_distance_value.currentText() != ""):
+                self.result_die_value.clear()
+
+                die_holder_angle_height_distance = MyDb.get_die_by_holder_ang_hei_dist(
+                    book=self.book,
+                    type_holder=holder_die,
+                    angle=self.die_angle_value.currentText(),
+                    height=self.die_height_value.currentText(),
+                    distance=self.die_distance_value.currentText()
+                )
+                for item in die_holder_angle_height_distance:
+                    self.result_die_value.addItem(item)
+
     def get_one_die_info(self) -> None:
         """
         Фунція заповнює length_info_die_label, die_info та
@@ -1800,7 +1968,7 @@ class Ui(QtWidgets.QMainWindow):
             self.die_info.setText("")
             self.set_empty_die_image()
         else:
-            image_code = My_db.get_die_code_image(
+            image_code = MyDb.get_die_code_image(
                 self.book,
                 code_die
             )
@@ -1828,7 +1996,7 @@ class Ui(QtWidgets.QMainWindow):
             self.die_image.setPixmap(p)
 
             # Довжини
-            length_die_tuple = My_db.get_length_die_tuple(
+            length_die_tuple = MyDb.get_length_die_tuple(
                 self.book,
                 code_die,
                 self.type_die_value.currentText()
@@ -1838,17 +2006,7 @@ class Ui(QtWidgets.QMainWindow):
             )
 
             #Інформація матриці
-            self.die_info.setText(My_db.get_die_info(self.book, code_die))
-
-
-
-class CustomerWindow(QtWidgets.QMainWindow):
-
-    def __init__(self):
-        super(CustomerWindow, self).__init__()
-        uic.loadUi("customers.ui")
-        self.setGeometry(870, 50, 500, 280)
-        self.setFixedSize(500, 280)
+            self.die_info.setText(MyDb.get_die_info(self.book, code_die))
 
 
 class MessageError(QMessageBox):
@@ -1879,10 +2037,4 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = Ui()
     window.show()
-    scroll_area = QScrollArea()
-    scroll_area.setWidget(window)
-    scroll_area.setMaximumWidth(1500)
-    scroll_area.setMaximumHeight(960)
-
-    scroll_area.show()
     app.exec_()

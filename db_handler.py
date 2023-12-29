@@ -2,13 +2,13 @@ import openpyxl
 from openpyxl import *
 from openpyxl.utils import get_column_letter
 
-DB_PATH = ""
+DB_PATH = "data/DB_bending.xlsx"
 COMMERCIAL_OFFER_EMPTY_SAMPLE_PATH = ""
 
 CALCULATION_EMPTY_SMPLE_PATH = ""
 
 
-class My_db:
+class MyDb:
 
     def __init__(self):
         self.path_db = DB_PATH
@@ -20,7 +20,7 @@ class My_db:
         pass
 
     @staticmethod
-    def open_book(path_book: str = "data/DB_bending.xlsx"):
+    def open_book(path_book: str = DB_PATH):
         """
         Метод повертає об'єкт Workbook, який був створений при
         відкритті файла типу Excel за розташуванням парамерта
@@ -36,12 +36,14 @@ class My_db:
     def get_code_list(holder_item: tuple) -> tuple:
         holder: str = holder_item[0]
         item: str = holder_item[1]
-        wb = load_workbook("data/DB_bending.xlsx")
+        wb = load_workbook(DB_PATH)
         code_list: list = [" "]
         work_sheet = wb[item]
         max_row_item = work_sheet.max_row
         for i in range(1, max_row_item + 1):
             if work_sheet["B"+str(i)].value == holder:
+                if len(work_sheet["C"+str(i)].value) == 6:
+                    code_list.append(work_sheet["C"+str(i)].value)
                 if len(work_sheet["C"+str(i)].value) == 7:
                     code_list.append(work_sheet["C"+str(i)].value[0:6])
                 if len(work_sheet["C"+str(i)].value) == 8:
@@ -55,7 +57,7 @@ class My_db:
 
     @staticmethod
     def get_length_item(holder_item_code: tuple) -> tuple:
-        wb = load_workbook("data/DB_bending.xlsx")
+        wb = load_workbook(DB_PATH)
         length_list: list = [" "]
         holder: str = holder_item_code[0]
         item: str = holder_item_code[1]
@@ -86,22 +88,17 @@ class My_db:
                         length: str) -> str:
         """Метод повертає повний код виробу якщо остання літера назви
          X та початок збігається з short_code """
-        wb = load_workbook("data/DB_bending.xlsx")
+        wb = load_workbook(DB_PATH)
         work_sheet = wb[item]
         max_row_item = work_sheet.max_row
         result: str = "Empty"
-        print("Hello from get_code_length")
-        print(f"{item}")
-        print(f"{short_code}")
-        print(f"{length}")
         for i in range(1, max_row_item + 1):
 
             if (work_sheet["C" + str(i)].value[-1] == "X" and
-                    work_sheet["C" + str(i)].value[0:6] == short_code[0:6]  and
+                    work_sheet["C" + str(i)].value[0:6] == short_code[0:6] and
                     str(work_sheet["G" + str(i)].value) == length):
 
-                result =  work_sheet["C" + str(i)].value
-                print("&" *16 + "TOTAL CODE " + f"{result}")
+                result = work_sheet["C" + str(i)].value
                 return result
         return result
 
@@ -113,7 +110,7 @@ class My_db:
         code: str = data_list[2]
         length: str = data_list[3]
         full_code: str = data_list[4]
-        wb = load_workbook("data/DB_bending.xlsx")
+        wb = load_workbook(DB_PATH)
         work_sheet = wb[item]
         max_row_item = 0
         max_row_item = work_sheet.max_row
@@ -130,7 +127,7 @@ class My_db:
         code: str = data_list[2]
         length: str = data_list[3]
         full_code: str = data_list[4]
-        wb = load_workbook("data/DB_bending.xlsx")
+        wb = load_workbook(DB_PATH)
         work_sheet = wb[item]
         max_row_item = 0
         max_row_item = work_sheet.max_row
@@ -152,7 +149,7 @@ class My_db:
         type_loder: str = parameters_list[0]
         item: str = parameters_list[1]
         code: str = parameters_list[2]
-        length_item: str = My_db.get_length(parameters_list[3])
+        length_item: str = MyDb.get_length(parameters_list[3])
 
     @staticmethod
     def get_full_code_item(parameters: list) -> str:
@@ -161,13 +158,13 @@ class My_db:
         item: str = parameters[1]
         code: str = parameters[2]
         length: str = parameters[3]
-        wb = load_workbook("data/DB_bending.xlsx")
+        wb = load_workbook(DB_PATH)
         work_sheet = wb[item]
         max_row_item = 0
         max_row_item = work_sheet.max_row
 
         if code[-1] == "X":
-            full_code = My_db.get_code_length(item, code, length)
+            full_code = MyDb.get_code_length(item, code, length)
         else:
             for i in range(1, max_row_item + 1):
                 if work_sheet["C"+str(i)].value[0:6] == code and \
@@ -179,7 +176,7 @@ class My_db:
     @staticmethod
     def get_info_item(data_list: list) -> dict:
         info_item: dict = {}
-        wb = load_workbook("data/DB_bending.xlsx")
+        wb = load_workbook(DB_PATH)
         work_sheet = wb[data_list[1]]
         max_row_item = work_sheet.max_row
         max_column_item = work_sheet.max_column
@@ -555,7 +552,6 @@ class My_db:
                 result += f', R = {str(sheet["L" + str(index)].value)} мм'
                 result += f', {str(sheet["M" + str(index)].value)} T/м.'
 
-                print(result)
                 return result
         return "0, 0, 0, 0"
 
@@ -689,7 +685,7 @@ class My_db:
                         result.append(str(number_sectioned[1]).strip() + " SEC")
                     else:
                         result.append(str(work_sheet_die["G" + str(index)].value))
-        #result_set = sorted(result_set)
+
         return tuple(result)
 
     def get_die_info(book, code_die) -> str:
@@ -845,6 +841,7 @@ class My_db:
         :param angle:
         :return:
         """
+        angle = int(angle)
         sheet_die = book["Матриця одноручова"]
         die_max_row = sheet_die.max_row
         result_set: set = set()
@@ -852,7 +849,7 @@ class My_db:
 
         for index in range(2, die_max_row):
             if (sheet_die["B"+str(index)].value == type_holder
-                    and str(sheet_die["J"+str(index)].value) == angle):
+                    and sheet_die["J"+str(index)].value == angle):
                 result_set.add(sheet_die["C"+str(index)].value[0:6])
 
         if type_holder != "Amada-promecam":
@@ -866,10 +863,10 @@ class My_db:
             if (
                     sheet_die["B"+str(index)].value == type_holder
                     and (
-                    str(sheet_die["J"+str(index)].value) == angle
-                    or str(sheet_die["M"+str(index)].value) == angle
-                    or str(sheet_die["P"+str(index)].value) == angle
-                    or str(sheet_die["S"+str(index)].value) == angle
+                    sheet_die["J"+str(index)].value == angle
+                    or sheet_die["M"+str(index)].value == angle
+                    or sheet_die["P"+str(index)].value == angle
+                    or sheet_die["S"+str(index)].value == angle
                 )
             ):
                 result_set.add(sheet_die["C"+str(index)].value[0:6])
@@ -936,7 +933,10 @@ class My_db:
         result_set.add("")
 
         for index in range(2, die_max_row):
-            if (sheet_die["B"+str(index)].value == type_holder and str(sheet_die["K"+str(index)].value) == distance):
+            if (
+                    sheet_die["B"+str(index)].value == type_holder
+                    and str(sheet_die["K"+str(index)].value) == distance
+            ):
                 result_set.add(sheet_die["C"+str(index)].value[0:6])
 
         if type_holder != "Amada-promecam":
@@ -962,11 +962,10 @@ class My_db:
 
     @staticmethod
     def get_die_by_holder_angle_height(book, type_holder, angle, height) -> tuple:
-       # """
-       # Функція вертає кортеж матриць певного тимача, кута та висоти
-       #
-       # :return: tuple
-       # """
+        """
+        Функція вертає кортеж матриць певного тимача, кута та висоти
+        :return: tuple
+        """
         angle = int(angle)
         height = int(height)
         sheet_die = book["Матриця одноручова"]
@@ -978,7 +977,7 @@ class My_db:
             if (sheet_die["B"+str(index)].value == type_holder
                     and sheet_die["J"+str(index)].value == angle
                     and sheet_die["L"+str(index)].value == height):
-                result_set.add(sheet_die["B"+str(index)].value[0:6])
+                result_set.add(sheet_die["C"+str(index)].value[0:6])
 
         if type_holder != "Amada-promecam":
             result_set = sorted(result_set)
@@ -993,7 +992,7 @@ class My_db:
                          or sheet_die["M"+str(index)].value == angle
                          or sheet_die["P"+str(index)].value == angle
                          or sheet_die["T"+str(index)].value == angle)):
-                result_set.add(sheet_die["B"+str(index)].value[0:6])
+                result_set.add(sheet_die["C"+str(index)].value[0:6])
         result_set = sorted(result_set)
         return tuple(result_set)
 
@@ -1030,18 +1029,6 @@ class My_db:
         die_max_row = sheet_die.max_row
 
         for index in range(2, die_max_row):
-            print(
-                sheet_die["C" + str(index)].value,
-                'sheet_die["K"+str(index)].value',
-                sheet_die["K" + str(index)].value,
-                type(sheet_die["K"+str(index)].value),
-                " ",
-                "distance",
-                distance,
-                type(distance)
-            )
-            if distance ==  sheet_die["K" + str(index)].value:
-                print("OK")
             if (
                     (sheet_die["K"+str(index)].value == distance
                      and sheet_die["J"+str(index)].value == angle)
@@ -1099,6 +1086,60 @@ class My_db:
         return tuple(result_set)
 
     @staticmethod
+    def get_die_by_holder_ang_hei_dist(
+        book,
+        type_holder,
+        angle,
+        height,
+        distance) -> tuple:
+        """
+        Функція вертає кортеж номерів матриць за тримачем, кутом,
+        висотою та розкриттям
+        :param book:
+        :param type_holder:
+        :param angle:
+        :param height:
+        :param distance:
+        :return:
+        """
+        angle = int(angle)
+        distance = int(distance)
+        height = int(height)
+        sheet_die = book["Матриця одноручова"]
+        die_max_row = sheet_die.max_row
+        result_set: set = set()
+        result_set.add("")
+        for index in range(2, die_max_row):
+            if (
+                    sheet_die["B"+str(index)].value == type_holder
+                    and sheet_die["J"+str(index)].value == angle
+                    and sheet_die["L"+str(index)].value == height
+                    and sheet_die["K"+str(index)].value == distance
+            ):
+                result_set.add(sheet_die["C" + str(index)].value[0:6])
+        if type_holder != "Amada-promecam":
+            result_set = sorted(result_set)
+            return tuple(result_set)
+
+        sheet_die = book["Матриця багаторучова"]
+        die_max_row = sheet_die.max_row
+
+        for index in range(2, die_max_row):
+            if (
+                    sheet_die["V"+str(index)].value == height and
+                    ((sheet_die["K"+str(index)].value == distance and
+                      sheet_die["J"+str(index)].value == angle)
+                     or (sheet_die["N"+str(index)].value == distance and
+                         sheet_die["M"+str(index)].value == angle)
+                     or (sheet_die["Q"+str(index)].value == distance and
+                         sheet_die["P"+str(index)].value == angle)
+                     or (sheet_die["T"+str(index)].value == distance and
+                         sheet_die["S"+str(index)].value == angle))
+            ):
+                result_set.add(sheet_die["C" + str(index)].value[0:6])
+        result_set = sorted(result_set)
+        return tuple(result_set)
+    @staticmethod
     def get_all_die_parameters(book, type_holder) -> tuple:
         """
         Функція повертає усі можливі кути, висоти та розкриття
@@ -1111,7 +1152,7 @@ class My_db:
         set_angle = set()
         set_height = set()
         set_distance = set()
-        counter = 0
+
         for index in range(2, rows):
             if sheet_die["B" + str(index)].value == type_holder:
                 set_angle.add(sheet_die["J" + str(index)].value)
@@ -1134,7 +1175,6 @@ class My_db:
                     set_distance.add(sheet_die["N" + str(index)].value)
                     set_distance.add(sheet_die["Q" + str(index)].value)
                     set_distance.add(sheet_die["T" + str(index)].value)
-                    print(sheet_die["T" + str(index)].value)
 
         tuple_angle = tuple(sorted(set_angle))
         tuple_height = tuple(sorted(set_height))
@@ -1144,9 +1184,3 @@ class My_db:
             tuple_height,
             tuple_distance
         )
-
-class Pre_commercial_offer_xlsx():
-
-    def __init__(self):
-        self.path_file
-

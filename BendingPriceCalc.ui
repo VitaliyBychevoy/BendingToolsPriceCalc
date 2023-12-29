@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1010</width>
-    <height>957</height>
+    <width>1500</width>
+    <height>950</height>
    </rect>
   </property>
   <property name="font">
@@ -2151,7 +2151,7 @@ QPushButton:hover {
       <rect>
        <x>10</x>
        <y>140</y>
-       <width>241</width>
+       <width>240</width>
        <height>30</height>
       </rect>
      </property>
@@ -2178,9 +2178,9 @@ QPushButton:hover {
     <widget class="QPushButton" name="update_customer_Button">
      <property name="geometry">
       <rect>
-       <x>390</x>
+       <x>260</x>
        <y>140</y>
-       <width>260</width>
+       <width>240</width>
        <height>30</height>
       </rect>
      </property>
@@ -2213,7 +2213,7 @@ QPushButton:hover {
     <widget class="QComboBox" name="list_customer_comboBox">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>10</x>
        <y>180</y>
        <width>450</width>
        <height>30</height>
@@ -2244,9 +2244,9 @@ QComboBox:focus {
     <widget class="QPushButton" name="delete_customer_Button">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>180</y>
-       <width>180</width>
+       <x>510</x>
+       <y>140</y>
+       <width>140</width>
        <height>30</height>
       </rect>
      </property>
@@ -2299,9 +2299,9 @@ color:rgb(255, 255, 255);</string>
     <widget class="QPushButton" name="all_customers_Button">
      <property name="geometry">
       <rect>
-       <x>270</x>
-       <y>140</y>
-       <width>101</width>
+       <x>470</x>
+       <y>180</y>
+       <width>180</width>
        <height>30</height>
       </rect>
      </property>
@@ -2414,7 +2414,7 @@ border-radius: 10px;</string>
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -2662,6 +2662,14 @@ color: white;</string>
        <height>30</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Arial Narrow</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">QComboBox{
 	background-color:#8BE8E5;
@@ -2781,7 +2789,7 @@ color: white;
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -2813,7 +2821,7 @@ QComboBox:focus {
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -2845,7 +2853,7 @@ QComboBox:focus {
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -2898,8 +2906,10 @@ border-radius: 10px;</string>
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -2968,7 +2978,7 @@ QPushButton:hover {
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -3274,7 +3284,7 @@ color: white;</string>
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -3306,7 +3316,7 @@ QComboBox:focus {
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -3338,7 +3348,7 @@ QComboBox:focus {
      </property>
      <property name="font">
       <font>
-       <family>Comic Sans MS</family>
+       <family>Arial Narrow</family>
        <pointsize>12</pointsize>
       </font>
      </property>

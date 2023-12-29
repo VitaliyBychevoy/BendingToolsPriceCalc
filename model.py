@@ -262,9 +262,9 @@ class Invoice:
         temp_list.pop(index_code)
         self.set_list_item(temp_list)
 
-    def print_code_amount(self):
-        for item in self.list_item:
-            print(item.get_code_item(), " ", item.get_amount_item())
+    # def print_code_amount(self):
+    #     for item in self.list_item:
+    #         print(item.get_code_item(), " ", item.get_amount_item())
 
     #Загальна вага
     def set_total_weight(self) -> None:
@@ -319,12 +319,6 @@ class Invoice:
 
     def get_provider_discount(self) -> str:
         return self.provider_discount
-
-    def show_list(self) -> None:
-        print("START LIST")
-        for item in self.get_list_item():
-            print(f"{item.get_code_item()} - {item.get_amount_item()}")
-        print("END LIST")
 
     def get_list_code(self) -> list:
         result_list = []
@@ -390,20 +384,16 @@ class Invoice:
         discount: float = (
             100 - float(self.get_provider_discount().replace(",","."))
         ) / 100
-        print("Discount provider:", discount)
         sum_item_price = round(
             sum(
                 [item.get_price_item() * discount * item.get_amount_item()
                  for item in self.get_list_item()]
             ),
             2)
-
-        print("Сума закупки у виробника", sum_item_price)
         self.set_sum_item_price(sum_item_price)
 
     def calculate_total_price_ua(self) -> None:
 
-        print("i", "_!"*20)
         discount: float = (
             100 - float(self.get_provider_discount().replace(",","."))
         ) / 100
@@ -415,18 +405,16 @@ class Invoice:
                  for item in self.get_list_item()]
             ),
             2)
-        print("SUM(Price * amount * discount)", price)
-
 
         #Додаємо Packing
         price += float(self.get_packing_price().replace(",", "."))
-        print("Price + packing" , price)
+
 
         #Додаємо банківські відсотки
         tax: float = round((float(self.get_bank_tax().replace(",", "."))/100 ), 4)
-        print(" Tax", tax)
+
         price = round((price * (1 + tax)), 2)
-        print("Price after tax", price)
+
 
         # Додаємо комісію Vectortool
         commission: float = (
@@ -435,23 +423,20 @@ class Invoice:
                     self.get_commission_percentage().replace(",", "."))/100 ),
                 2)
         )
-        print("Commission", commission)
+
 
         price = round(price / (1 - commission), 2)
-        print("Price after commission", price)
+
 
         #Переводимо у UAH
-        print("rate", self.get_rate(), " type ", type(self.get_rate()) )
+
 
         price = round(price* self.get_rate(), 2)
-        print("Price in UAH", price, "UAH.")
+
 
         #Додаємо Вартість переводу валюти  Брокерські
         price += float(self.get_transaction_price().replace(",", "."))
         price += float(self.get_brokerage_price().replace(",", "."))
-        print("Total price UAH:",  price)
-
-        print("i", "_!"*20)
 
         self.set_total_price_ua(price)
 
@@ -463,10 +448,7 @@ class Invoice:
             float(self.get_delivery_price().replace(",","."))
         document: float =\
             float(self.get_price_document().replace(",","."))
-        print("delivery total", round(
-            self.get_rate() * (
-                    delivery + document + (delivery + document) * 0.2),
-            2))
+
 
         delivery_price = round(
             self.get_rate() * (
@@ -476,22 +458,10 @@ class Invoice:
         self.set_total_delivery_price_ua(delivery_price)
 
 
-    def invoice_input_toString(self) -> None:
-        print("#"*5, "INVOICE OBJECT","#"*5)
-        print("Customer name is ", self.get_customer_name() + ".")
-        print("Rate ", self.get_rate(), " uah/euro.")
-        print("Commission ", self.get_commission_percentage(), "%.")
-        print("Discount for customer ", self.get_customer_discount(), "%.")
-        print("Provider discount", self.get_provider_discount(), "%.")
-        print("Bank tax", self.get_bank_tax(), "%.")
-        print("Packing price", self.get_packing_price(), "euro.")
-        print("Delivery price", self.get_delivery_price(), "euro.")
-        print("Document price", self.get_price_document(), "euro.")
-        print("Transfer price", self.get_transaction_price(), "uah.")
-        print("Brokerage price", self.get_brokerage_price(), "uah.")
-        print("#"*25)
+#class Pre_commercial_offer:
 
-class Pre_commercial_offer:
+"""
+class PreCommercialOffer:
 
     def __init__(
             self,
@@ -596,11 +566,11 @@ class Pre_commercial_offer:
             work_sheet[f"F{str(current_row)}"].border = thin_border
 
             work_sheet[f"G{str(current_row)}"].border = thin_border
-            print(new_invoice.get_list_item()[index].get_image_path())
+
             img = openpyxl.drawing.image.Image(f"data/{new_invoice.get_list_item()[index].get_image_path()}")
             img.height = 120
             img.width = 80
-            print(type(img))
+
             img.anchor = f"H{str(current_row)}"
             ws[f"H{str(current_row)}"].alignment = Alignment(horizontal='center', vertical="center")
             ws.add_image(img)
@@ -724,7 +694,7 @@ class Pre_commercial_offer:
 
         work_sheet[f"F{last_row + 1}"].font = all_font
         work_sheet[f"F{last_row + 1}"].alignment = Alignment(horizontal="left", vertical='center')
-        print(str(last_row+1))
+
 
 
         #Загальна ціна у EURO та грн
@@ -805,5 +775,4 @@ class Pre_commercial_offer:
 
 
         wb.save(self.get_path_temp())
-
-
+"""

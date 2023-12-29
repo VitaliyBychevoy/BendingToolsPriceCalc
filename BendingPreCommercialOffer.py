@@ -2,16 +2,10 @@ from datetime import datetime, date
 import openpyxl.styles.numbers
 
 from openpyxl.drawing.image import Image
-from openpyxl.worksheet.page import *
-from openpyxl.styles import Alignment
-from openpyxl.styles.borders import Border, Side
 from openpyxl.worksheet.page import PageMargins
 import openpyxl.styles.numbers
-from openpyxl.styles import Font, Fill #Стилі для текста
-from openpyxl.styles import PatternFill #Cтили для ячеєк
 
 import model
-from vectortool_customers.customers_db import *
 from model import *
 
 #Шрифти
@@ -726,7 +720,6 @@ def items_in_row(
 
         current_row += 1
 
-    print("Current row: ", current_row, ".")
     return current_row
 
 def write_row(
@@ -912,35 +905,31 @@ def get_price_item_for_customer(invoce: Invoice) -> list:
         for index in range(len(invoce.get_list_item()))
     ])
 
-    print("Total price: ", total_price, " ", type(total_price))
-    print("get price: ",
-          invoce.get_packing_price(), " ", type(invoce.get_packing_price()))
+
 
     total_price = total_price + float(invoce.get_packing_price().replace(",","."))
 
-    print("Total price (+packing): ", total_price, " ", type(total_price))
 
     total_price = round(total_price * model.BANK_TAX, 2)
 
-    print("Total price(+BANK_TAX): ", total_price, " ", type(total_price))
+
 
     total_price = round((total_price /
                    ((100 - float(invoce.get_commission_percentage().replace(",","."))) / 100)), 2)
-    print("Total price(+Commission): ", total_price, " ", type(total_price))
+
 
     total_price = round(total_price * float(invoce.get_rate().replace(",", ".")), 2)
-    print("Total price(UA): ", total_price, " ", type(total_price), " грн.")
+
 
     prices_item = [item.get_price_item() for item in invoce.get_list_item()]
-    print(prices_item)
+
     sum_prices_item = sum(prices_item)
     price_item_ua =[]
     for index in range(len(invoce.get_list_item())):
         price_item_ua.append(round(
             ((100 * invoce.get_list_item()[index].get_price_item() / sum_prices_item) * total_price / 100),  2))
 
-    print("price_item_ua ", price_item_ua)
-    print("sum(price_item_ua: )", sum(price_item_ua))
+
     return price_item_ua
 
 def tax_row_total(
@@ -1298,7 +1287,6 @@ def after_table(
     sheet[f'B{str(current_row)}'].alignment = alignment_left_center
     img = Image("./data/img.png")
 
-    # img = openpyxl.drawing.image.Image(f"data/{invoice.get_list_item()[index].get_image_path()}")
     img.height = int(300 / 1.8)
     img.width = 310
     img.anchor = f"K{str(current_row)}"
