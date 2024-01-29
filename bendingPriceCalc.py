@@ -66,7 +66,8 @@ item_list_amada = (
     "Матриця багаторучова",
     "Тримач радіусних вставок",
     "Тримач поліуретанової вставки",
-    #"Тримач пуансона",
+    "Підкладка матриці",
+    "Тримач пуансона",
     #"Прижимні планки",
     #"Тримач матриці",
     #"Радіусна вставка",
@@ -80,7 +81,8 @@ item_list_trumpf_wila = (
     "Матриця плющення",
     "Кнопка",
     "Штіфт",
-    "Тримач поліуретанової вставки"
+    "Тримач поліуретанової вставки",
+    "Тримач пуансона",
 )
 
 
@@ -2371,7 +2373,6 @@ class Ui_MainWindow(object):
                 data_list.append(code)
                 dict_item = MyDb.get_info_item(data_list)
 
-
                 self.new_item.set_type_holder(dict_item["type_holder"])
                 self.new_item.set_type_item(dict_item["item"])
                 self.new_item.set_code_item(dict_item["code_item"])
@@ -2404,10 +2405,10 @@ class Ui_MainWindow(object):
 
                         self.my_invoice.add_item_to_list(self.new_item)
 
-                self.my_invoice.set_total_weight()
-                self.my_invoice.set_max_length()
-                self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
-                self.lenght_value.setText(str(self.my_invoice.get_max_length()) + " см")
+                #self.my_invoice.set_total_weight()
+                #self.my_invoice.set_max_length()
+                #self.weight_value.setText(str(self.my_invoice.get_total_weight()) + " кг")
+                #self.lenght_value.setText(str(self.my_invoice.get_max_length()) + " см")
             self.load_data()
 
     # Скидаємо попередні параметри

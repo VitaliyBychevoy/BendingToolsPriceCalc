@@ -180,7 +180,7 @@ class MyDb:
         work_sheet = wb[data_list[1]]
         max_row_item = work_sheet.max_row
         max_column_item = work_sheet.max_column
-        for i in range(1, max_row_item):
+        for i in range(1, max_row_item + 1):
             if work_sheet["C" + str(i)].value == data_list[-1]:
                 info_item["type_holder"] = work_sheet["B" + str(i)].value
                 info_item["item"] = work_sheet.title

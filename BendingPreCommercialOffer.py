@@ -629,6 +629,7 @@ def items_in_row(
 
         if invoice.get_list_item()[index].get_en_name_item()[-9:] == "SECTIONED":
             sectioned: str = invoice.get_list_item()[index].get_sectioned_image_name()
+            print(sectioned)
             img_sectioned = openpyxl.drawing.image.Image(f"data/{sectioned}")
             img_sectioned.height = 100
             img_sectioned.width = 261
@@ -639,7 +640,6 @@ def items_in_row(
                 invoice.get_list_item()[index].get_ua_name_item()
             sheet[f"F{str(current_row)}"].font = description_ua_font
             sheet[f"F{str(current_row)}"].alignment = alignment_left_bottom
-
         else:
             sheet[f"F{str(current_row)}"].border = thin_border
             sheet[f"F{str(current_row)}"].value = \

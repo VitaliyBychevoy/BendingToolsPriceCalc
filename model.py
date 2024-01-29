@@ -160,19 +160,19 @@ class Item:
     def get_sectioned_image_name(self) -> str:
         if self.get_type_holder() == "Amada-promecam":
             if self.get_type_item() == "Пуансон":
-                 return "punch_amada.png"
-            if self.get_type_item() == "Матриця":
+                return "punch_amada.png"
+            if self.get_type_item() == "Матриця одноручова":
                 return "die_amada.png"
             if self.get_type_item() == "Пуансон плющення":
-                return "punch_amada_hemming.png"
+                return "punch_amada_hamming.png"
             if self.get_type_item() == "Матриця плющення":
                 return "die_amada_hamming.png"
             if self.get_type_item() == "Матриця багаторучова":
-             return "die_amada.png"
+                return "die_amada.png"
         if self.get_type_holder() == "Trumpf-Wila":
             if self.get_type_item() == "Пуансон":
                 return "punch_trumpf.png"
-            if self.get_type_item() == "Матриця":
+            if self.get_type_item() == "Матриця одноручова":
                 return "die_trumpf.png"
             if self.get_type_item() == "Пуансон плющення":
                 return "punch_trumpf_hamming.png"
@@ -181,12 +181,12 @@ class Item:
         if self.get_type_holder() == "Bystronic":
             if self.get_type_item() == "Пуансон":
                 return "punch_bystronic.png"
-            if self.get_type_item() == "Матриця":
+            if self.get_type_item() == "Матриця одноручова":
                 return "die_trumpf.png"
             if self.get_type_item() == "Пуансон плющення":
-                return "punch_bystronic_hemming.png"
+                return "punch_bystronic_hamming.png"
             if self.get_type_item() == "Матриця плющення":
-                return "die_bystronic_hemming.png"
+                return "die_bystronic_hamming.png"
 
 class Invoice:
 
@@ -286,6 +286,7 @@ class Invoice:
         elif len(self.list_item) == 1:
             self.max_length = self.list_item[0].get_length_item_mm()
             self.max_length = str(float(self.max_length) / 10)
+
         else:
             self.max_length = self.list_item[0].get_length_item_mm()
             for i in range(len(self.list_item)):
@@ -293,6 +294,7 @@ class Invoice:
                     self.max_length = self.list_item[i].get_length_item_mm()
 
             self.max_length = str(float(self.max_length) / 10)
+
     def get_max_length(self) -> str:
         return self.max_length
 
