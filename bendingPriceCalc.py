@@ -29,10 +29,7 @@ from BendingPreCommercialOffer import *
 from style import *
 from db_handler import *
 
-
-
-acceptable_character = \
-    ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", ".")
+acceptable_character: tuple = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", ".")
 
 zero_spinBox = ("", " ", "00,000", "00,00", "0,0", "0")
 
@@ -454,9 +451,9 @@ class Ui_MainWindow(object):
         self.table.setHorizontalHeaderItem(3, item)
         self.table.horizontalHeader().setVisible(False)
         self.table.horizontalHeader().setCascadingSectionResizes(False)
-        self.table.horizontalHeader().setDefaultSectionSize(90)
+        self.table.horizontalHeader().setDefaultSectionSize(50)
         self.table.horizontalHeader().setHighlightSections(False)
-        self.table.horizontalHeader().setMinimumSectionSize(50)
+        self.table.horizontalHeader().setMinimumSectionSize(30)
         self.table.horizontalHeader().setSortIndicatorShown(True)
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.verticalHeader().setVisible(False)
@@ -1971,9 +1968,10 @@ class Ui_MainWindow(object):
             self.type_holder.addItem(item_connection)
 
         #Розміри стовбчиків попередньої таблиці
-        self.table.setColumnWidth(0, 20)
-        self.table.setColumnWidth(1, 100)
-        self.table.setColumnWidth(2, 500)
+        self.table.setColumnWidth(0, 10)
+        self.table.setColumnWidth(1, 70)
+        self.table.setColumnWidth(2, 580)
+        self.table.setColumnWidth(3, 80)
 
         self.book = MyDb.open_book("data/DB_bending.xlsx")
 
@@ -2435,7 +2433,7 @@ class Ui_MainWindow(object):
             #print(len(self.my_invoice.get_list_item()))
             self.table.setRowCount(len(self.my_invoice.get_list_item()))
             for i in range(0, len(self.my_invoice.get_list_item())):
-                self.table.setRowHeight(i, 50)
+                self.table.setRowHeight(i, 80)
 
                 self.table.setItem(i, 0, QTableWidgetItem(str(i + 1)))
 
@@ -2459,6 +2457,7 @@ class Ui_MainWindow(object):
 
                 self.table.item(i, 3).setFlags(self.table.item(i, 3, ).flags() & ~ QtCore.Qt.ItemIsEditable)
                 self.table.item(i, 3).setFont(self.font_table_2)
+                #self.table.setColumnWidth(3, 50)
         else:
             pass
         self.my_invoice.set_total_weight()

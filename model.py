@@ -249,8 +249,8 @@ class Invoice:
 
         my_list_item.append(new_item)
         self.set_list_item(my_list_item)
-        self.set_total_weight()
-        self.set_max_length()
+        #self.set_total_weight()
+        #self.set_max_length()
 
     def remove_item_from_list(self, code: str) -> None:
         index_code = 0
