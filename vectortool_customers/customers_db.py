@@ -1,8 +1,6 @@
 from openpyxl import *
 
-#DEFAULT_PATH = "vectortool_customers/customers_vectortool.xlsx"
 DEFAULT_PATH = "vectortool_customers/customers.xlsx"
-#DEFAULT_PATH = "data/customers_vectortool.xlsx"
 
 company_index: int = 0
 

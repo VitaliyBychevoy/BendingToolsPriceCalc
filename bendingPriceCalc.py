@@ -147,6 +147,8 @@ def get_rate() -> str:
             for item in td_list:
                 rate_full_string = item.find("div", {"class": "sc-1x32wa2-9 bKmKjX"}).text
             rate = rate_full_string[0:5]
+            if rate[-1] == "-" :
+                rate  = rate[0:4] + "0"
             return rate
         else:
             return "00.00"
@@ -158,6 +160,7 @@ def get_recommended_rate_for_euro_value(new_rate: str) -> str:
     """Функція  отримує строку яка містить вартість покупки euro
     та вертає збільшену вартість на один відсоток у вигяді строки"""
     rate = new_rate.replace(",", ".")
+    print(rate)
     result = str(round(float(rate) * 1.01, 2))
     rate_with_comma = result.replace(".", ",")
     return rate_with_comma
