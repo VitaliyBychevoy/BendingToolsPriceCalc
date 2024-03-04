@@ -540,9 +540,9 @@ class MyDb:
         :return: tuple
         """
         sheet_max_row = sheet.max_row
-
+        print(code_item)
         for index in range(2, sheet_max_row):
-            if sheet["C" + str(index)].value[0:6] == code_item:
+            if sheet["C" + str(index)].value[0:6] == code_item or (len(code_item) == 7 and sheet["C" + str(index)].value[0:6] == code_item[0:6]):
                 result = ""
                 result += chr(int("03B1", 16))
                 result += " = "
@@ -553,6 +553,8 @@ class MyDb:
                 result += f', {str(sheet["M" + str(index)].value)} T/м.'
 
                 return result
+
+
         return "0, 0, 0, 0"
 
     @staticmethod
