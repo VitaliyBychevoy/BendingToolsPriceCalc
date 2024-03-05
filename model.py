@@ -340,8 +340,8 @@ class Invoice:
     def get_customer_name(self) -> str:
         return self.customer_name
 
-    def set_price_document(self, new_price_documen: str) -> None:
-        self.price_document = new_price_documen
+    def set_price_document(self, new_price_document: str) -> None:
+        self.price_document = new_price_document
 
     def get_price_document(self) -> str:
         return self.price_document
@@ -442,21 +442,41 @@ class Invoice:
 
         self.set_total_price_ua(price)
 
-
     #Вартість доставки у UAH
-    def calculate_total_delivery_price_ua(self) -> None:
+    def calculate_total_delivery_price_ua(
+            self, euro_one_price: str
+    ) -> None:
 
         delivery: float =\
-            float(self.get_delivery_price().replace(",","."))
+            float(self.get_delivery_price().replace(",", "."))
+
         document: float =\
-            float(self.get_price_document().replace(",","."))
+            float(
+                self.get_price_document().replace(",", ".")
+            )
 
+        euro_1: float = \
+            float(euro_one_price.replace(",","."))
 
-        delivery_price = round(
-            self.get_rate() * (
-                    delivery + document + (delivery + document) * 0.2),
-            2)
+        packing: float = (
+            float(self.get_packing_price().replace(",", ".")))
 
+        item_price: float = self.get_sum_item_price()
+
+        if (packing + item_price) < 6000:
+            delivery_price = round(
+                self.get_rate() * (
+                        delivery + document + ((delivery + document) * 0.2)),
+                2)
+        else:
+            delivery_price = round(
+                self.get_rate() * (
+                        delivery +
+                        document +
+                        euro_1 +
+                        (delivery + document + euro_1) * 0.2),
+                2)
+        print("Delivery price", delivery_price)
         self.set_total_delivery_price_ua(delivery_price)
 
 

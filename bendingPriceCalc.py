@@ -124,7 +124,7 @@ def get_list_moment() -> tuple:
     day = date.today().isoweekday()
     moment_list = moment.split(" ")
     date_list = moment_list[0].split("-")
-    date_str = ":".join(date_list[::-1])
+    date_str = ".".join(date_list[::-1])
     time_list = moment_list[1].split(":")
     time_string = time_list[0] + ":" + time_list[1]
     list_result = [date_str, time_string, week_day[day]]
@@ -2923,7 +2923,9 @@ class Ui_MainWindow(object):
             current_row += 1
 
         # Вартість доставки
-        self.my_invoice.calculate_total_delivery_price_ua()
+        self.my_invoice.calculate_total_delivery_price_ua(
+            self.delivery_document_EURO_1_value_.text()
+        )
         fill_delivery_value(sheet, current_row, self.my_invoice)
         current_row += 1
 
